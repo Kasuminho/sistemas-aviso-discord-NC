@@ -1,22 +1,20 @@
 import { REST, Routes } from 'discord.js';
-import { config, validateConfig } from './config.js';
+import { config } from './config.js';
 import * as agendarEvento from './commands/agendarEvento.js';
 import * as listarEventos from './commands/listarEventos.js';
 import * as cancelarEvento from './commands/cancelarEvento.js';
 import * as sortearItem from './commands/sortearItem.js';
 
-validateConfig();
+export async function registerCommands() {
+  const commands = [
+    agendarEvento.data.toJSON(),
+    listarEventos.data.toJSON(),
+    cancelarEvento.data.toJSON(),
+    sortearItem.data.toJSON()
+  ];
 
-const commands = [
-  agendarEvento.data.toJSON(),
-  listarEventos.data.toJSON(),
-  cancelarEvento.data.toJSON(),
-  sortearItem.data.toJSON()
-];
+  const rest = new REST({ version: '10' }).setToken(config.token);
 
-const rest = new REST({ version: '10' }).setToken(config.token);
-
-(async () => {
   try {
     console.log(`🚀 Registrando ${commands.length} comandos Slash com a API do Discord...`);
 
@@ -38,4 +36,9 @@ const rest = new REST({ version: '10' }).setToken(config.token);
   } catch (error) {
     console.error('❌ Erro ao registrar comandos:', error);
   }
-})();
+}
+
+// Se executado diretamente via terminal (`node src/deploy-commands.js`)
+if (process.argv[1] && process.argv[1].endsWith('deploy-commands.js')) {
+  registerCommands();
+}

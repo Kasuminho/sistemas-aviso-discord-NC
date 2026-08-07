@@ -1,6 +1,7 @@
 import { Client, GatewayIntentBits, Collection, ActivityType } from 'discord.js';
 import { config, validateConfig } from './config.js';
 import { initScheduler } from './services/scheduler.js';
+import { registerCommands } from './deploy-commands.js';
 
 import * as agendarEvento from './commands/agendarEvento.js';
 import * as listarEventos from './commands/listarEventos.js';
@@ -32,6 +33,9 @@ client.once('ready', async () => {
   console.log(`🤖 Bot conectado como: ${client.user.tag}`);
   console.log(`🛡️ Cargo Staff Permitido: ${config.staffRoleId}`);
   console.log(`==========================================`);
+
+  // Tenta registrar/atualizar as Slash Commands automaticamente
+  await registerCommands();
 
   // Define a presença/status do bot
   client.user.setPresence({

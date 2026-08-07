@@ -1,13 +1,20 @@
-version: '3.8'
+networks:
+  icontainer-network:
+    external: true
 
 services:
   bot-nc:
-    build: .
-    container_name: bot_nc_app
+    image: ghcr.io/kasuminho/sistemas-aviso-discord-nc:latest
+    container_name: bot-nc
     restart: unless-stopped
+    labels:
+      com.centurylinklabs.watchtower.enable: 'true'
     env_file:
-      - .env
-    volumes:
-      - ./data:/app/data
+      - icontainer.env
     environment:
-      - TZ=America/Sao_Paulo
+      NODE_ENV: production
+      TZ: America/Sao_Paulo
+    networks:
+      - icontainer-network
+    volumes:
+      - /srv/bot-nc/data:/app/data
