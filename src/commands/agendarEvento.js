@@ -7,7 +7,7 @@ import { config } from '../config.js';
 
 export const data = new SlashCommandBuilder()
   .setName('agendar-evento')
-  .setDescription('[STAFF] Agenda um novo evento com avisos automáticos em GMT-3')
+  .setDescription('[STAFF] Agenda um novo evento com aviso imediato e lembretes automáticos em GMT-3')
   .addStringOption(option =>
     option.setName('titulo')
       .setDescription('Título do evento')
@@ -83,15 +83,28 @@ export async function execute(interaction) {
 
   db.addEvent(newEvent);
 
+  // 1. Resposta privada de confirmação para o Staff
   const confirmEmbed = createSuccessEmbed(
     'Evento Agendado com Sucesso!',
-    `O evento **${title}** foi agendado para <t:${Math.floor(dt.toJSDate().getTime() / 1000)}:F>.\nOs avisos serão enviados no canal <#${channelId}>.`
+    `O evento **${title}** foi agendado para <t:${Math.floor(dt.toJSDate().getTime() / 1000)}:F>.\nUm aviso público foi enviado no canal <#${channelId}> marcando <@&${config.eventRoleId}>.`
   );
 
-  const previewEmbed = createEventEmbed(newEvent, 'INFO');
-
   await interaction.reply({
-    embeds: [confirmEmbed, previewEmbed],
+    embeds: [confirmEmbed],
     ephemeral: true
   });
+
+  // 2. Primeira postagem pública imediata no canal para a galera!
+  try {
+    const targetChannel = await interaction.client.channels.fetch(channelId);
+    if (targetChannel && targetChannel.isTextBased()) {
+      const publicEmbed = createEventEmbed(newEvent, 'NEW_EVENT');
+      await targetChannel.send({
+        content: `📢 **NOVO EVENTO AGENDADO!** <@&${config.eventRoleId}>`,
+        embeds: [publicEmbed]
+      });
+    }
+  } catch (err) {
+    console.error(`Erro ao postar primeiro aviso do evento ${eventId} no canal:`, err);
+  }
 }

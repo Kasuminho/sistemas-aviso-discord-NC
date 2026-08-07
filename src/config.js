@@ -6,6 +6,7 @@ export const config = {
   clientId: process.env.CLIENT_ID,
   guildId: process.env.GUILD_ID,
   staffRoleId: process.env.STAFF_ROLE_ID || '1526370359652122826',
+  eventRoleId: process.env.EVENT_ROLE_ID || '1525526128725459065',
   announcementChannelId: process.env.ANNOUNCEMENT_CHANNEL_ID || '',
   timezone: 'America/Sao_Paulo' // GMT-3
 };

@@ -48,7 +48,7 @@ async function sendDaily15hAnnouncements(client) {
       if (channel && channel.isTextBased()) {
         const embed = createEventEmbed(event, 'DAILY_15H');
         await channel.send({
-          content: '📢 **[AVISO DIÁRIO]** Confira os detalhes do próximo evento!',
+          content: `📢 **[AVISO DIÁRIO]** Lembrete de evento para <@&${config.eventRoleId}>!`,
           embeds: [embed]
         });
       }
@@ -76,20 +76,24 @@ async function checkEventReminders(client) {
     if (!channelId) continue;
 
     let noticeType = null;
+    let pingText = `📢 <@&${config.eventRoleId}>`;
 
     // Aviso de 4 horas antes (janela de 210 a 245 minutos)
     if (diffMinutes <= 240 && diffMinutes > 210 && !event.notified4h) {
       noticeType = 'REMINDER_4H';
+      pingText = `⏰ **[LEMBRETE 4H]** O evento começa em 4 horas! <@&${config.eventRoleId}>`;
       event.notified4h = true;
     }
     // Aviso de 1 hora antes (janela de 45 a 65 minutos)
     else if (diffMinutes <= 60 && diffMinutes > 45 && !event.notified1h) {
       noticeType = 'REMINDER_1H';
+      pingText = `🔥 **[LEMBRETE 1H]** O evento começa em 1 hora! <@&${config.eventRoleId}>`;
       event.notified1h = true;
     }
     // Aviso de 30 minutos antes (janela de 5 a 35 minutos)
     else if (diffMinutes <= 30 && diffMinutes > 5 && !event.notified30m) {
       noticeType = 'REMINDER_30M';
+      pingText = `🚨 **[LEMBRETE 30M]** O EVENTO COMEÇA EM 30 MINUTOS! <@&${config.eventRoleId}>`;
       event.notified30m = true;
     }
 
@@ -98,10 +102,6 @@ async function checkEventReminders(client) {
         const channel = await client.channels.fetch(channelId);
         if (channel && channel.isTextBased()) {
           const embed = createEventEmbed(event, noticeType);
-          let pingText = '📢 @everyone';
-          if (noticeType === 'REMINDER_30M') {
-            pingText = '🚨 @everyone **O EVENTO COMEÇA EM 30 MINUTOS!**';
-          }
           await channel.send({
             content: pingText,
             embeds: [embed]

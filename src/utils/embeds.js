@@ -18,11 +18,14 @@ export function createErrorEmbed(title, description) {
     .setFooter({ text: 'NC Bot • Gerenciador de Eventos' });
 }
 
-export function createEventEmbed(event, noticeType = 'INFO') {
+export function createEventEmbed(event, noticeType = 'NEW_EVENT') {
   let headerText = '📅 NOVO EVENTO AGENDADO!';
   let color = '#5865F2';
 
-  if (noticeType === 'DAILY_15H') {
+  if (noticeType === 'NEW_EVENT') {
+    headerText = '🎉 NOVO EVENTO AGENDADO PARA A GALERA!';
+    color = '#5865F2';
+  } else if (noticeType === 'DAILY_15H') {
     headerText = '📢 AVISO DIÁRIO DE EVENTOS';
     color = '#FEE75C';
   } else if (noticeType === 'REMINDER_4H') {
