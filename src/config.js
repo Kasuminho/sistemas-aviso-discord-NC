@@ -8,6 +8,9 @@ export const config = {
   staffRoleId: process.env.STAFF_ROLE_ID || '1526370359652122826',
   eventRoleId: process.env.EVENT_ROLE_ID || '1525526128725459065',
   announcementChannelId: process.env.ANNOUNCEMENT_CHANNEL_ID || '',
+  voiceCategoryId: process.env.VOICE_CATEGORY_ID || '1525526402500395189',
+  afkChannelId: process.env.AFK_CHANNEL_ID || '', // Se omitido, usará o canal AFK padrão do servidor
+  muteTimeoutMinutes: parseInt(process.env.MUTE_TIMEOUT_MINUTES || '10', 10),
   timezone: 'America/Sao_Paulo' // GMT-3
 };
 

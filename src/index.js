@@ -1,6 +1,7 @@
 import { Client, GatewayIntentBits, Collection, ActivityType } from 'discord.js';
 import { config, validateConfig } from './config.js';
 import { initScheduler } from './services/scheduler.js';
+import { initVoiceMuteChecker } from './services/voiceMuteChecker.js';
 import { registerCommands } from './deploy-commands.js';
 
 import * as agendarEvento from './commands/agendarEvento.js';
@@ -15,7 +16,8 @@ const client = new Client({
     GatewayIntentBits.Guilds,
     GatewayIntentBits.GuildMessages,
     GatewayIntentBits.GuildMembers,
-    GatewayIntentBits.MessageContent
+    GatewayIntentBits.MessageContent,
+    GatewayIntentBits.GuildVoiceStates
   ]
 });
 
@@ -32,6 +34,7 @@ client.once('ready', async () => {
   console.log(`==========================================`);
   console.log(`🤖 Bot conectado como: ${client.user.tag}`);
   console.log(`🛡️ Cargo Staff Permitido: ${config.staffRoleId}`);
+  console.log(`🎙️ Categoria Voz Monitorada: ${config.voiceCategoryId}`);
   console.log(`==========================================`);
 
   // Tenta registrar/atualizar as Slash Commands automaticamente
@@ -39,12 +42,15 @@ client.once('ready', async () => {
 
   // Define a presença/status do bot
   client.user.setPresence({
-    activities: [{ name: 'Gerenciando Eventos & Sorteios NC', type: ActivityType.Custom }],
+    activities: [{ name: 'Gerenciando Eventos & Voice NC', type: ActivityType.Custom }],
     status: 'online'
   });
 
   // Inicializa o serviço de agendamento de avisos (15h GMT-3 e 4h/1h/30m)
   initScheduler(client);
+
+  // Inicializa o serviço de verificação de mute em voz (mover para AFK após 10 min)
+  initVoiceMuteChecker(client);
 });
 
 // Evento de recepção de comandos Slash
