@@ -2,12 +2,16 @@ import { Client, GatewayIntentBits, Collection, ActivityType } from 'discord.js'
 import { config, validateConfig } from './config.js';
 import { initScheduler } from './services/scheduler.js';
 import { initVoiceMuteChecker } from './services/voiceMuteChecker.js';
+import { initAltTimerChecker } from './services/altTimerChecker.js';
 import { registerCommands } from './deploy-commands.js';
 
 import * as agendarEvento from './commands/agendarEvento.js';
 import * as listarEventos from './commands/listarEventos.js';
 import * as cancelarEvento from './commands/cancelarEvento.js';
 import * as sortearItem from './commands/sortearItem.js';
+import * as cadastrarAltTimer from './commands/cadastrarAltTimer.js';
+import * as consultarAltTimer from './commands/consultarAltTimer.js';
+import * as removerAltTimer from './commands/removerAltTimer.js';
 
 validateConfig();
 
@@ -23,7 +27,15 @@ const client = new Client({
 
 // Registra os comandos na coleção
 client.commands = new Collection();
-const commandsList = [agendarEvento, listarEventos, cancelarEvento, sortearItem];
+const commandsList = [
+  agendarEvento,
+  listarEventos,
+  cancelarEvento,
+  sortearItem,
+  cadastrarAltTimer,
+  consultarAltTimer,
+  removerAltTimer
+];
 
 for (const cmd of commandsList) {
   client.commands.set(cmd.data.name, cmd);
@@ -34,6 +46,8 @@ client.once('ready', async () => {
   console.log(`==========================================`);
   console.log(`🤖 Bot conectado como: ${client.user.tag}`);
   console.log(`🛡️ Cargo Staff Permitido: ${config.staffRoleId}`);
+  console.log(`⚔️ Cargo Jogador NC: ${config.eventRoleId}`);
+  console.log(`📍 Canal Alt Timers: ${config.altTimerChannelId}`);
   console.log(`🎙️ Categoria Voz Monitorada: ${config.voiceCategoryId}`);
   console.log(`==========================================`);
 
@@ -42,7 +56,7 @@ client.once('ready', async () => {
 
   // Define a presença/status do bot
   client.user.setPresence({
-    activities: [{ name: 'Gerenciando Eventos & Voice NC', type: ActivityType.Custom }],
+    activities: [{ name: 'Gerenciando Eventos, Sorteios & Alts NC', type: ActivityType.Custom }],
     status: 'online'
   });
 
@@ -51,6 +65,9 @@ client.once('ready', async () => {
 
   // Inicializa o serviço de verificação de mute em voz (mover para AFK após 10 min)
   initVoiceMuteChecker(client);
+
+  // Inicializa o serviço de notificação de timers de Alts
+  initAltTimerChecker(client);
 });
 
 // Evento de recepção de comandos Slash

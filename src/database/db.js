@@ -8,6 +8,7 @@ const __dirname = path.dirname(__filename);
 const DATA_DIR = path.join(__dirname, '../../data');
 const EVENTS_FILE = path.join(DATA_DIR, 'events.json');
 const SORTEIOS_FILE = path.join(DATA_DIR, 'sorteios.json');
+const ALT_TIMERS_FILE = path.join(DATA_DIR, 'alt_timers.json');
 
 // Garante que o diretório data exista
 if (!fs.existsSync(DATA_DIR)) {
@@ -38,6 +39,7 @@ function writeJSON(filePath, data) {
 }
 
 export const db = {
+  // Eventos
   getEvents() {
     return readJSON(EVENTS_FILE);
   },
@@ -72,6 +74,7 @@ export const db = {
     }
   },
 
+  // Sorteios
   getSorteios() {
     return readJSON(SORTEIOS_FILE);
   },
@@ -80,5 +83,61 @@ export const db = {
     const sorteios = this.getSorteios();
     sorteios.push(sorteio);
     writeJSON(SORTEIOS_FILE, sorteios);
+  },
+
+  // Alt Timers
+  getAltTimers() {
+    return readJSON(ALT_TIMERS_FILE);
+  },
+
+  saveAltTimers(timers) {
+    writeJSON(ALT_TIMERS_FILE, timers);
+  },
+
+  getUserAltTimers(userId) {
+    const timers = this.getAltTimers();
+    return timers.filter(t => t.userId === userId);
+  },
+
+  setAltTimer(userId, slot, altName, expiresAtISO) {
+    const timers = this.getAltTimers();
+    const existingIndex = timers.findIndex(t => t.userId === userId && t.slot === slot);
+
+    const timerData = {
+      userId,
+      slot,
+      altName: altName || `Alt ${slot}`,
+      expiresAtISO,
+      createdAtISO: new Date().toISOString(),
+      notified: false
+    };
+
+    if (existingIndex !== -1) {
+      timers[existingIndex] = timerData;
+    } else {
+      timers.push(timerData);
+    }
+
+    this.saveAltTimers(timers);
+    return timerData;
+  },
+
+  removeAltTimer(userId, slot) {
+    const timers = this.getAltTimers();
+    const filtered = timers.filter(t => !(t.userId === userId && t.slot === slot));
+    const removed = timers.length !== filtered.length;
+    if (removed) {
+      this.saveAltTimers(filtered);
+    }
+    return removed;
+  },
+
+  updateAltTimer(updatedTimer) {
+    const timers = this.getAltTimers();
+    const index = timers.findIndex(t => t.userId === updatedTimer.userId && t.slot === updatedTimer.slot);
+    if (index !== -1) {
+      timers[index] = updatedTimer;
+      this.saveAltTimers(timers);
+    }
   }
 };

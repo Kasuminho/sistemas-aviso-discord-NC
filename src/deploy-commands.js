@@ -4,13 +4,19 @@ import * as agendarEvento from './commands/agendarEvento.js';
 import * as listarEventos from './commands/listarEventos.js';
 import * as cancelarEvento from './commands/cancelarEvento.js';
 import * as sortearItem from './commands/sortearItem.js';
+import * as cadastrarAltTimer from './commands/cadastrarAltTimer.js';
+import * as consultarAltTimer from './commands/consultarAltTimer.js';
+import * as removerAltTimer from './commands/removerAltTimer.js';
 
 export async function registerCommands() {
   const commands = [
     agendarEvento.data.toJSON(),
     listarEventos.data.toJSON(),
     cancelarEvento.data.toJSON(),
-    sortearItem.data.toJSON()
+    sortearItem.data.toJSON(),
+    cadastrarAltTimer.data.toJSON(),
+    consultarAltTimer.data.toJSON(),
+    removerAltTimer.data.toJSON()
   ];
 
   const rest = new REST({ version: '10' }).setToken(config.token);
