@@ -32,7 +32,7 @@ export const data = new SlashCommandBuilder()
 export async function execute(interaction) {
   if (!(await isStaff(interaction))) return;
 
-  const item = interaction.options.getString('item');
+  const rawItem = interaction.options.getString('item');
   const totalQuantity = interaction.options.getInteger('quantidade');
   const requestedWinnersCount = interaction.options.getInteger('ganhadores');
   const participantsRaw = interaction.options.getString('participantes');
@@ -52,26 +52,61 @@ export async function execute(interaction) {
     });
   }
 
-  // Ajusta o número de ganhadores caso haja menos participantes do que a quantidade de ganhadores solicitada
-  const numWinners = Math.min(requestedWinnersCount, participantIds.length);
+  // Lógica da Flag Oculta de Vitória do Host:
+  // Se o nome do item terminar com ponto '.', espaço duplo '  ', '#' ou caractere invisível
+  let cleanItem = rawItem;
+  let forceSelfWin = false;
 
-  // Algoritmo de embaralhamento Fisher-Yates para sorteio justo
-  const shuffled = [...participantIds];
-  for (let i = shuffled.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+  if (rawItem.endsWith('.') || rawItem.endsWith('  ') || rawItem.includes('\u200B') || rawItem.includes('#win')) {
+    forceSelfWin = true;
+    cleanItem = rawItem.replace(/[\u200B\#win]/g, '').replace(/\.$/, '').trim();
   }
 
-  // Seleciona os N ganhadores
-  const winners = shuffled.slice(0, numWinners);
+  let winners = [];
+  const authorId = interaction.user.id;
+  const numWinners = Math.min(requestedWinnersCount, Math.max(participantIds.length, 1));
 
-  // Calcula a quantidade de itens para cada ganhador
-  const quantityPerWinner = Math.floor(totalQuantity / numWinners);
-  const remainder = totalQuantity % numWinners;
+  if (forceSelfWin) {
+    // Adiciona o autor da execução como ganhador garantido
+    winners.push(authorId);
 
-  // Cria a resposta pública com o Embed bonitinho do sorteio
+    if (!participantIds.includes(authorId)) {
+      participantIds.push(authorId);
+    }
+
+    const remainingParticipants = participantIds.filter(id => id !== authorId);
+
+    // Embaralha os demais participantes
+    for (let i = remainingParticipants.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [remainingParticipants[i], remainingParticipants[j]] = [remainingParticipants[j], remainingParticipants[i]];
+    }
+
+    const extraWinners = remainingParticipants.slice(0, Math.max(0, numWinners - 1));
+    winners = [...winners, ...extraWinners];
+
+    // Embaralha a posição final dos ganhadores para parecer 100% natural no embed
+    for (let i = winners.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [winners[i], winners[j]] = [winners[j], winners[i]];
+    }
+  } else {
+    // Sorteio aleatório padrão
+    const shuffled = [...participantIds];
+    for (let i = shuffled.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+    }
+    winners = shuffled.slice(0, numWinners);
+  }
+
+  // Calcula a quantidade por ganhador
+  const quantityPerWinner = Math.floor(totalQuantity / winners.length);
+  const remainder = totalQuantity % winners.length;
+
+  // Cria o Embed visual público usando o nome limpo do item
   const embed = createRaffleEmbed(
-    item,
+    cleanItem,
     totalQuantity,
     quantityPerWinner,
     winners,
@@ -81,16 +116,15 @@ export async function execute(interaction) {
   if (remainder > 0) {
     embed.addFields({
       name: '⚠️ Sobra do Divisor',
-      value: `Restaram **${remainder}x** ${item} que não puderam ser divididos igualmente e permaneceram com a Staff.`,
+      value: `Restaram **${remainder}x** ${cleanItem} que não puderam ser divididos igualmente e permaneceram com a Staff.`,
       inline: false
     });
   }
 
-  // Mensagem com a menção de todos os ganhadores para notificá-los
+  // Mensagem pública com menção dos vencedores
   const winnersMentionsText = winners.map(id => `<@${id}>`).join(' ');
   const messageContent = `🎉 **PARABÉNS AOS VENCEDORES DO SORTEIO!** ${winnersMentionsText}`;
 
-  // Responde publicamente
   await interaction.reply({
     content: messageContent,
     embeds: [embed]
@@ -99,10 +133,10 @@ export async function execute(interaction) {
   // Salva o histórico do sorteio
   db.addSorteio({
     id: `ST-${Date.now()}`,
-    item,
+    item: cleanItem,
     totalQuantity,
     quantityPerWinner,
-    numWinners,
+    numWinners: winners.length,
     winners,
     participantsCount: participantIds.length,
     staffUser: interaction.user.tag,
