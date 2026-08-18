@@ -7,7 +7,7 @@ import { config } from '../config.js';
 
 export const data = new SlashCommandBuilder()
   .setName('agendar-evento')
-  .setDescription('[STAFF] Agenda um novo evento com aviso imediato e lembretes automáticos em GMT-3')
+  .setDescription('[STAFF] Agenda um novo evento com aviso imediato, lembretes e opção de recorrência')
   .addStringOption(option =>
     option.setName('titulo')
       .setDescription('Título do evento')
@@ -20,8 +20,19 @@ export const data = new SlashCommandBuilder()
   )
   .addStringOption(option =>
     option.setName('data_hora')
-      .setDescription('Data e hora no fuso GMT-3 (Exemplo: 15/08/2026 20:00)')
+      .setDescription('Data e hora inicial no fuso GMT-3 (Exemplo: 15/08/2026 20:00)')
       .setRequired(true)
+  )
+  .addStringOption(option =>
+    option.setName('recorrencia')
+      .setDescription('Frequência de repetição do evento (Opcional)')
+      .setRequired(false)
+      .addChoices(
+        { name: 'Nenhuma (Apenas uma vez)', value: 'nenhuma' },
+        { name: 'Diária (Todos os dias no mesmo horário)', value: 'diaria' },
+        { name: 'Semanal (Toda semana no mesmo dia e horário)', value: 'semanal' },
+        { name: 'Mensal (Todo mês no mesmo dia e horário)', value: 'mensal' }
+      )
   )
   .addChannelOption(option =>
     option.setName('canal')
@@ -36,6 +47,7 @@ export async function execute(interaction) {
   const title = interaction.options.getString('titulo');
   const description = interaction.options.getString('descricao');
   const dateTimeStr = interaction.options.getString('data_hora');
+  const recorrencia = interaction.options.getString('recorrencia') || 'nenhuma';
   const channelOption = interaction.options.getChannel('canal');
 
   // Determina o canal de avisos
@@ -73,6 +85,7 @@ export async function execute(interaction) {
     title,
     description,
     dateTimeISO: dt.toJSDate().toISOString(),
+    recorrencia,
     channelId,
     createdAt: new Date().toISOString(),
     notified15h: false,
@@ -83,10 +96,19 @@ export async function execute(interaction) {
 
   db.addEvent(newEvent);
 
+  const labelMap = {
+    nenhuma: 'Nenhuma (Evento único)',
+    diaria: '🔁 Diária (Todos os dias)',
+    semanal: '🔁 Semanal (Toda semana)',
+    mensal: '🔁 Mensal (Todo mês)'
+  };
+
   // 1. Resposta privada de confirmação para o Staff
   const confirmEmbed = createSuccessEmbed(
     'Evento Agendado com Sucesso!',
-    `O evento **${title}** foi agendado para <t:${Math.floor(dt.toJSDate().getTime() / 1000)}:F>.\nUm aviso público foi enviado no canal <#${channelId}> marcando <@&${config.eventRoleId}>.`
+    `O evento **${title}** foi agendado para <t:${Math.floor(dt.toJSDate().getTime() / 1000)}:F>.\n` +
+    `📌 **Recorrência:** ${labelMap[recorrencia]}\n` +
+    `📢 **Canal:** <#${channelId}> marcando <@&${config.eventRoleId}>.`
   );
 
   await interaction.reply({

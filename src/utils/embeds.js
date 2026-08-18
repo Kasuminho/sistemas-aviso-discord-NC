@@ -42,15 +42,26 @@ export function createEventEmbed(event, noticeType = 'NEW_EVENT') {
   const dateFormatted = `<t:${Math.floor(new Date(event.dateTimeISO).getTime() / 1000)}:F>`;
   const relativeFormatted = `<t:${Math.floor(new Date(event.dateTimeISO).getTime() / 1000)}:R>`;
 
+  const fields = [
+    { name: '📌 Título do Evento', value: `**${event.title}**`, inline: false },
+    { name: '📝 Descrição', value: event.description || 'Sem descrição.', inline: false },
+    { name: '📆 Data e Horário', value: `${dateFormatted} (${relativeFormatted})`, inline: true },
+    { name: '🆔 ID do Evento', value: `\`${event.id}\``, inline: true }
+  ];
+
+  if (event.recorrencia && event.recorrencia !== 'nenhuma') {
+    const labelMap = {
+      diaria: '🔁 Diária (Todos os dias)',
+      semanal: '🔁 Semanal (Toda semana)',
+      mensal: '🔁 Mensal (Todo mês)'
+    };
+    fields.push({ name: '🔁 Recorrência', value: labelMap[event.recorrencia] || event.recorrencia, inline: true });
+  }
+
   return new EmbedBuilder()
     .setColor(color)
     .setTitle(headerText)
-    .addFields(
-      { name: '📌 Título do Evento', value: `**${event.title}**`, inline: false },
-      { name: '📝 Descrição', value: event.description || 'Sem descrição.', inline: false },
-      { name: '📆 Data e Horário', value: `${dateFormatted} (${relativeFormatted})`, inline: true },
-      { name: '🆔 ID do Evento', value: `\`${event.id}\``, inline: true }
-    )
+    .addFields(fields)
     .setTimestamp()
     .setFooter({ text: 'Fuso Horário: GMT-3 (Horário de Brasília)' });
 }

@@ -19,7 +19,7 @@ export function initScheduler(client) {
     timezone: 'America/Sao_Paulo'
   });
 
-  // 2. Cron Job Minuto a Minuto para avisos de 4h, 1h e 30 min antes do evento
+  // 2. Cron Job Minuto a Minuto para avisos de 4h, 1h e 30 min antes do evento e gestão de recorrência
   cron.schedule('* * * * *', async () => {
     await checkEventReminders(client);
   }, {
@@ -59,7 +59,7 @@ async function sendDaily15hAnnouncements(client) {
 }
 
 /**
- * Verifica eventos que precisam de avisos de 4h, 1h e 30m
+ * Verifica eventos que precisam de avisos de 4h, 1h e 30m e avança eventos recorrentes
  */
 async function checkEventReminders(client) {
   const events = db.getEvents();
@@ -69,8 +69,33 @@ async function checkEventReminders(client) {
     const eventTime = DateTime.fromISO(event.dateTimeISO).setZone('America/Sao_Paulo');
     const diffMinutes = Math.floor(eventTime.diff(now, 'minutes').minutes);
 
-    // Se o evento já passou há mais de 10 minutos, pula
-    if (diffMinutes < -10) continue;
+    // Gestão de eventos passados e Recorrência (Diária, Semanal, Mensal)
+    if (diffMinutes < -15) {
+      if (event.recorrencia && event.recorrencia !== 'nenhuma') {
+        let nextTime = eventTime;
+
+        while (nextTime <= now) {
+          if (event.recorrencia === 'diaria') {
+            nextTime = nextTime.plus({ days: 1 });
+          } else if (event.recorrencia === 'semanal') {
+            nextTime = nextTime.plus({ weeks: 1 });
+          } else if (event.recorrencia === 'mensal') {
+            nextTime = nextTime.plus({ months: 1 });
+          }
+        }
+
+        // Atualiza a data e reseta as notificações enviadas para o novo ciclo
+        event.dateTimeISO = nextTime.toJSDate().toISOString();
+        event.notified15h = false;
+        event.notified4h = false;
+        event.notified1h = false;
+        event.notified30m = false;
+
+        db.updateEvent(event);
+        console.log(`🔁 [RECURRENCE] Evento ${event.id} ("${event.title}") avançado para o próximo ciclo: ${event.dateTimeISO}`);
+      }
+      continue;
+    }
 
     const channelId = event.channelId || config.announcementChannelId;
     if (!channelId) continue;
