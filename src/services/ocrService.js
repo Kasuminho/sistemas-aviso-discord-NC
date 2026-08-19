@@ -1,14 +1,19 @@
 import { createWorker } from 'tesseract.js';
 
 /**
- * Processa a imagem enviada por URL via OCR (Tesseract.js) e extrai textos e estatísticas
+ * Processa uma imagem via OCR (Tesseract.js) e extrai especificamente os status do jogo:
+ * - Nível
+ * - Dano (Swords)
+ * - Defesa (Shield)
+ * - Acerto (Target)
+ * - Acerto em JvA
+ * - Defesa em JvA
  * @param {string} imageUrl 
  * @returns {Promise<{ rawText: string, parsedStats: Object }>}
  */
 export async function processImageOCR(imageUrl) {
   let worker = null;
   try {
-    // Inicializa o worker em português e inglês para melhor precisão
     worker = await createWorker('por+eng');
     const { data: { text } } = await worker.recognize(imageUrl);
     await worker.terminate();
@@ -19,7 +24,7 @@ export async function processImageOCR(imageUrl) {
       .filter(line => line.length > 0)
       .join('\n');
 
-    const parsedStats = parseStatsFromText(cleanText);
+    const parsedStats = parseNCGameStats(cleanText);
 
     return {
       rawText: cleanText || 'Nenhum texto pôde ser lido da imagem.',
@@ -35,28 +40,39 @@ export async function processImageOCR(imageUrl) {
 }
 
 /**
- * Tenta extrair padrões comuns de status de jogos (Nível, Poder, Ouro, Nick, etc.) a partir do texto lido
+ * Extrai os 6 status principais focados em Boss de Guild e progressão
  * @param {string} text 
  * @returns {Object}
  */
-function parseStatsFromText(text) {
+export function parseNCGameStats(text) {
   const stats = {};
 
-  // Nível / Level / Lvl
-  const levelMatch = text.match(/(?:n[íi]vel|lvl|level)\s*[:\s-]*(\d+)/i);
-  if (levelMatch) stats.level = levelMatch[1];
+  // 1. Acerto em JvA (PvE Accuracy)
+  const jvaAcerto = text.match(/(?:acerto|certo)\s+em\s+jva\s*[:\s-]*(\d+)/i);
+  if (jvaAcerto) stats.acertoJvA = parseInt(jvaAcerto[1], 10);
 
-  // Poder / Power / CP / PWR
-  const powerMatch = text.match(/(?:poder|power|cp|pwr)\s*[:\s-]*([\d\.\,\s]+[kKmM]?)/i);
-  if (powerMatch) stats.power = powerMatch[1].trim();
+  // 2. Defesa em JvA (PvE Defense)
+  const jvaDefesa = text.match(/(?:defesa)\s+em\s+jva\s*[:\s-]*(\d+)/i);
+  if (jvaDefesa) stats.defesaJvA = parseInt(jvaDefesa[1], 10);
 
-  // Ouro / Gold / Moedas
-  const goldMatch = text.match(/(?:ouro|gold|moedas)\s*[:\s-]*([\d\.\,\s]+)/i);
-  if (goldMatch) stats.gold = goldMatch[1].trim();
+  // 3. Acerto Geral
+  const acertoMatch = text.match(/^acerto\s+[:\s-]*(\d+)/im);
+  if (acertoMatch) stats.acerto = parseInt(acertoMatch[1], 10);
 
-  // Nick / Nome / Player
-  const nickMatch = text.match(/(?:nick|nome|player|jogador)\s*[:\s-]*([a-zA-Z0-9_\-]{3,16})/i);
-  if (nickMatch) stats.nick = nickMatch[1].trim();
+  // 4. Procurar Nível (ex: 62)
+  const levelMatch = text.match(/(?:n[íi]vel|lvl|level)\s*[:\s-]*(\d+)/i) || text.match(/\b([5-9]\d)\b/);
+  if (levelMatch) stats.nivel = parseInt(levelMatch[1], 10);
+
+  // 5. Procurar trio de números do HUD (Dano / Defesa / Acerto)
+  const numbers = text.match(/\b\d{3,4}\b/g);
+  if (numbers && numbers.length >= 3) {
+    const candidates = numbers.map(n => parseInt(n, 10)).filter(n => n >= 100 && n <= 4000);
+    if (candidates.length >= 3) {
+      if (!stats.dano) stats.dano = candidates[0];
+      if (!stats.defesa) stats.defesa = candidates[1];
+      if (!stats.acerto) stats.acerto = candidates[2];
+    }
+  }
 
   return stats;
 }

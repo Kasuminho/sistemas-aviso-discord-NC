@@ -4,10 +4,10 @@ import { createErrorEmbed } from '../utils/embeds.js';
 
 export const data = new SlashCommandBuilder()
   .setName('consultar-status')
-  .setDescription('Consulta o último print de status registrado de um jogador')
+  .setDescription('Consulta o status do personagem de um jogador para Boss de Guild')
   .addUserOption(option =>
     option.setName('jogador')
-      .setDescription('Selecione o jogador para consultar os status (Opcional)')
+      .setDescription('Selecione o jogador para consultar (Opcional)')
       .setRequired(false)
   );
 
@@ -19,41 +19,37 @@ export async function execute(interaction) {
     return interaction.reply({
       embeds: [createErrorEmbed(
         'Nenhum Status Registrado',
-        `O jogador <@${targetUser.id}> ainda não registrou nenhum print de status.\nUse \`/registrar-status\` para enviar um print.`
+        `O jogador <@${targetUser.id}> ainda não registrou seus status.\nUse \`/registrar-status\` para registrar.`
       )],
       ephemeral: true
     });
   }
 
   const timestampUnix = Math.floor(new Date(statusData.updatedAtISO).getTime() / 1000);
+  const s = statusData.parsedStats || {};
 
   const embed = new EmbedBuilder()
     .setColor('#5865F2')
-    .setTitle(`📊 STATUS DE ${targetUser.username.toUpperCase()}`)
-    .setDescription(`Último print registrado em <t:${timestampUnix}:F> (<t:${timestampUnix}:R>)`)
-    .setImage(statusData.imageUrl)
+    .setTitle(`🛡️ STATUS DE ${targetUser.username.toUpperCase()}`)
+    .setDescription(`Última atualização em <t:${timestampUnix}:F> (<t:${timestampUnix}:R>)`)
+    .addFields(
+      { name: '⭐ Nível', value: s.nivel ? `**${s.nivel}**` : 'Não informado', inline: true },
+      { name: '⚔️ Dano', value: s.dano ? `**${s.dano}**` : 'Não informado', inline: true },
+      { name: '🛡️ Defesa', value: s.defesa ? `**${s.defesa}**` : 'Não informado', inline: true },
+      { name: '🎯 Acerto Geral', value: s.acerto ? `**${s.acerto}**` : 'Não informado', inline: true },
+      { name: '🐉 Acerto em JvA', value: s.acertoJvA ? `**${s.acertoJvA}**` : 'Não informado', inline: true },
+      { name: '🛡️ Defesa em JvA', value: s.defesaJvA ? `**${s.defesaJvA}**` : 'Não informado', inline: true }
+    )
     .setTimestamp()
-    .setFooter({ text: 'NC Bot • OCR Status Tracker' });
+    .setFooter({ text: 'NC Bot • Acompanhamento de Boss de Guild' });
 
-  const detectedFields = [];
-  if (statusData.parsedStats?.nick) detectedFields.push(`👤 **Nick:** ${statusData.parsedStats.nick}`);
-  if (statusData.parsedStats?.level) detectedFields.push(`⭐ **Nível:** ${statusData.parsedStats.level}`);
-  if (statusData.parsedStats?.power) detectedFields.push(`⚔️ **Poder:** ${statusData.parsedStats.power}`);
-  if (statusData.parsedStats?.gold) detectedFields.push(`💰 **Ouro:** ${statusData.parsedStats.gold}`);
-
-  if (detectedFields.length > 0) {
-    embed.addFields({
-      name: '📊 Status Detectados',
-      value: detectedFields.join('\n'),
-      inline: false
-    });
+  if (statusData.imageUrl) {
+    embed.setImage(statusData.imageUrl);
   }
 
-  const textSnippet = statusData.rawText.length > 500 ? statusData.rawText.substring(0, 500) + '...' : statusData.rawText;
-  embed.addFields(
-    { name: '🔍 Texto Lido via OCR', value: `\`\`\`text\n${textSnippet}\n\`\`\``, inline: false },
-    { name: '📝 Observação', value: statusData.observacao || 'Sem observação.', inline: false }
-  );
+  if (statusData.observacao) {
+    embed.addFields({ name: '📝 Observação', value: statusData.observacao, inline: false });
+  }
 
   await interaction.reply({
     embeds: [embed]
