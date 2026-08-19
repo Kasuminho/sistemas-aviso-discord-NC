@@ -7,6 +7,9 @@ import * as sortearItem from './commands/sortearItem.js';
 import * as cadastrarAltTimer from './commands/cadastrarAltTimer.js';
 import * as consultarAltTimer from './commands/consultarAltTimer.js';
 import * as removerAltTimer from './commands/removerAltTimer.js';
+import * as registrarStatusPrint from './commands/registrarStatusPrint.js';
+import * as consultarStatus from './commands/consultarStatus.js';
+import * as listarStatusGuild from './commands/listarStatusGuild.js';
 
 export async function registerCommands() {
   const commands = [
@@ -16,7 +19,10 @@ export async function registerCommands() {
     sortearItem.data.toJSON(),
     cadastrarAltTimer.data.toJSON(),
     consultarAltTimer.data.toJSON(),
-    removerAltTimer.data.toJSON()
+    removerAltTimer.data.toJSON(),
+    registrarStatusPrint.data.toJSON(),
+    consultarStatus.data.toJSON(),
+    listarStatusGuild.data.toJSON()
   ];
 
   const rest = new REST({ version: '10' }).setToken(config.token);

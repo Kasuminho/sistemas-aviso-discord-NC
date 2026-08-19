@@ -9,6 +9,7 @@ const DATA_DIR = path.join(__dirname, '../../data');
 const EVENTS_FILE = path.join(DATA_DIR, 'events.json');
 const SORTEIOS_FILE = path.join(DATA_DIR, 'sorteios.json');
 const ALT_TIMERS_FILE = path.join(DATA_DIR, 'alt_timers.json');
+const PLAYER_STATUS_FILE = path.join(DATA_DIR, 'player_status.json');
 
 // Garante que o diretório data exista
 if (!fs.existsSync(DATA_DIR)) {
@@ -139,5 +140,46 @@ export const db = {
       timers[index] = updatedTimer;
       this.saveAltTimers(timers);
     }
+  },
+
+  // Player Status (OCR Prints)
+  getPlayerStatusList() {
+    return readJSON(PLAYER_STATUS_FILE);
+  },
+
+  savePlayerStatusList(list) {
+    writeJSON(PLAYER_STATUS_FILE, list);
+  },
+
+  addPlayerStatus(statusData) {
+    const list = this.getPlayerStatusList();
+    const index = list.findIndex(s => s.userId === statusData.userId);
+
+    if (index !== -1) {
+      // Mantém histórico no array e atualiza o atual
+      if (!list[index].history) list[index].history = [];
+      list[index].history.push({
+        imageUrl: list[index].imageUrl,
+        parsedStats: list[index].parsedStats,
+        timestamp: list[index].updatedAtISO
+      });
+      list[index] = {
+        ...statusData,
+        history: list[index].history
+      };
+    } else {
+      list.push({
+        ...statusData,
+        history: []
+      });
+    }
+
+    this.savePlayerStatusList(list);
+    return statusData;
+  },
+
+  getLatestPlayerStatus(userId) {
+    const list = this.getPlayerStatusList();
+    return list.find(s => s.userId === userId);
   }
 };

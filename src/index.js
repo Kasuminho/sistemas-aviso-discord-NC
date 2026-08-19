@@ -12,6 +12,9 @@ import * as sortearItem from './commands/sortearItem.js';
 import * as cadastrarAltTimer from './commands/cadastrarAltTimer.js';
 import * as consultarAltTimer from './commands/consultarAltTimer.js';
 import * as removerAltTimer from './commands/removerAltTimer.js';
+import * as registrarStatusPrint from './commands/registrarStatusPrint.js';
+import * as consultarStatus from './commands/consultarStatus.js';
+import * as listarStatusGuild from './commands/listarStatusGuild.js';
 
 validateConfig();
 
@@ -34,7 +37,10 @@ const commandsList = [
   sortearItem,
   cadastrarAltTimer,
   consultarAltTimer,
-  removerAltTimer
+  removerAltTimer,
+  registrarStatusPrint,
+  consultarStatus,
+  listarStatusGuild
 ];
 
 for (const cmd of commandsList) {
@@ -56,7 +62,7 @@ client.once('ready', async () => {
 
   // Define a presença/status do bot
   client.user.setPresence({
-    activities: [{ name: 'Gerenciando Eventos, Sorteios & Alts NC', type: ActivityType.Custom }],
+    activities: [{ name: 'Gerenciando Eventos, Alts & Status OCR NC', type: ActivityType.Custom }],
     status: 'online'
   });
 
