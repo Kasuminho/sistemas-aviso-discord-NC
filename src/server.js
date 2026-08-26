@@ -556,8 +556,8 @@ export function createWebServer(client) {
   // Servir arquivos estáticos do Frontend
   app.use(express.static(path.join(__dirname, 'public')));
 
-  // Fallback para SPA
-  app.get('*', (req, res) => {
+  // Fallback para SPA (compatível com Express 4 e 5)
+  app.use((req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'index.html'));
   });
 
