@@ -181,5 +181,47 @@ export const db = {
   getLatestPlayerStatus(userId) {
     const list = this.getPlayerStatusList();
     return list.find(s => s.userId === userId);
+  },
+
+  // Itens Salvos / Predefinições de Sorteio
+  getSavedItems() {
+    const defaultItems = [
+      '10.000 Diamantes',
+      '5.000 Diamantes',
+      '1.000 Diamantes',
+      'Baú de Seleção Lendário',
+      'Baú de Seleção Épico',
+      'Tomo de Habilidade Lendário',
+      'Tomo de Habilidade Épico',
+      'Pedra de Aperfeiçoamento de Voo Lendária',
+      'Poção de EXP Supremo',
+      'Lágrima do Corvo'
+    ];
+    const items = readJSON(path.join(DATA_DIR, 'saved_items.json'));
+    if (!items || items.length === 0) {
+      writeJSON(path.join(DATA_DIR, 'saved_items.json'), defaultItems);
+      return defaultItems;
+    }
+    return items;
+  },
+
+  addSavedItem(itemName) {
+    if (!itemName || typeof itemName !== 'string') return;
+    const cleanName = itemName.trim();
+    if (!cleanName) return;
+
+    const items = this.getSavedItems();
+    if (!items.includes(cleanName)) {
+      items.push(cleanName);
+      writeJSON(path.join(DATA_DIR, 'saved_items.json'), items);
+    }
+    return items;
+  },
+
+  removeSavedItem(itemName) {
+    const items = this.getSavedItems();
+    const filtered = items.filter(i => i.toLowerCase() !== itemName.toLowerCase().trim());
+    writeJSON(path.join(DATA_DIR, 'saved_items.json'), filtered);
+    return filtered;
   }
 };

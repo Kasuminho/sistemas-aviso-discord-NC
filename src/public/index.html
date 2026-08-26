@@ -116,48 +116,6 @@
       line-height: 1.4;
     }
 
-    .btn-discord-login {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 12px;
-      width: 100%;
-      padding: 14px;
-      background: #5865F2;
-      color: #fff;
-      text-decoration: none;
-      font-weight: 600;
-      font-size: 15px;
-      border-radius: 8px;
-      transition: all 0.3s ease;
-      box-shadow: 0 4px 15px rgba(88, 101, 242, 0.3);
-    }
-
-    .btn-discord-login:hover {
-      background: #4752c4;
-      transform: translateY(-2px);
-      box-shadow: 0 6px 20px rgba(88, 101, 242, 0.4);
-    }
-
-    .divider {
-      display: flex;
-      align-items: center;
-      margin: 24px 0 18px;
-      color: var(--text-muted);
-      font-size: 11px;
-      letter-spacing: 1px;
-    }
-
-    .divider::before, .divider::after {
-      content: '';
-      flex: 1;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    }
-
-    .divider span {
-      padding: 0 12px;
-    }
-
     .key-login-form .input-group {
       display: flex;
       gap: 8px;
@@ -180,13 +138,16 @@
     }
 
     .btn-key-login {
-      padding: 0 18px;
+      padding: 0 20px;
       background: var(--gold-gradient);
       border: none;
       border-radius: 8px;
       color: #000;
       font-weight: 700;
       cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
       transition: all 0.3s;
     }
 
@@ -540,6 +501,47 @@
       box-shadow: 0 0 10px rgba(212, 175, 55, 0.2);
     }
 
+    /* Chips de Itens Rápidos Salvos */
+    .quick-items-wrapper {
+      margin-top: 8px;
+    }
+
+    .quick-items-label {
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-bottom: 4px;
+      display: block;
+    }
+
+    .quick-items-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      max-height: 80px;
+      overflow-y: auto;
+    }
+
+    .quick-item-badge {
+      background: rgba(212, 175, 55, 0.1);
+      border: 1px solid rgba(212, 175, 55, 0.25);
+      color: #f1c40f;
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-size: 11px;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .quick-item-badge:hover {
+      background: var(--gold-gradient);
+      color: #000;
+      font-weight: 600;
+      transform: translateY(-1px);
+    }
+
     .items-list-header {
       display: flex;
       justify-content: space-between;
@@ -720,10 +722,42 @@
       box-shadow: 0 8px 30px rgba(212, 175, 55, 0.5);
     }
 
+    /* Controles de Membros */
+    .members-controls {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .members-controls .btn-group {
+      display: flex;
+      gap: 6px;
+    }
+
+    .btn-action-sm {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      color: var(--text-main);
+      padding: 5px 10px;
+      border-radius: 6px;
+      font-size: 11px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .btn-action-sm:hover {
+      background: rgba(212, 175, 55, 0.2);
+      border-color: var(--gold-primary);
+      color: var(--gold-primary);
+    }
+
     .role-desc {
       font-size: 12px;
       color: var(--text-muted);
-      margin-bottom: 14px;
     }
 
     .search-box {
@@ -751,7 +785,7 @@
 
     .members-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
       gap: 10px;
       max-height: 480px;
       overflow-y: auto;
@@ -761,17 +795,39 @@
     .member-pill {
       display: flex;
       align-items: center;
+      justify-content: space-between;
       gap: 8px;
       background: rgba(0, 0, 0, 0.3);
-      border: 1px solid rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(212, 175, 55, 0.25);
       padding: 6px 10px;
       border-radius: 8px;
       transition: all 0.2s;
+      cursor: pointer;
+      user-select: none;
     }
 
-    .member-pill:hover {
-      background: rgba(212, 175, 55, 0.1);
-      border-color: rgba(212, 175, 55, 0.3);
+    .member-pill-left {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      overflow: hidden;
+    }
+
+    .member-pill.selected {
+      background: rgba(212, 175, 55, 0.12);
+      border-color: var(--gold-primary);
+      box-shadow: 0 0 10px rgba(212, 175, 55, 0.15);
+    }
+
+    .member-pill.unselected {
+      opacity: 0.35;
+      filter: grayscale(0.8);
+      border-color: rgba(255, 255, 255, 0.08);
+      background: rgba(0, 0, 0, 0.2);
+    }
+
+    .member-pill.unselected span {
+      text-decoration: line-through;
     }
 
     .member-pill img {
@@ -785,6 +841,15 @@
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
+    }
+
+    .member-check-icon {
+      font-size: 12px;
+      color: var(--gold-primary);
+    }
+
+    .member-pill.unselected .member-check-icon {
+      color: var(--text-muted);
     }
 
     .custom-table {
@@ -1070,7 +1135,7 @@
           </div>
           <div class="stat-pill">
             <i class="fa-solid fa-users"></i>
-            <span id="eligibleCountHeader">Membros: Carregando...</span>
+            <span id="eligibleCountHeader">Participantes: Carregando...</span>
           </div>
           <div class="stat-pill">
             <i class="fa-solid fa-signal"></i>
@@ -1092,12 +1157,21 @@
               </div>
             </div>
 
+            <!-- Datalist com sugestões salvas de prêmios -->
+            <datalist id="savedItemsDataList"></datalist>
+
             <form id="raffleForm">
               <!-- MODO ITEM ÚNICO -->
               <div id="singleItemSection">
                 <div class="form-group">
-                  <label for="singleItemName"><i class="fa-solid fa-gift"></i> Nome do Item / Prêmio</label>
-                  <input type="text" id="singleItemName" placeholder="Ex: 10.000 Diamantes, Baú de Seleção Lendário" required>
+                  <label for="singleItemName"><i class="fa-solid fa-gift"></i> Nome do Item / Prêmio (Salva automaticamente)</label>
+                  <input type="text" id="singleItemName" list="savedItemsDataList" placeholder="Ex: 10.000 Diamantes, Baú de Seleção Lendário" required autocomplete="off">
+                  <div class="quick-items-wrapper">
+                    <span class="quick-items-label"><i class="fa-solid fa-bolt"></i> Prêmios Recentes / Frequentes (Clique para usar):</span>
+                    <div id="quickItemsContainer" class="quick-items-container">
+                      <!-- Chips de itens rápidos renderizados via JS -->
+                    </div>
+                  </div>
                 </div>
                 <div class="form-row">
                   <div class="form-group">
@@ -1180,19 +1254,26 @@
             </form>
           </div>
 
-          <!-- CARD DE MEMBROS ELEGÍVEIS -->
+          <!-- CARD DE MEMBROS ELEGÍVEIS E PRESENÇA -->
           <div class="card glass-panel members-card">
             <div class="card-header">
               <h2>
-                <i class="fa-solid fa-users-viewfinder"></i> Participantes Elegíveis 
-                <span class="badge" id="memberCountBadge">0</span>
+                <i class="fa-solid fa-users-viewfinder"></i> Participantes Selecionados 
+                <span class="badge" id="selectedCountBadge">0 / 0</span>
               </h2>
               <button type="button" id="refreshMembersBtn" class="btn-icon" title="Atualizar Lista"><i class="fa-solid fa-rotate-right"></i></button>
             </div>
             
-            <p class="role-desc">
-              Listando todos os membros com o cargo <strong id="cargoNameDisplay">1525526128725459065</strong>:
-            </p>
+            <div class="members-controls">
+              <span class="role-desc">
+                Clique nos membros para <strong>marcar/desmarcar quem participou</strong>:
+              </span>
+              <div class="btn-group">
+                <button type="button" id="selectAllMembersBtn" class="btn-action-sm" title="Marcar todos"><i class="fa-solid fa-check-double"></i> Todos</button>
+                <button type="button" id="deselectAllMembersBtn" class="btn-action-sm" title="Desmarcar todos"><i class="fa-solid fa-ban"></i> Nenhum</button>
+                <button type="button" id="invertSelectionBtn" class="btn-action-sm" title="Inverter seleção"><i class="fa-solid fa-arrows-rotate"></i> Inverter</button>
+              </div>
+            </div>
 
             <div class="search-box">
               <i class="fa-solid fa-magnifying-glass"></i>
@@ -1359,6 +1440,7 @@
     const state = {
       user: null,
       eligibleMembers: [],
+      savedItems: [],
       channels: [],
       multiItems: [
         { name: '10.000 Diamantes', quantity: 10000, winnersCount: 1 },
@@ -1395,23 +1477,22 @@
     const multiItemsContainer = document.getElementById('multiItemsContainer');
     const addPrizeBtn = document.getElementById('addPrizeBtn');
     const membersListContainer = document.getElementById('membersListContainer');
-    const memberCountBadge = document.getElementById('memberCountBadge');
+    const selectedCountBadge = document.getElementById('selectedCountBadge');
     const memberSearchInput = document.getElementById('memberSearchInput');
     const refreshMembersBtn = document.getElementById('refreshMembersBtn');
     const targetChannelSelect = document.getElementById('targetChannelSelect');
+
+    const selectAllMembersBtn = document.getElementById('selectAllMembersBtn');
+    const deselectAllMembersBtn = document.getElementById('deselectAllMembersBtn');
+    const invertSelectionBtn = document.getElementById('invertSelectionBtn');
+    const savedItemsDataList = document.getElementById('savedItemsDataList');
+    const quickItemsContainer = document.getElementById('quickItemsContainer');
 
     const raffleResultModal = document.getElementById('raffleResultModal');
     const modalResultBody = document.getElementById('modalResultBody');
     const discordLinkBtn = document.getElementById('discordLinkBtn');
     const closeModalBtn = document.getElementById('closeModalBtn');
     const closeModalBtn2 = document.getElementById('closeModalBtn2');
-
-    function getAuthHeaders() {
-      const token = localStorage.getItem('nc_token');
-      const headers = { 'Content-Type': 'application/json' };
-      if (token) headers['Authorization'] = `Bearer ${token}`;
-      return headers;
-    }
 
     function apiUrl(endpoint) {
       let base = window.location.pathname;
@@ -1464,6 +1545,7 @@
 
       loadBotStatus();
       loadChannels();
+      loadSavedItems();
       loadEligibleMembers();
       renderMultiItems();
     }
@@ -1512,7 +1594,7 @@
 
         if (tabId === 'raffleTab') {
           pageTitle.innerHTML = '<i class="fa-solid fa-dice"></i> Central de Sorteios';
-          pageSubtitle.textContent = 'Sorteie itens para todos os membros com o cargo oficial de forma rápida e segura.';
+          pageSubtitle.textContent = 'Sorteie itens para os membros presentes de forma rápida e segura.';
         } else if (tabId === 'historyTab') {
           pageTitle.innerHTML = '<i class="fa-solid fa-clock-rotate-left"></i> Histórico de Sorteios';
           pageSubtitle.textContent = 'Registro detalhado de todos os sorteios e ganhadores passados.';
@@ -1579,6 +1661,51 @@
       }
     }
 
+    // ==========================================
+    // ITENS SALVOS / PREDEFINIÇÕES DE PRÊMIOS
+    // ==========================================
+    async function loadSavedItems() {
+      try {
+        const res = await fetch(apiUrl('/api/raffle/saved-items'), { headers: getAuthHeaders() });
+        const data = await res.json();
+        if (data.items) {
+          state.savedItems = data.items;
+          renderSavedItemsDatalist();
+          renderQuickItemsChips();
+        }
+      } catch (err) {
+        console.error('Erro ao carregar itens salvos:', err);
+      }
+    }
+
+    function renderSavedItemsDatalist() {
+      savedItemsDataList.innerHTML = '';
+      state.savedItems.forEach(item => {
+        const opt = document.createElement('option');
+        opt.value = item;
+        savedItemsDataList.appendChild(opt);
+      });
+    }
+
+    function renderQuickItemsChips() {
+      quickItemsContainer.innerHTML = '';
+      state.savedItems.slice(0, 10).forEach(item => {
+        const chip = document.createElement('button');
+        chip.type = 'button';
+        chip.className = 'quick-item-badge';
+        chip.innerHTML = `<i class="fa-solid fa-gift"></i> ${item}`;
+        chip.addEventListener('click', () => {
+          const input = document.getElementById('singleItemName');
+          input.value = item;
+          input.focus();
+        });
+        quickItemsContainer.appendChild(chip);
+      });
+    }
+
+    // ==========================================
+    // MEMBROS ELEGÍVEIS E PRESENÇA NO SORTEIO
+    // ==========================================
     async function loadEligibleMembers() {
       membersListContainer.innerHTML = '<div class="loading-spinner"><i class="fa-solid fa-circle-notch fa-spin"></i> Carregando membros...</div>';
       
@@ -1587,12 +1714,12 @@
         const data = await res.json();
 
         if (res.ok && data.members) {
-          state.eligibleMembers = data.members;
-          memberCountBadge.textContent = data.total;
-          eligibleCountHeader.textContent = `Membros: ${data.total}`;
+          // Marca todos os membros como selecionados por padrão
+          state.eligibleMembers = data.members.map(m => ({ ...m, selected: true }));
           document.getElementById('cargoNameDisplay').textContent = data.roleId;
           roleLabelTag.textContent = `Cargo ${data.roleId}`;
-          renderMembersGrid(data.members);
+          updateSelectedCount();
+          renderMembersGrid(state.eligibleMembers);
         } else {
           membersListContainer.innerHTML = `<div class="error-msg">${data.error || 'Erro ao buscar membros'}</div>`;
         }
@@ -1601,37 +1728,85 @@
       }
     }
 
-    function renderMembersGrid(members) {
+    function updateSelectedCount() {
+      const selectedCount = state.eligibleMembers.filter(m => m.selected).length;
+      const totalCount = state.eligibleMembers.length;
+      selectedCountBadge.textContent = `${selectedCount} / ${totalCount}`;
+      eligibleCountHeader.textContent = `Participantes: ${selectedCount} de ${totalCount}`;
+    }
+
+    function renderMembersGrid(membersToRender) {
       membersListContainer.innerHTML = '';
-      if (members.length === 0) {
-        membersListContainer.innerHTML = '<div class="role-desc">Nenhum membro encontrado com este cargo.</div>';
+      if (membersToRender.length === 0) {
+        membersListContainer.innerHTML = '<div class="role-desc">Nenhum membro encontrado com os filtros atuais.</div>';
         return;
       }
 
-      members.forEach(m => {
+      membersToRender.forEach(m => {
         const pill = document.createElement('div');
-        pill.className = 'member-pill';
-        pill.title = `ID: ${m.id}`;
+        pill.className = `member-pill ${m.selected ? 'selected' : 'unselected'}`;
+        pill.title = m.selected ? 'Clique para desmarcar da presença' : 'Clique para marcar na presença';
         pill.innerHTML = `
-          <img src="${m.avatar}" alt="${m.displayName}" loading="lazy">
-          <span>${m.displayName}</span>
+          <div class="member-pill-left">
+            <img src="${m.avatar}" alt="${m.displayName}" loading="lazy">
+            <span>${m.displayName}</span>
+          </div>
+          <i class="fa-solid ${m.selected ? 'fa-circle-check member-check-icon' : 'fa-circle-xmark member-check-icon'}"></i>
         `;
+
+        pill.addEventListener('click', () => {
+          m.selected = !m.selected;
+          pill.className = `member-pill ${m.selected ? 'selected' : 'unselected'}`;
+          pill.title = m.selected ? 'Clique para desmarcar da presença' : 'Clique para marcar na presença';
+          const icon = pill.querySelector('.member-check-icon');
+          if (icon) {
+            icon.className = `fa-solid ${m.selected ? 'fa-circle-check member-check-icon' : 'fa-circle-xmark member-check-icon'}`;
+          }
+          updateSelectedCount();
+        });
+
         membersListContainer.appendChild(pill);
       });
     }
 
-    memberSearchInput.addEventListener('input', (e) => {
-      const query = e.target.value.toLowerCase();
-      const filtered = state.eligibleMembers.filter(m => 
+    // Botões de Seleção em Massa
+    selectAllMembersBtn.addEventListener('click', () => {
+      state.eligibleMembers.forEach(m => m.selected = true);
+      renderMembersGrid(getFilteredMembers());
+      updateSelectedCount();
+    });
+
+    deselectAllMembersBtn.addEventListener('click', () => {
+      state.eligibleMembers.forEach(m => m.selected = false);
+      renderMembersGrid(getFilteredMembers());
+      updateSelectedCount();
+    });
+
+    invertSelectionBtn.addEventListener('click', () => {
+      state.eligibleMembers.forEach(m => m.selected = !m.selected);
+      renderMembersGrid(getFilteredMembers());
+      updateSelectedCount();
+    });
+
+    function getFilteredMembers() {
+      const query = memberSearchInput.value.toLowerCase().trim();
+      if (!query) return state.eligibleMembers;
+      return state.eligibleMembers.filter(m => 
         m.displayName.toLowerCase().includes(query) || 
         m.username.toLowerCase().includes(query) ||
         m.id.includes(query)
       );
-      renderMembersGrid(filtered);
+    }
+
+    memberSearchInput.addEventListener('input', () => {
+      renderMembersGrid(getFilteredMembers());
     });
 
     refreshMembersBtn.addEventListener('click', loadEligibleMembers);
 
+    // ==========================================
+    // MODO ITEM ÚNICO / MÚLTIPLOS PRÊMIOS
+    // ==========================================
     singleModeBtn.addEventListener('click', () => {
       state.isMultiMode = false;
       singleModeBtn.classList.add('active');
@@ -1656,7 +1831,7 @@
         const row = document.createElement('div');
         row.className = 'multi-item-row';
         row.innerHTML = `
-          <input type="text" placeholder="Nome do Prêmio ${index + 1}" value="${item.name}" required onchange="updateMultiItem(${index}, 'name', this.value)">
+          <input type="text" list="savedItemsDataList" placeholder="Nome do Prêmio ${index + 1}" value="${item.name}" required onchange="updateMultiItem(${index}, 'name', this.value)">
           <input type="number" placeholder="Qtd" value="${item.quantity}" min="1" required title="Quantidade do Item" onchange="updateMultiItem(${index}, 'quantity', this.value)">
           <input type="number" placeholder="Ganhadores" value="${item.winnersCount}" min="1" required title="Número de Ganhadores" onchange="updateMultiItem(${index}, 'winnersCount', this.value)">
           <button type="button" class="btn-remove-item" onclick="removeMultiItem(${index})" title="Remover"><i class="fa-solid fa-trash"></i></button>
@@ -1682,8 +1857,19 @@
       renderMultiItems();
     });
 
+    // ==========================================
+    // EXECUÇÃO DO SORTEIO
+    // ==========================================
     raffleForm.addEventListener('submit', async (e) => {
       e.preventDefault();
+
+      // Pega apenas os membros que estão com presença marcada
+      const selectedParticipantIds = state.eligibleMembers.filter(m => m.selected).map(m => m.id);
+
+      if (selectedParticipantIds.length === 0) {
+        alert('⚠️ Nenhum participante selecionado! Selecione ao menos 1 membro na lista de presença para realizar o sorteio.');
+        return;
+      }
 
       const executeBtn = document.getElementById('executeRaffleBtn');
       executeBtn.disabled = true;
@@ -1702,6 +1888,7 @@
 
       const payload = {
         items: itemsToRaffle,
+        participantIds: selectedParticipantIds,
         allowDuplicates: document.getElementById('allowDuplicatesCheck').checked,
         guaranteeSelfWin: document.getElementById('guaranteeSelfWinCheck').checked,
         postToDiscord: document.getElementById('postDiscordCheck').checked,
@@ -1726,6 +1913,8 @@
               origin: { y: 0.6 }
             });
           }
+          // Recarrega itens salvos para autocompletar futuros
+          loadSavedItems();
           showRaffleResultModal(data);
         } else {
           alert(`❌ Erro ao realizar sorteio: ${data.error || 'Erro desconhecido'}`);
@@ -1787,6 +1976,9 @@
     closeModalBtn.addEventListener('click', () => raffleResultModal.classList.add('hidden'));
     closeModalBtn2.addEventListener('click', () => raffleResultModal.classList.add('hidden'));
 
+    // ==========================================
+    // HISTÓRICO DE SORTEIOS
+    // ==========================================
     async function loadRaffleHistory() {
       const tbody = document.getElementById('historyTableBody');
       tbody.innerHTML = '<tr><td colspan="7" class="text-center"><i class="fa-solid fa-circle-notch fa-spin"></i> Carregando...</td></tr>';
@@ -1833,6 +2025,9 @@
 
     document.getElementById('refreshHistoryBtn')?.addEventListener('click', loadRaffleHistory);
 
+    // ==========================================
+    // EVENTOS DA GUILDA
+    // ==========================================
     async function loadGuildEvents() {
       const container = document.getElementById('eventsListContainer');
       container.innerHTML = '<div class="loading-spinner"><i class="fa-solid fa-circle-notch fa-spin"></i> Carregando...</div>';
@@ -1901,6 +2096,9 @@
       }
     });
 
+    // ==========================================
+    // DISPARADOR DE NOTÍCIAS WEBHOOK
+    // ==========================================
     document.getElementById('triggerNewsBtn')?.addEventListener('click', async () => {
       const statusMsg = document.getElementById('newsStatusMsg');
       statusMsg.classList.remove('hidden');

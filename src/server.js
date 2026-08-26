@@ -296,6 +296,36 @@ export function createWebServer(client) {
     }
   });
 
+  // Itens Salvos / Predefinições de Prêmios
+  router.get('/api/raffle/saved-items', requireAdminAuth, (req, res) => {
+    try {
+      const items = db.getSavedItems();
+      res.json({ items });
+    } catch (e) {
+      res.status(500).json({ error: e.message });
+    }
+  });
+
+  router.post('/api/raffle/saved-items', requireAdminAuth, (req, res) => {
+    try {
+      const { name } = req.body;
+      if (!name) return res.status(400).json({ error: 'Nome do item obrigatório.' });
+      const items = db.addSavedItem(name);
+      res.json({ success: true, items });
+    } catch (e) {
+      res.status(500).json({ error: e.message });
+    }
+  });
+
+  router.delete('/api/raffle/saved-items/:name', requireAdminAuth, (req, res) => {
+    try {
+      const items = db.removeSavedItem(decodeURIComponent(req.params.name));
+      res.json({ success: true, items });
+    } catch (e) {
+      res.status(500).json({ error: e.message });
+    }
+  });
+
   // Execução de Sorteio (Item Único ou Múltiplos Itens)
   router.post('/api/raffle/execute', requireAdminAuth, async (req, res) => {
     try {
@@ -331,6 +361,9 @@ export function createWebServer(client) {
       if (parsedItems.length === 0) {
         return res.status(400).json({ error: 'Nenhum item válido configurado para o sorteio.' });
       }
+
+      // Salva itens no banco para autocompletar no futuro
+      parsedItems.forEach(i => db.addSavedItem(i.name));
 
       let eligibleIds = [];
       if (Array.isArray(participantIds) && participantIds.length > 0) {
