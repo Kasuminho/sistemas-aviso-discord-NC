@@ -252,36 +252,41 @@ export function createWebServer(client) {
     }
   });
 
-  // Lista Membros Elegíveis para Sorteio (com o Cargo do Evento)
-  router.get('/api/raffle/eligible-members', requireAdminAuth, async (req, res) => {
+  // Lista Membros Cadastrados no Banco (Via /registrar-status) com Elegibilidade
+  router.get('/api/raffle/eligible-members', requireAdminAuth, (req, res) => {
     try {
-      const guild = config.guildId ? client.guilds.cache.get(config.guildId) : client.guilds.cache.first();
-      if (!guild) {
-        return res.status(404).json({ error: 'Servidor Discord não encontrado pelo bot.' });
-      }
+      const dbMembers = db.getGuildMembersList();
+      const cutoff = db.getCutoffSettings();
 
-      // Utiliza o cache em memória mantido pelo bot via Gateway Intents (zero chamadas API Opcode 8)
-      const targetRoleId = config.eventRoleId || '1525526128725459065';
-      const membersWithRole = guild.members.cache.filter(m => m.roles.cache.has(targetRoleId) && !m.user.bot);
+      const membersList = dbMembers.map(m => {
+        const check = db.isPlayerEligibleForRaffle(m.userId);
+        const discordUser = client.users.cache.get(m.userId);
 
-      const membersList = membersWithRole.map(m => ({
-        id: m.id,
-        username: m.user.username,
-        displayName: m.displayName || m.user.globalName || m.user.username,
-        avatar: m.user.displayAvatarURL({ dynamic: true, size: 64 }),
-        joinedAt: m.joinedAt
-      }));
+        return {
+          id: m.userId,
+          username: m.userTag || m.userId,
+          displayName: m.charName || m.userTag || m.userId,
+          charName: m.charName || m.userTag,
+          avatar: discordUser ? discordUser.displayAvatarURL({ dynamic: true, size: 64 }) : 'https://cdn.discordapp.com/embed/avatars/0.png',
+          eligible: check.eligible,
+          reasons: check.reasons,
+          pc: m.parsedStats?.pc || 0,
+          weeklyBossScore: m.weeklyBossScore || 0,
+          flagFaltouBoss: m.flagFaltouBoss || false
+        };
+      });
 
       membersList.sort((a, b) => a.displayName.localeCompare(b.displayName));
 
       res.json({
-        roleId: targetRoleId,
         total: membersList.length,
+        eligibleTotal: membersList.filter(m => m.eligible).length,
+        cutoff,
         members: membersList
       });
     } catch (e) {
-      console.error('Erro ao buscar membros elegíveis:', e);
-      res.status(500).json({ error: 'Erro ao buscar membros no Discord: ' + e.message });
+      console.error('Erro ao buscar membros elegíveis do banco:', e);
+      res.status(500).json({ error: e.message });
     }
   });
 
@@ -368,9 +373,8 @@ export function createWebServer(client) {
       if (Array.isArray(participantIds) && participantIds.length > 0) {
         eligibleIds = [...new Set(participantIds)];
       } else {
-        const targetRoleId = config.eventRoleId || '1525526128725459065';
-        const members = guild.members.cache.filter(m => m.roles.cache.has(targetRoleId) && !m.user.bot);
-        eligibleIds = [...members.keys()];
+        const dbMembers = db.getGuildMembersList();
+        eligibleIds = dbMembers.filter(m => db.isPlayerEligibleForRaffle(m.userId).eligible).map(m => m.userId);
       }
 
       if (eligibleIds.length === 0) {

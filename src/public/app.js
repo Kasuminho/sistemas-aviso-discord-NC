@@ -224,10 +224,10 @@ async function loadEligibleMembers() {
 
     if (res.ok && data.members) {
       state.eligibleMembers = data.members;
-      memberCountBadge.textContent = data.total;
-      eligibleCountHeader.textContent = `Membros: ${data.total}`;
-      document.getElementById('cargoNameDisplay').textContent = data.roleId;
-      roleLabelTag.textContent = `Cargo ${data.roleId}`;
+      memberCountBadge.textContent = `${data.eligibleTotal}/${data.total} Elegíveis`;
+      eligibleCountHeader.textContent = `Cadastrados: ${data.total} (${data.eligibleTotal} Elegíveis)`;
+      document.getElementById('cargoNameDisplay').textContent = 'Membros Cadastrados (Status)';
+      roleLabelTag.textContent = 'Banco de Status NC';
       renderMembersGrid(data.members);
     } else {
       membersListContainer.innerHTML = `<div class="error-msg">${data.error || 'Erro ao buscar membros'}</div>`;
@@ -240,17 +240,23 @@ async function loadEligibleMembers() {
 function renderMembersGrid(members) {
   membersListContainer.innerHTML = '';
   if (members.length === 0) {
-    membersListContainer.innerHTML = '<div class="role-desc">Nenhum membro encontrado com este cargo.</div>';
+    membersListContainer.innerHTML = '<div class="role-desc">Nenhum membro cadastrou status ainda. Envie /registrar-status no Discord.</div>';
     return;
   }
 
   members.forEach(m => {
     const pill = document.createElement('div');
-    pill.className = 'member-pill';
-    pill.title = `ID: ${m.id}`;
+    pill.className = `member-pill ${m.eligible ? 'selected' : 'unselected'}`;
+    const badgeText = m.eligible ? '🟢 Elegível' : `🔴 Inapto (${m.reasons ? m.reasons.length : 0})`;
+    const titleText = m.eligible 
+      ? `${m.displayName} (PC: ${m.pc.toLocaleString('pt-BR')} | Boss: ${m.weeklyBossScore}pts)`
+      : `${m.displayName} - ${m.reasons ? m.reasons.join(', ') : 'Inapto'}`;
+    
+    pill.title = titleText;
     pill.innerHTML = `
       <img src="${m.avatar}" alt="${m.displayName}" loading="lazy">
-      <span>${m.displayName}</span>
+      <span style="font-weight:600;">${m.displayName}</span>
+      <small style="font-size:10px; opacity:0.85; margin-left:4px;">${badgeText}</small>
     `;
     membersListContainer.appendChild(pill);
   });
