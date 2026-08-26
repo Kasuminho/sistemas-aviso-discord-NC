@@ -40,10 +40,12 @@ export function createWebServer(client) {
     next();
   };
 
+  const router = express.Router();
+
   // ==========================================
   // ROTAS DE ARQUIVOS ESTÁTICOS EXPLÍCITAS
   // ==========================================
-  app.get('/style.css', (req, res) => {
+  router.get('/style.css', (req, res) => {
     res.setHeader('Content-Type', 'text/css');
     const cssPath = path.join(__dirname, 'public', 'style.css');
     if (fs.existsSync(cssPath)) {
@@ -53,7 +55,7 @@ export function createWebServer(client) {
     }
   });
 
-  app.get('/app.js', (req, res) => {
+  router.get('/app.js', (req, res) => {
     res.setHeader('Content-Type', 'application/javascript');
     const jsPath = path.join(__dirname, 'public', 'app.js');
     if (fs.existsSync(jsPath)) {
@@ -63,14 +65,14 @@ export function createWebServer(client) {
     }
   });
 
-  app.use(express.static(path.join(__dirname, 'public')));
+  router.use(express.static(path.join(__dirname, 'public')));
 
   // ==========================================
   // ROTAS DE AUTENTICAÇÃO
   // ==========================================
 
-  // 1. Redirecionamento para OAuth2 Discord
-  app.get('/auth/discord', (req, res) => {
+  // 1. Redirecionamento para OAuth2 Discord (Opcional)
+  router.get('/auth/discord', (req, res) => {
     const host = req.get('host');
     const protocol = req.protocol === 'https' || req.get('x-forwarded-proto') === 'https' ? 'https' : 'http';
     const dynamicRedirectUri = config.redirectUri || `${protocol}://${host}/auth/discord/callback`;
@@ -84,8 +86,8 @@ export function createWebServer(client) {
   });
 
   // 2. Callback do OAuth2 Discord
-  app.get('/auth/discord/callback', async (req, res) => {
-    const { code, state } = req.query;
+  router.get('/auth/discord/callback', async (req, res) => {
+    const { code } = req.query;
     if (!code) {
       return res.status(400).send('Código de autorização não fornecido pelo Discord.');
     }
@@ -95,7 +97,6 @@ export function createWebServer(client) {
     const redirectUri = config.redirectUri || `${protocol}://${host}/auth/discord/callback`;
 
     try {
-      // Troca code por token de acesso
       const tokenResponse = await fetch('https://discord.com/api/oauth2/token', {
         method: 'POST',
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
@@ -110,17 +111,14 @@ export function createWebServer(client) {
 
       const tokenData = await tokenResponse.json();
       if (!tokenData.access_token) {
-        console.error('Falha ao obter token OAuth2:', tokenData);
         return res.status(400).send('Erro ao autenticar com o Discord. Verifique o CLIENT_SECRET no .env.');
       }
 
-      // Obtém os dados do usuário logado
       const userResponse = await fetch('https://discord.com/api/users/@me', {
         headers: { Authorization: `Bearer ${tokenData.access_token}` }
       });
       const discordUser = await userResponse.json();
 
-      // VERIFICAÇÃO DE SEGURANÇA: Só o ID do usuário permitido pode entrar!
       if (discordUser.id !== config.allowedUserId) {
         return res.status(403).send(`
           <html>
@@ -135,7 +133,6 @@ export function createWebServer(client) {
         `);
       }
 
-      // Cria a sessão
       const sessionToken = crypto.randomBytes(32).toString('hex');
       const avatarUrl = discordUser.avatar
         ? `https://cdn.discordapp.com/avatars/${discordUser.id}/${discordUser.avatar}.png`
@@ -152,10 +149,10 @@ export function createWebServer(client) {
 
       res.cookie('nc_session_token', sessionToken, {
         httpOnly: true,
-        maxAge: 7 * 24 * 60 * 60 * 1000 // 7 dias
+        maxAge: 7 * 24 * 60 * 60 * 1000
       });
 
-      res.redirect('/');
+      res.redirect('./');
     } catch (err) {
       console.error('Erro no callback OAuth2:', err);
       res.status(500).send('Erro interno durante a autenticação.');
@@ -163,7 +160,7 @@ export function createWebServer(client) {
   });
 
   // 3. Login por Chave de Acesso / Token Mestre de Admin
-  app.post('/auth/login-key', (req, res) => {
+  router.post('/auth/login-key', (req, res) => {
     const { key } = req.body;
     if (!key) {
       return res.status(400).json({ error: 'Chave de acesso não informada.' });
@@ -192,7 +189,7 @@ export function createWebServer(client) {
   });
 
   // 4. Perfil do Usuário Atual
-  app.get('/api/me', (req, res) => {
+  router.get('/api/me', (req, res) => {
     const sessionToken = req.cookies?.nc_session_token || req.headers['authorization']?.replace('Bearer ', '');
     if (!sessionToken || !activeSessions.has(sessionToken)) {
       return res.json({ authenticated: false });
@@ -202,8 +199,8 @@ export function createWebServer(client) {
   });
 
   // 5. Logout
-  app.post('/auth/logout', (req, res) => {
-    const sessionToken = req.cookies?.nc_session_token;
+  router.post('/auth/logout', (req, res) => {
+    const sessionToken = req.cookies?.nc_session_token || req.headers['authorization']?.replace('Bearer ', '');
     if (sessionToken) {
       activeSessions.delete(sessionToken);
       res.clearCookie('nc_session_token');
@@ -216,7 +213,7 @@ export function createWebServer(client) {
   // ==========================================
 
   // Status do Bot
-  app.get('/api/bot/status', requireAdminAuth, async (req, res) => {
+  router.get('/api/bot/status', requireAdminAuth, async (req, res) => {
     try {
       const guild = config.guildId ? client.guilds.cache.get(config.guildId) : client.guilds.cache.first();
       const statusData = {
@@ -240,7 +237,7 @@ export function createWebServer(client) {
   });
 
   // Lista Canais de Texto da Guild
-  app.get('/api/channels', requireAdminAuth, async (req, res) => {
+  router.get('/api/channels', requireAdminAuth, async (req, res) => {
     try {
       const guild = config.guildId ? client.guilds.cache.get(config.guildId) : client.guilds.cache.first();
       if (!guild) return res.json({ channels: [] });
@@ -256,14 +253,13 @@ export function createWebServer(client) {
   });
 
   // Lista Membros Elegíveis para Sorteio (com o Cargo do Evento)
-  app.get('/api/raffle/eligible-members', requireAdminAuth, async (req, res) => {
+  router.get('/api/raffle/eligible-members', requireAdminAuth, async (req, res) => {
     try {
       const guild = config.guildId ? client.guilds.cache.get(config.guildId) : client.guilds.cache.first();
       if (!guild) {
         return res.status(404).json({ error: 'Servidor Discord não encontrado pelo bot.' });
       }
 
-      // Faz fetch dos membros para garantir lista 100% atualizada
       await guild.members.fetch();
 
       const targetRoleId = config.eventRoleId || '1525526128725459065';
@@ -277,7 +273,6 @@ export function createWebServer(client) {
         joinedAt: m.joinedAt
       }));
 
-      // Ordena por nome alfabético
       membersList.sort((a, b) => a.displayName.localeCompare(b.displayName));
 
       res.json({
@@ -292,7 +287,7 @@ export function createWebServer(client) {
   });
 
   // Histórico de Sorteios
-  app.get('/api/raffle/history', requireAdminAuth, (req, res) => {
+  router.get('/api/raffle/history', requireAdminAuth, (req, res) => {
     try {
       const history = db.getSorteios();
       res.json({ history: history.reverse() });
@@ -302,7 +297,7 @@ export function createWebServer(client) {
   });
 
   // Execução de Sorteio (Item Único ou Múltiplos Itens)
-  app.post('/api/raffle/execute', requireAdminAuth, async (req, res) => {
+  router.post('/api/raffle/execute', requireAdminAuth, async (req, res) => {
     try {
       const {
         items,
@@ -493,11 +488,11 @@ export function createWebServer(client) {
   });
 
   // Eventos da Guilda
-  app.get('/api/events', requireAdminAuth, (req, res) => {
+  router.get('/api/events', requireAdminAuth, (req, res) => {
     res.json({ events: db.getEvents() });
   });
 
-  app.post('/api/events', requireAdminAuth, async (req, res) => {
+  router.post('/api/events', requireAdminAuth, async (req, res) => {
     try {
       const { title, description, dateTimeISO, recorrencia } = req.body;
       if (!title || !dateTimeISO) {
@@ -525,13 +520,13 @@ export function createWebServer(client) {
     }
   });
 
-  app.delete('/api/events/:id', requireAdminAuth, (req, res) => {
+  router.delete('/api/events/:id', requireAdminAuth, (req, res) => {
     const removed = db.removeEvent(req.params.id);
     res.json({ success: removed });
   });
 
   // Publicar Notícias de Night Crows para o Webhook com 1 Clique
-  app.post('/api/news/publish-webhook', requireAdminAuth, async (req, res) => {
+  router.post('/api/news/publish-webhook', requireAdminAuth, async (req, res) => {
     try {
       const { customWebhookUrl } = req.body;
       const targetWebhook = customWebhookUrl || config.webhookUrl;
@@ -567,6 +562,10 @@ export function createWebServer(client) {
       res.status(500).json({ error: 'Erro ao enviar para o webhook: ' + e.message });
     }
   });
+
+  // Monta as rotas tanto na raiz quanto no subcaminho /hotlink/discord
+  app.use('/hotlink/discord', router);
+  app.use('/', router);
 
   // Fallback para SPA (compatível com Express 4 e 5)
   app.use((req, res) => {
