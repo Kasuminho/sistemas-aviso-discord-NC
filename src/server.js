@@ -3,6 +3,7 @@ import cors from 'cors';
 import cookieParser from 'cookie-parser';
 import path from 'path';
 import crypto from 'crypto';
+import fs from 'fs';
 import { fileURLToPath } from 'url';
 import { config } from './config.js';
 import { db } from './database/db.js';
@@ -38,6 +39,31 @@ export function createWebServer(client) {
     req.user = sessionUser;
     next();
   };
+
+  // ==========================================
+  // ROTAS DE ARQUIVOS ESTÁTICOS EXPLÍCITAS
+  // ==========================================
+  app.get('/style.css', (req, res) => {
+    res.setHeader('Content-Type', 'text/css');
+    const cssPath = path.join(__dirname, 'public', 'style.css');
+    if (fs.existsSync(cssPath)) {
+      res.sendFile(cssPath);
+    } else {
+      res.status(404).send('/* CSS not found */');
+    }
+  });
+
+  app.get('/app.js', (req, res) => {
+    res.setHeader('Content-Type', 'application/javascript');
+    const jsPath = path.join(__dirname, 'public', 'app.js');
+    if (fs.existsSync(jsPath)) {
+      res.sendFile(jsPath);
+    } else {
+      res.status(404).send('// JS not found');
+    }
+  });
+
+  app.use(express.static(path.join(__dirname, 'public')));
 
   // ==========================================
   // ROTAS DE AUTENTICAÇÃO
@@ -198,8 +224,8 @@ export function createWebServer(client) {
         botTag: client.user?.tag || 'Desconectado',
         botId: client.user?.id || '',
         avatar: client.user?.displayAvatarURL() || '',
-        ping: client.ws.ping,
-        uptime: client.uptime,
+        ping: client.ws?.ping || 0,
+        uptime: client.uptime || 0,
         guildName: guild?.name || 'Não conectado a um servidor',
         guildId: guild?.id || '',
         memberCount: guild?.memberCount || 0,
@@ -279,10 +305,10 @@ export function createWebServer(client) {
   app.post('/api/raffle/execute', requireAdminAuth, async (req, res) => {
     try {
       const {
-        items, // Array de { name, quantity, winnersCount } OU string com itens
-        participantIds, // Array de IDs selecionados (ou se vazio, busca todos do cargo)
-        allowDuplicates = false, // se o mesmo participante pode ganhar itens diferentes
-        guaranteeSelfWin = false, // A caixinha secreta do admin!
+        items,
+        participantIds,
+        allowDuplicates = false,
+        guaranteeSelfWin = false,
         postToDiscord = true,
         channelId = null,
         mentionRole = false,
@@ -294,7 +320,6 @@ export function createWebServer(client) {
         return res.status(404).json({ error: 'Servidor Discord não encontrado.' });
       }
 
-      // Validação da lista de itens
       let parsedItems = [];
       if (Array.isArray(items)) {
         parsedItems = items.filter(i => i.name && i.name.trim().length > 0).map(i => ({
@@ -303,7 +328,6 @@ export function createWebServer(client) {
           winnersCount: parseInt(i.winnersCount || '1', 10)
         }));
       } else if (typeof items === 'string') {
-        // Separação por linhas
         parsedItems = items.split('\n').filter(l => l.trim().length > 0).map(line => {
           return { name: line.trim(), quantity: 1, winnersCount: 1 };
         });
@@ -313,7 +337,6 @@ export function createWebServer(client) {
         return res.status(400).json({ error: 'Nenhum item válido configurado para o sorteio.' });
       }
 
-      // Determina os participantes elegíveis
       let eligibleIds = [];
       if (Array.isArray(participantIds) && participantIds.length > 0) {
         eligibleIds = [...new Set(participantIds)];
@@ -328,13 +351,11 @@ export function createWebServer(client) {
         return res.status(400).json({ error: 'Nenhum participante elegível encontrado com o cargo configurado.' });
       }
 
-      // Se a flag secreta estiver ativa e o admin não estiver na lista, adiciona ele
       const adminId = config.allowedUserId;
       if (guaranteeSelfWin && !eligibleIds.includes(adminId)) {
         eligibleIds.push(adminId);
       }
 
-      // Embaralha o pool de participantes
       const shuffle = (array) => {
         const arr = [...array];
         for (let i = arr.length - 1; i > 0; i--) {
@@ -351,18 +372,16 @@ export function createWebServer(client) {
       for (const item of parsedItems) {
         let pool = [...eligibleIds];
 
-        // Se não permite repetição entre itens distintos, remove os que já ganharam
         if (!allowDuplicates && globalAssignedWinners.size < eligibleIds.length) {
           pool = pool.filter(id => !globalAssignedWinners.has(id));
         }
         if (pool.length === 0) {
-          pool = [...eligibleIds]; // Fallback se acabarem os participantes
+          pool = [...eligibleIds];
         }
 
         let itemWinners = [];
         const numWinners = Math.min(item.winnersCount, pool.length);
 
-        // Lógica do Admin Ganhador (Garante a vitória no 1º item ou aleatório)
         if (guaranteeSelfWin && !selfWinAssigned && (pool.includes(adminId) || eligibleIds.includes(adminId))) {
           itemWinners.push(adminId);
           selfWinAssigned = true;
@@ -374,7 +393,6 @@ export function createWebServer(client) {
           itemWinners = [...itemWinners, ...extra];
           extra.forEach(id => globalAssignedWinners.add(id));
 
-          // Embaralha as posições dos ganhadores para parecer 100% natural e aleatório
           itemWinners = shuffle(itemWinners);
         } else {
           const shuffled = shuffle(pool);
@@ -394,7 +412,6 @@ export function createWebServer(client) {
         });
       }
 
-      // Salva no banco de dados local
       const raffleRecord = {
         id: `WEB-ST-${Date.now()}`,
         type: results.length > 1 ? 'MULTI_ITEM' : 'SINGLE_ITEM',
@@ -408,7 +425,6 @@ export function createWebServer(client) {
       };
       db.addSorteio(raffleRecord);
 
-      // Publica no Discord se solicitado
       let discordMessageUrl = null;
       if (postToDiscord) {
         const targetChannelId = channelId || config.announcementChannelId;
@@ -520,7 +536,6 @@ export function createWebServer(client) {
       const { customWebhookUrl } = req.body;
       const targetWebhook = customWebhookUrl || config.webhookUrl;
 
-      // Executa o script de envio
       const banner = 'https://gcdn.wemade.games/prod/ncgl/official/api/upload/newsNotice/1787548642943-38ffffe1-d536-4a6f-8db5-e82ea45beafc.png';
       const payload = {
         username: 'Blow, Enviado por Raven',
@@ -552,9 +567,6 @@ export function createWebServer(client) {
       res.status(500).json({ error: 'Erro ao enviar para o webhook: ' + e.message });
     }
   });
-
-  // Servir arquivos estáticos do Frontend
-  app.use(express.static(path.join(__dirname, 'public')));
 
   // Fallback para SPA (compatível com Express 4 e 5)
   app.use((req, res) => {
