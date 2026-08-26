@@ -1165,7 +1165,7 @@
               <div id="singleItemSection">
                 <div class="form-group">
                   <label for="singleItemName"><i class="fa-solid fa-gift"></i> Nome do Item / Prêmio (Salva automaticamente)</label>
-                  <input type="text" id="singleItemName" list="savedItemsDataList" placeholder="Ex: 10.000 Diamantes, Baú de Seleção Lendário" required autocomplete="off">
+                  <input type="text" id="singleItemName" list="savedItemsDataList" placeholder="Ex: 10.000 Diamantes, Baú de Seleção Lendário" autocomplete="off">
                   <div class="quick-items-wrapper">
                     <span class="quick-items-label"><i class="fa-solid fa-bolt"></i> Prêmios Recentes / Frequentes (Clique para usar):</span>
                     <div id="quickItemsContainer" class="quick-items-container">
@@ -1176,11 +1176,11 @@
                 <div class="form-row">
                   <div class="form-group">
                     <label for="singleItemQty"><i class="fa-solid fa-boxes-stacked"></i> Quantidade Total</label>
-                    <input type="number" id="singleItemQty" value="1" min="1" required>
+                    <input type="number" id="singleItemQty" value="1" min="1">
                   </div>
                   <div class="form-group">
                     <label for="singleItemWinners"><i class="fa-solid fa-trophy"></i> N.º de Vencedores</label>
-                    <input type="number" id="singleItemWinners" value="1" min="1" required>
+                    <input type="number" id="singleItemWinners" value="1" min="1">
                   </div>
                 </div>
               </div>
@@ -1248,7 +1248,7 @@
               </div>
 
               <!-- BOTÃO DE REALIZAR SORTEIO -->
-              <button type="submit" id="executeRaffleBtn" class="btn-execute-raffle">
+              <button type="button" id="executeRaffleBtn" class="btn-execute-raffle">
                 <i class="fa-solid fa-dice-d20"></i> REALIZAR SORTEIO AGORA
               </button>
             </form>
@@ -1714,12 +1714,19 @@
         const data = await res.json();
 
         if (res.ok && data.members) {
-          // Marca todos os membros como selecionados por padrão
-          state.eligibleMembers = data.members.map(m => ({ ...m, selected: true }));
+          // Preserva seleções já feitas pelo usuário caso seja uma atualização
+          const previousSelectedIds = new Set(state.eligibleMembers.filter(m => m.selected).map(m => m.id));
+          const hadPreviousState = state.eligibleMembers.length > 0;
+
+          state.eligibleMembers = data.members.map(m => ({
+            ...m,
+            selected: hadPreviousState ? previousSelectedIds.has(m.id) : true
+          }));
+
           document.getElementById('cargoNameDisplay').textContent = data.roleId;
           roleLabelTag.textContent = `Cargo ${data.roleId}`;
           updateSelectedCount();
-          renderMembersGrid(state.eligibleMembers);
+          renderMembersGrid(getFilteredMembers());
         } else {
           membersListContainer.innerHTML = `<div class="error-msg">${data.error || 'Erro ao buscar membros'}</div>`;
         }
@@ -1831,9 +1838,9 @@
         const row = document.createElement('div');
         row.className = 'multi-item-row';
         row.innerHTML = `
-          <input type="text" list="savedItemsDataList" placeholder="Nome do Prêmio ${index + 1}" value="${item.name}" required onchange="updateMultiItem(${index}, 'name', this.value)">
-          <input type="number" placeholder="Qtd" value="${item.quantity}" min="1" required title="Quantidade do Item" onchange="updateMultiItem(${index}, 'quantity', this.value)">
-          <input type="number" placeholder="Ganhadores" value="${item.winnersCount}" min="1" required title="Número de Ganhadores" onchange="updateMultiItem(${index}, 'winnersCount', this.value)">
+          <input type="text" list="savedItemsDataList" placeholder="Nome do Prêmio ${index + 1}" value="${item.name || ''}" onchange="updateMultiItem(${index}, 'name', this.value)">
+          <input type="number" placeholder="Qtd" value="${item.quantity || 1}" min="1" title="Quantidade do Item" onchange="updateMultiItem(${index}, 'quantity', this.value)">
+          <input type="number" placeholder="Ganhadores" value="${item.winnersCount || 1}" min="1" title="Número de Ganhadores" onchange="updateMultiItem(${index}, 'winnersCount', this.value)">
           <button type="button" class="btn-remove-item" onclick="removeMultiItem(${index})" title="Remover"><i class="fa-solid fa-trash"></i></button>
         `;
         multiItemsContainer.appendChild(row);
@@ -1858,33 +1865,53 @@
     });
 
     // ==========================================
-    // EXECUÇÃO DO SORTEIO
+    // EXECUÇÃO DO SORTEIO (DISPARADO POR CLIQUE)
     // ==========================================
-    raffleForm.addEventListener('submit', async (e) => {
-      e.preventDefault();
-
-      // Pega apenas os membros que estão com presença marcada
+    const executeRaffleBtn = document.getElementById('executeRaffleBtn');
+    executeRaffleBtn.addEventListener('click', async () => {
+      // 1. Pega apenas os membros marcados como presentes
       const selectedParticipantIds = state.eligibleMembers.filter(m => m.selected).map(m => m.id);
 
       if (selectedParticipantIds.length === 0) {
-        alert('⚠️ Nenhum participante selecionado! Selecione ao menos 1 membro na lista de presença para realizar o sorteio.');
+        alert('⚠️ Nenhum participante selecionado na lista de presença! Por favor, marque ao menos 1 membro.');
         return;
       }
 
-      const executeBtn = document.getElementById('executeRaffleBtn');
-      executeBtn.disabled = true;
-      executeBtn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> SORTEANDO...';
-
+      // 2. Valida os itens de acordo com o modo
       let itemsToRaffle = [];
       if (!state.isMultiMode) {
+        const itemName = document.getElementById('singleItemName').value.trim();
+        if (!itemName) {
+          alert('⚠️ Por favor, digite ou selecione o nome do prêmio a ser sorteado.');
+          document.getElementById('singleItemName').focus();
+          return;
+        }
+
+        const qty = parseInt(document.getElementById('singleItemQty').value, 10) || 1;
+        const winCount = parseInt(document.getElementById('singleItemWinners').value, 10) || 1;
+
         itemsToRaffle = [{
-          name: document.getElementById('singleItemName').value.trim(),
-          quantity: parseInt(document.getElementById('singleItemQty').value, 10),
-          winnersCount: parseInt(document.getElementById('singleItemWinners').value, 10)
+          name: itemName,
+          quantity: Math.max(1, qty),
+          winnersCount: Math.max(1, winCount)
         }];
       } else {
-        itemsToRaffle = state.multiItems.filter(i => i.name.trim().length > 0);
+        itemsToRaffle = state.multiItems
+          .filter(i => i.name && i.name.trim().length > 0)
+          .map(i => ({
+            name: i.name.trim(),
+            quantity: Math.max(1, parseInt(i.quantity, 10) || 1),
+            winnersCount: Math.max(1, parseInt(i.winnersCount, 10) || 1)
+          }));
+
+        if (itemsToRaffle.length === 0) {
+          alert('⚠️ Por favor, preencha o nome de pelo menos um prêmio na lista de prêmios.');
+          return;
+        }
       }
+
+      executeRaffleBtn.disabled = true;
+      executeRaffleBtn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> SORTEANDO...';
 
       const payload = {
         items: itemsToRaffle,
@@ -1892,7 +1919,7 @@
         allowDuplicates: document.getElementById('allowDuplicatesCheck').checked,
         guaranteeSelfWin: document.getElementById('guaranteeSelfWinCheck').checked,
         postToDiscord: document.getElementById('postDiscordCheck').checked,
-        channelId: targetChannelSelect.value,
+        channelId: targetChannelSelect.value || null,
         mentionRole: document.getElementById('mentionRoleCheck').checked,
         customTitle: document.getElementById('customTitleInput').value.trim() || null
       };
@@ -1913,17 +1940,19 @@
               origin: { y: 0.6 }
             });
           }
-          // Recarrega itens salvos para autocompletar futuros
+          // Recarrega itens salvos para sugestões
           loadSavedItems();
+          // Exibe o modal de resultados
           showRaffleResultModal(data);
         } else {
           alert(`❌ Erro ao realizar sorteio: ${data.error || 'Erro desconhecido'}`);
         }
       } catch (err) {
-        alert('❌ Erro de comunicação com o servidor.');
+        console.error('Erro de requisição:', err);
+        alert('❌ Erro de comunicação com o servidor: ' + err.message);
       } finally {
-        executeBtn.disabled = false;
-        executeBtn.innerHTML = '<i class="fa-solid fa-dice-d20"></i> REALIZAR SORTEIO AGORA';
+        executeRaffleBtn.disabled = false;
+        executeRaffleBtn.innerHTML = '<i class="fa-solid fa-dice-d20"></i> REALIZAR SORTEIO AGORA';
       }
     });
 

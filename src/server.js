@@ -455,55 +455,59 @@ export function createWebServer(client) {
 
       let discordMessageUrl = null;
       if (postToDiscord) {
-        const targetChannelId = channelId || config.announcementChannelId;
-        const targetChannel = guild.channels.cache.get(targetChannelId) || guild.channels.cache.find(c => c.isTextBased());
+        try {
+          const targetChannelId = channelId || config.announcementChannelId;
+          const targetChannel = guild.channels.cache.get(targetChannelId) || guild.channels.cache.find(c => c.isTextBased());
 
-        if (targetChannel) {
-          const allWinnersSet = new Set();
-          results.forEach(r => r.winners.forEach(w => allWinnersSet.add(w)));
-          const allWinnersMentions = [...allWinnersSet].map(id => `<@${id}>`).join(' ');
+          if (targetChannel) {
+            const allWinnersSet = new Set();
+            results.forEach(r => r.winners.forEach(w => allWinnersSet.add(w)));
+            const allWinnersMentions = [...allWinnersSet].map(id => `<@${id}>`).join(' ');
 
-          const embed = new EmbedBuilder()
-            .setColor('#EB459E')
-            .setTitle(`🎉 ${customTitle || 'SORTEIO REALIZADO COM SUCESSO!'} 🎉`)
-            .setDescription(`O sorteio oficial da Guilda foi concluído! Parabéns a todos os contemplados! 🦅✨`)
-            .setTimestamp()
-            .setFooter({ text: 'NC Bot • Portal de Gestão Raven' });
+            const embed = new EmbedBuilder()
+              .setColor('#EB459E')
+              .setTitle(`🎉 ${customTitle || 'SORTEIO REALIZADO COM SUCESSO!'} 🎉`)
+              .setDescription(`O sorteio oficial da Guilda foi concluído! Parabéns a todos os contemplados! 🦅✨`)
+              .setTimestamp()
+              .setFooter({ text: 'NC Bot • Portal de Gestão Raven' });
 
-          for (const resItem of results) {
-            const winnersText = resItem.winners
-              .map((w, idx) => `🏅 **${idx + 1}º:** <@${w}> -> Recebe **${resItem.quantityPerWinner}x** ${resItem.item}`)
-              .join('\n');
+            for (const resItem of results) {
+              const winnersText = resItem.winners
+                .map((w, idx) => `🏅 **${idx + 1}º:** <@${w}> -> Recebe **${resItem.quantityPerWinner}x** ${resItem.item}`)
+                .join('\n');
 
-            let fieldValue = `📦 **Total:** ${resItem.totalQuantity}x\n👥 **Ganhadores:**\n${winnersText}`;
-            if (resItem.remainder > 0) {
-              fieldValue += `\n⚠️ *(Sobra: ${resItem.remainder}x retida com a Staff)*`;
+              let fieldValue = `📦 **Total:** ${resItem.totalQuantity}x\n👥 **Ganhadores:**\n${winnersText}`;
+              if (resItem.remainder > 0) {
+                fieldValue += `\n⚠️ *(Sobra: ${resItem.remainder}x retida com a Staff)*`;
+              }
+
+              embed.addFields({
+                name: `🎁 Prêmio: ${resItem.item}`,
+                value: fieldValue,
+                inline: false
+              });
             }
 
             embed.addFields({
-              name: `🎁 Prêmio: ${resItem.item}`,
-              value: fieldValue,
-              inline: false
+              name: '👥 Participantes Elegíveis',
+              value: `**${eligibleIds.length}** jogadores com o cargo <@&${config.eventRoleId}>`,
+              inline: true
             });
+
+            let contentText = `🎉 **PARABÉNS AOS VENCEDORES DO SORTEIO!** ${allWinnersMentions}`;
+            if (mentionRole && config.eventRoleId) {
+              contentText = `<@&${config.eventRoleId}> ` + contentText;
+            }
+
+            const sentMsg = await targetChannel.send({
+              content: contentText,
+              embeds: [embed]
+            });
+
+            discordMessageUrl = sentMsg.url;
           }
-
-          embed.addFields({
-            name: '👥 Participantes Elegíveis',
-            value: `**${eligibleIds.length}** jogadores com o cargo <@&${config.eventRoleId}>`,
-            inline: true
-          });
-
-          let contentText = `🎉 **PARABÉNS AOS VENCEDORES DO SORTEIO!** ${allWinnersMentions}`;
-          if (mentionRole && config.eventRoleId) {
-            contentText = `<@&${config.eventRoleId}> ` + contentText;
-          }
-
-          const sentMsg = await targetChannel.send({
-            content: contentText,
-            embeds: [embed]
-          });
-
-          discordMessageUrl = sentMsg.url;
+        } catch (discordErr) {
+          console.error('Aviso: Sorteio registrado, mas erro ao postar no Discord:', discordErr.message);
         }
       }
 
