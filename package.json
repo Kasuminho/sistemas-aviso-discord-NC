@@ -19,10 +19,14 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "cookie-parser": "^1.4.7",
+    "cors": "^2.8.6",
     "discord.js": "^14.18.0",
     "dotenv": "^16.4.7",
+    "express": "^5.2.1",
     "luxon": "^3.5.0",
     "node-cron": "^3.0.3",
+    "puppeteer-core": "^25.8.0",
     "tesseract.js": "^7.0.0"
   }
 }

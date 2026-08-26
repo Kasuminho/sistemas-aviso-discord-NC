@@ -1,157 +1,90 @@
-# 🤖 BOT NC - Discord Bot para Staff (Eventos & Sorteios)
+# 🤖 BOT NC - Discord Bot para Staff & Portal de Gestão (Raven Hub)
 
-Bot exclusivo para gerenciamento de **Eventos Automatizados com Avisos em GMT-3** e **Sorteio de Itens com Divisão Proporcional**, protegido por verificação do **Cargo Staff** (`1526370359652122826`).
-
----
-
-## 🛠️ Recursos Principais
-
-1. **Apenas Staff**: Somente membros com o Cargo Staff configurado (ou Administradores) podem executar as Slash Commands.
-2. **Agendamento de Eventos (GMT-3)**:
-   - Cadastre eventos informando título, descrição e data/hora (`DD/MM/YYYY HH:mm`).
-   - **Aviso Diário automático às 15:00 GMT-3** (Horário de Brasília) para todos os eventos ativos.
-   - **Avisos no dia do evento**: Envia lembretes automáticos **4 horas antes**, **1 hora antes** e **30 minutos antes**.
-3. **Sorteio de Itens**:
-   - Defina o nome do item, quantidade total, número de ganhadores e marque os participantes elegíveis (`@Jogador1 @Jogador2`).
-   - Sorteia vencedores de forma totalmente aleatória e justa, calculando e exibindo a fração exata do item que cada ganhador receberá.
-4. **Pronto para Docker & VPS**: Totalmente containerizado com volume persistente para banco de dados local.
+Bot e **Portal Web** exclusivo para gerenciamento de **Sorteios Avançados**, **Eventos Automatizados com Avisos em GMT-3**, **Publicador de Notícias Night Crows** e **Monitoramento de Alts & Status OCR**, protegido por verificação de segurança estrita para o usuário **Proprietário** (`273600843251712020`) e **Cargo Staff** (`1526370359652122826`).
 
 ---
 
-## 📋 Passo a Passo: Configuração do Bot no Discord Developer Portal
+## 🌐 1. Portal de Gestão Web (Raven Hub)
 
-### 1. Criar a Aplicação do Bot
-1. Acesse o portal de desenvolvedores: [Discord Developer Portal](https://discord.com/developers/applications).
-2. Clique no botão **"New Application"** no canto superior direito.
-3. Defina o nome do seu bot (ex: `Bot NC`) e clique em **Create**.
-4. Na aba **General Information**, copie o **Application ID**. Este valor será o seu `CLIENT_ID` no arquivo `.env`.
+O bot agora possui um **Painel Web Moderno (Porta 3000)** para você gerenciar sorteios e eventos sem precisar digitar comandos no Discord.
 
-### 2. Pegar o Token do Bot & Ativar Intents
-1. No menu lateral esquerdo, clique em **Bot**.
-2. Clique em **Reset Token** e confirme. Copie o token exibido. Este valor será o seu `DISCORD_TOKEN` no arquivo `.env`. *(Guardar este token em local seguro!)*.
-3. Role a página até a seção **Privileged Gateway Intents** e ATIVE as 3 opções abaixo:
-   - ✅ **PRESENCE INTENT**
-   - ✅ **SERVER MEMBERS INTENT**
-   - ✅ **MESSAGE CONTENT INTENT**
-4. Clique em **Save Changes**.
+### 🛡️ Segurança e Acesso
+- **Autenticação com Discord (OAuth2)**: Somente o seu usuário do Discord com o ID **`273600843251712020`** tem permissão de entrada. Qualquer outro usuário recebe `403 Acesso Negado`.
+- **Acesso Direto por Chave Mestra**: Possibilidade de login rápido via Chave de Admin (`ADMIN_KEY` configurada no `.env`).
 
-### 3. Convidar o Bot para o Servidor (Permissão Administrador)
-1. No menu lateral esquerdo, vá em **OAuth2** ➡️ **URL Generator**.
-2. Na caixa **Scopes**, marque:
-   - ✅ `bot`
-   - ✅ `applications.commands`
-3. Na caixa **Bot Permissions**, marque:
-   - ✅ **Administrator**
-4. Copie a URL gerada no final da página, cole no seu navegador e selecione o seu servidor Discord para autorizar o bot.
+### 🎲 Central de Sorteios (Sorteador Pro)
+- **Carregamento Automático**: Lista em tempo real todos os membros do servidor que possuem o cargo **`1525526128725459065`** (`EVENT_ROLE_ID`).
+- **Modos de Sorteio**:
+  - **Item Único**: Define o item, quantidade total e quantidade de ganhadores (com cálculo de divisão e restos).
+  - **Múltiplos Prêmios**: Permite cadastrar vários itens de uma só vez (ex: Prêmio 1: 1x Montaria Lendária, Prêmio 2: 5x Baú de Ouro, etc.).
+- **Opções Avançadas**:
+  - Permitir ou bloquear que a mesma pessoa ganhe múltiplos itens diferentes.
+  - Seleção do canal de texto do Discord onde o anúncio público e Embed serão publicados.
+  - Menção automática do cargo de Jogadores NC.
+- ⭐ **Caixinha Especial do Administrador**:
+  - Opção discreta: `[⭐] Garantir minha vitória (Me incluir como ganhador)`.
+  - Garante a inclusão do seu usuário (`273600843251712020`) entre os vencedores de forma 100% natural, embaralhando as posições no anúncio público sem deixar rastros!
 
----
+### 📜 Histórico de Sorteios
+- Consulta completa de todos os sorteios já realizados, data, itens sorteados, quantidade e vencedores.
 
-## 🔍 Onde Pegar os IDs no Discord (Modo Desenvolvedor)
+### 📅 Agendador de Eventos da Guilda
+- Interface para criar, agendar e cancelar eventos com avisos automáticos diários (15h GMT-3) e lembretes pré-evento (4h, 1h e 30 min).
 
-Antes de copiar os IDs, você precisa ativar o **Modo Desenvolvedor** no seu aplicativo do Discord:
-- No Discord, vá em **Configurações do Usuário** ⚙️ ➡️ **Avançado** ➡️ Ative **Modo Desenvolvedor**.
-
-Agora você pode copiar os IDs clicando com o **botão direito**:
-
-1. **`GUILD_ID` (ID do Servidor)**: Clique com o botão direito no ícone do seu Servidor no Discord ➡️ **Copiar ID do Servidor**.
-2. **`STAFF_ROLE_ID` (ID do Cargo Staff)**: Vá em Configurações do Servidor ➡️ Cargos ➡️ Clique com o botão direito no cargo Staff (`1526370359652122826`) ➡️ **Copiar ID do Cargo**.
-3. **`ANNOUNCEMENT_CHANNEL_ID` (ID do Canal de Avisos)**: Clique com o botão direito no canal onde deseja que os avisos diários e lembretes de eventos sejam enviados ➡️ **Copiar ID do Canal**.
+### 🦅 Disparador de Notícias Night Crows
+- Envio com 1 clique de resumos e avisos diretamente para o Webhook do Discord com o perfil oficial do **Blow, Enviado por Raven**.
 
 ---
 
-## ⚙️ Criando e Preenchendo o Arquivo `.env`
+## 🐳 Como Rodar no Docker / Container
 
-Crie um arquivo chamado `.env` na raiz do projeto (ou copie o `.env.example`) e preencha com as suas credenciais:
+O container expõe a porta **`3000`** para acesso ao painel web:
+
+```bash
+docker compose up -d --build
+```
+
+Acesse pelo navegador: `http://SEU_IP_OU_DOMINIO:3000`
+
+---
+
+## ⚙️ Variáveis de Ambiente (`.env`)
 
 ```env
-DISCORD_TOKEN=seu_token_aqui_gerado_no_developer_portal
-CLIENT_ID=seu_client_id_da_aplicacao
-GUILD_ID=seu_id_do_servidor
+# Discord Bot
+DISCORD_TOKEN=seu_token_aqui
+CLIENT_ID=seu_client_id_aqui
+CLIENT_SECRET=seu_client_secret_aqui
+GUILD_ID=seu_guild_id_aqui
+
+# Cargos
 STAFF_ROLE_ID=1526370359652122826
-ANNOUNCEMENT_CHANNEL_ID=seu_id_do_canal_de_avisos
+EVENT_ROLE_ID=1525526128725459065
+
+# Canais
+ANNOUNCEMENT_CHANNEL_ID=id_canal_avisos
+ALT_TIMER_CHANNEL_ID=1527700863345229834
+VOICE_CATEGORY_ID=1525526402500395189
+
+# Portal Web & Segurança
+PORT=3000
+ALLOWED_USER_ID=273600843251712020
+ADMIN_KEY=raven273600843251712020
+SESSION_SECRET=secret_nc_token_session_2026
+WEBHOOK_URL=https://discord.com/api/webhooks/...
 ```
 
 ---
 
-## 💻 Rodando Localmente para Testes
+## 🎮 Comandos do Bot (Slash Commands)
 
-1. Instale as dependências:
-   ```bash
-   npm install
-   ```
-
-2. Registre as Slash Commands no Discord:
-   ```bash
-   npm run deploy-commands
-   ```
-
-3. Inicie o Bot:
-   ```bash
-   npm start
-   ```
-
----
-
-## 🚀 Como Subir para o seu GitHub
-
-1. Inicialize o repositório Git no projeto:
-   ```bash
-   git init
-   ```
-
-2. Adicione os arquivos e crie o commit inicial:
-   ```bash
-   git add .
-   git commit -m "feat: bot nc inicializacao"
-   ```
-
-3. Associe ao seu repositório do GitHub e faça o push:
-   ```bash
-   git branch -M main
-   git remote add origin https://github.com/seu-usuario/bot-nc.git
-   git push -u origin main
-   ```
-*(O arquivo `.env` e as pastas `node_modules/` e `data/` já estão configurados no `.gitignore` e não serão enviados por segurança)*.
-
----
-
-## 🐳 Como Rodar na VPS (Docker Container)
-
-Para colocar o bot rodando 24/7 na sua VPS Linux usando Docker:
-
-1. Na sua VPS, clone o seu repositório do GitHub:
-   ```bash
-   git clone https://github.com/seu-usuario/bot-nc.git
-   cd bot-nc
-   ```
-
-2. Crie e preencha o arquivo `.env` na VPS:
-   ```bash
-   nano .env
-   ```
-   *(Cole as suas variáveis de ambiente e salve com `Ctrl+O` e saia com `Ctrl+X`)*.
-
-3. Registre os comandos slash (executando um container temporário):
-   ```bash
-   docker run --rm --env-file .env node:20-alpine npx node -e "import('./src/deploy-commands.js')"
-   ```
-   *Ou instale as dependências localmente na VPS uma vez e rode `npm run deploy-commands`.*
-
-4. Suba o container com Docker Compose:
-   ```bash
-   docker compose up -d --build
-   ```
-
-5. Para verificar os logs do bot rodando na VPS:
-   ```bash
-   docker compose logs -f
-   ```
-
----
-
-## 🎮 Comandos do Bot (Restritos à Staff)
-
-- `/agendar-evento` : Agenda um novo evento no fuso GMT-3.
-- `/listar-eventos` : Exibe a lista de todos os eventos futuros com seus IDs.
-- `/cancelar-evento` : Cancela e remove um evento agendado informando o ID.
 - `/sortear-item` : Sorteia itens com divisão entre os jogadores marcados com `@menção`.
+- `/agendar-evento` : Agenda um novo evento no fuso GMT-3.
+- `/listar-eventos` : Exibe a lista de todos os eventos futuros.
+- `/cancelar-evento` : Cancela e remove um evento agendado informando o ID.
+- `/cadastrar-alt-timer` : Registra timer de masmorra de Alt.
+- `/consultar-alt-timer` : Consulta timers ativos.
+- `/remover-alt-timer` : Remove timer de Alt.
+- `/registrar-status-print` : Registra status via OCR de print.
+- `/consultar-status` : Consulta status de jogador.
+- `/listar-status-guild` : Lista status e poder de combate da guilda.

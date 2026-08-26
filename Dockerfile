@@ -21,5 +21,8 @@ COPY . .
 RUN mkdir -p /app/data
 VOLUME ["/app/data"]
 
-# Comando para iniciar o Bot
+# Expõe a porta do Portal Web
+EXPOSE 3000
+
+# Comando para iniciar o Bot e o Portal Web
 CMD ["npm", "start"]

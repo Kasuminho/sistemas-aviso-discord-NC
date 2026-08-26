@@ -4,6 +4,7 @@ import { initScheduler } from './services/scheduler.js';
 import { initVoiceMuteChecker } from './services/voiceMuteChecker.js';
 import { initAltTimerChecker } from './services/altTimerChecker.js';
 import { registerCommands } from './deploy-commands.js';
+import { createWebServer } from './server.js';
 
 import * as agendarEvento from './commands/agendarEvento.js';
 import * as listarEventos from './commands/listarEventos.js';
@@ -47,14 +48,19 @@ for (const cmd of commandsList) {
   client.commands.set(cmd.data.name, cmd);
 }
 
+// Inicia o Servidor Web do Portal de Gestão
+export const webServer = createWebServer(client);
+
 // Evento quando o bot está pronto
 client.once('ready', async () => {
   console.log(`==========================================`);
   console.log(`🤖 Bot conectado como: ${client.user.tag}`);
+  console.log(`🌐 Portal Web Ativo em: http://localhost:${config.port}`);
   console.log(`🛡️ Cargo Staff Permitido: ${config.staffRoleId}`);
   console.log(`⚔️ Cargo Jogador NC: ${config.eventRoleId}`);
   console.log(`📍 Canal Alt Timers: ${config.altTimerChannelId}`);
   console.log(`🎙️ Categoria Voz Monitorada: ${config.voiceCategoryId}`);
+  console.log(`👑 Acesso Exclusivo ao Usuário: ${config.allowedUserId}`);
   console.log(`==========================================`);
 
   // Tenta registrar/atualizar as Slash Commands automaticamente
@@ -62,7 +68,7 @@ client.once('ready', async () => {
 
   // Define a presença/status do bot
   client.user.setPresence({
-    activities: [{ name: 'Gerenciando Eventos, Alts & Status OCR NC', type: ActivityType.Custom }],
+    activities: [{ name: 'Gerenciando Sorteios, Eventos & Alts NC', type: ActivityType.Custom }],
     status: 'online'
   });
 

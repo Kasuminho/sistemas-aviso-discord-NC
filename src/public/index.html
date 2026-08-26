@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Raven Portal • Night Crows Staff Hub</title>
+  <!-- Google Fonts & Font Awesome -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <!-- Canvas Confetti -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body class="dark-theme">
+
+  <!-- TELA DE LOGIN (Caso não autenticado) -->
+  <div id="loginSection" class="login-container">
+    <div class="login-card glass-panel">
+      <div class="login-header">
+        <div class="raven-badge"><i class="fa-solid fa-feather-pointed"></i></div>
+        <h1>PORTAL DE GESTÃO RAVEN</h1>
+        <p class="subtitle">Painel Administrativo & Sorteador • Night Crows</p>
+      </div>
+
+      <div class="auth-box">
+        <p class="auth-notice">
+          <i class="fa-solid fa-shield-halved"></i> Acesso restrito exclusivamente ao usuário autorizado: 
+          <strong>ID 273600843251712020</strong>
+        </p>
+
+        <a href="/auth/discord" class="btn-discord-login">
+          <i class="fa-brands fa-discord"></i> Entrar com Discord
+        </a>
+
+        <div class="divider">
+          <span>OU ACESSO DIRETO POR CHAVE</span>
+        </div>
+
+        <form id="keyLoginForm" class="key-login-form">
+          <div class="input-group">
+            <input type="password" id="adminKeyInput" placeholder="Insira a Chave Mestra / ID de Admin" required>
+            <button type="submit" class="btn-key-login"><i class="fa-solid fa-arrow-right"></i></button>
+          </div>
+          <p id="loginError" class="error-msg"></p>
+        </form>
+      </div>
+      
+      <div class="login-footer">
+        <span>Night Crows Global • Sistema de Sorteios & Notificações</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- DASHBOARD PRINCIPAL (Autenticado) -->
+  <div id="appSection" class="app-container hidden">
+    <!-- BARRA LATERAL / HEADER -->
+    <aside class="sidebar glass-panel">
+      <div class="sidebar-brand">
+        <div class="brand-icon"><i class="fa-solid fa-crown"></i></div>
+        <div class="brand-text">
+          <h2>RAVEN HUB</h2>
+          <span class="bot-badge">STAFF NC</span>
+        </div>
+      </div>
+
+      <nav class="nav-menu">
+        <button class="nav-item active" data-tab="raffleTab">
+          <i class="fa-solid fa-dice"></i> Sorteador Pro
+        </button>
+        <button class="nav-item" data-tab="historyTab">
+          <i class="fa-solid fa-clock-rotate-left"></i> Histórico de Sorteios
+        </button>
+        <button class="nav-item" data-tab="eventsTab">
+          <i class="fa-solid fa-calendar-days"></i> Eventos da Guilda
+        </button>
+        <button class="nav-item" data-tab="newsTab">
+          <i class="fa-solid fa-newspaper"></i> Publicador de Notícias
+        </button>
+        <button class="nav-item" data-tab="statusTab">
+          <i class="fa-solid fa-server"></i> Status do Bot
+        </button>
+      </nav>
+
+      <div class="sidebar-user">
+        <img id="userAvatar" src="https://cdn.discordapp.com/embed/avatars/0.png" alt="Avatar" class="user-avatar">
+        <div class="user-info">
+          <span id="userName" class="user-name">Raven</span>
+          <span id="userId" class="user-id">ID: 273600843251712020</span>
+        </div>
+        <button id="logoutBtn" class="btn-logout" title="Sair"><i class="fa-solid fa-right-from-bracket"></i></button>
+      </div>
+    </aside>
+
+    <!-- CONTEÚDO PRINCIPAL -->
+    <main class="main-content">
+      <!-- TOP STATUS BAR -->
+      <header class="topbar glass-panel">
+        <div class="topbar-title">
+          <h1 id="pageTitle"><i class="fa-solid fa-dice"></i> Central de Sorteios</h1>
+          <p id="pageSubtitle">Sorteie itens para todos os membros com o cargo oficial de forma rápida e segura.</p>
+        </div>
+        <div class="topbar-stats">
+          <div class="stat-pill">
+            <span class="status-dot online"></span>
+            <span id="botStatusTag">Bot: Online</span>
+          </div>
+          <div class="stat-pill">
+            <i class="fa-solid fa-users"></i>
+            <span id="eligibleCountHeader">Membros: Carregando...</span>
+          </div>
+          <div class="stat-pill">
+            <i class="fa-solid fa-signal"></i>
+            <span id="pingTag">Ping: -- ms</span>
+          </div>
+        </div>
+      </header>
+
+      <!-- ABA 1: CENTRAL DE SORTEIOS -->
+      <section id="raffleTab" class="tab-content active">
+        <div class="grid-layout">
+          <!-- CARD DE CONFIGURAÇÃO DO SORTEIO -->
+          <div class="card glass-panel form-card">
+            <div class="card-header">
+              <h2><i class="fa-solid fa-sliders"></i> Configuração do Sorteio</h2>
+              <div class="mode-toggle">
+                <button type="button" class="btn-mode active" id="singleModeBtn">Item Único</button>
+                <button type="button" class="btn-mode" id="multiModeBtn">Múltiplos Prêmios</button>
+              </div>
+            </div>
+
+            <form id="raffleForm">
+              <!-- MODO ITEM ÚNICO -->
+              <div id="singleItemSection">
+                <div class="form-group">
+                  <label for="singleItemName"><i class="fa-solid fa-gift"></i> Nome do Item / Prêmio</label>
+                  <input type="text" id="singleItemName" placeholder="Ex: 10.000 Diamantes, Baú de Seleção Lendário" required>
+                </div>
+                <div class="form-row">
+                  <div class="form-group">
+                    <label for="singleItemQty"><i class="fa-solid fa-boxes-stacked"></i> Quantidade Total</label>
+                    <input type="number" id="singleItemQty" value="1" min="1" required>
+                  </div>
+                  <div class="form-group">
+                    <label for="singleItemWinners"><i class="fa-solid fa-trophy"></i> N.º de Vencedores</label>
+                    <input type="number" id="singleItemWinners" value="1" min="1" required>
+                  </div>
+                </div>
+              </div>
+
+              <!-- MODO MÚLTIPLOS PRÊMIOS -->
+              <div id="multiItemSection" class="hidden">
+                <div class="items-list-header">
+                  <label><i class="fa-solid fa-layer-group"></i> Lista de Prêmios</label>
+                  <button type="button" id="addPrizeBtn" class="btn-sm btn-gold"><i class="fa-solid fa-plus"></i> Adicionar Prêmio</button>
+                </div>
+                <div id="multiItemsContainer" class="multi-items-container">
+                  <!-- Itens dinâmicos aqui -->
+                </div>
+              </div>
+
+              <!-- OPÇÕES DE PUBLICAÇÃO & DISCORD -->
+              <div class="options-section">
+                <h3><i class="fa-brands fa-discord"></i> Envio para o Discord</h3>
+                
+                <div class="form-row">
+                  <div class="form-group">
+                    <label for="targetChannelSelect"><i class="fa-solid fa-hashtag"></i> Canal de Anúncio</label>
+                    <select id="targetChannelSelect">
+                      <option value="">Carregando canais...</option>
+                    </select>
+                  </div>
+                  <div class="form-group">
+                    <label for="customTitleInput"><i class="fa-solid fa-heading"></i> Título do Anúncio (Opcional)</label>
+                    <input type="text" id="customTitleInput" placeholder="Ex: GRANDE SORTEIO DA GUILDA NC">
+                  </div>
+                </div>
+
+                <div class="checkbox-group">
+                  <label class="custom-checkbox">
+                    <input type="checkbox" id="postDiscordCheck" checked>
+                    <span class="checkmark"></span>
+                    <span>Publicar resultado automaticamente no canal do Discord</span>
+                  </label>
+                  <label class="custom-checkbox">
+                    <input type="checkbox" id="mentionRoleCheck" checked>
+                    <span class="checkmark"></span>
+                    <span>Mencionar cargo de Jogadores NC (<span id="roleLabelTag">@Jogador NC</span>)</span>
+                  </label>
+                  <label class="custom-checkbox">
+                    <input type="checkbox" id="allowDuplicatesCheck">
+                    <span class="checkmark"></span>
+                    <span>Permitir que o mesmo jogador ganhe mais de um item em sorteios múltiplos</span>
+                  </label>
+                </div>
+              </div>
+
+              <!-- A CAIXINHA ESPECIAL DO ADMINISTRADOR -->
+              <div class="secret-box glass-panel">
+                <div class="secret-header">
+                  <i class="fa-solid fa-star gold-glow"></i>
+                  <div>
+                    <h4>Garantir Minha Vitória (Admin)</h4>
+                    <p>Insere você (ID 273600843251712020) no resultado do sorteio de forma 100% natural no anúncio público.</p>
+                  </div>
+                </div>
+                <label class="switch">
+                  <input type="checkbox" id="guaranteeSelfWinCheck">
+                  <span class="slider round"></span>
+                </label>
+              </div>
+
+              <!-- BOTÃO DE REALIZAR SORTEIO -->
+              <button type="submit" id="executeRaffleBtn" class="btn-execute-raffle">
+                <i class="fa-solid fa-dice-d20"></i> REALIZAR SORTEIO AGORA
+              </button>
+            </form>
+          </div>
+
+          <!-- CARD DE MEMBROS ELEGÍVEIS -->
+          <div class="card glass-panel members-card">
+            <div class="card-header">
+              <h2>
+                <i class="fa-solid fa-users-viewfinder"></i> Participantes Elegíveis 
+                <span class="badge" id="memberCountBadge">0</span>
+              </h2>
+              <button type="button" id="refreshMembersBtn" class="btn-icon" title="Atualizar Lista"><i class="fa-solid fa-rotate-right"></i></button>
+            </div>
+            
+            <p class="role-desc">
+              Listando todos os membros com o cargo <strong id="cargoNameDisplay">1525526128725459065</strong>:
+            </p>
+
+            <div class="search-box">
+              <i class="fa-solid fa-magnifying-glass"></i>
+              <input type="text" id="memberSearchInput" placeholder="Filtrar membro por nome ou ID...">
+            </div>
+
+            <div id="membersListContainer" class="members-grid">
+              <div class="loading-spinner"><i class="fa-solid fa-circle-notch fa-spin"></i> Carregando membros...</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ABA 2: HISTÓRICO DE SORTEIOS -->
+      <section id="historyTab" class="tab-content">
+        <div class="card glass-panel">
+          <div class="card-header">
+            <h2><i class="fa-solid fa-clock-rotate-left"></i> Histórico de Sorteios Realizados</h2>
+            <button id="refreshHistoryBtn" class="btn-sm"><i class="fa-solid fa-rotate-right"></i> Atualizar</button>
+          </div>
+          <div class="table-responsive">
+            <table class="custom-table">
+              <thead>
+                <tr>
+                  <th>Data</th>
+                  <th>ID</th>
+                  <th>Tipo</th>
+                  <th>Prêmio(s)</th>
+                  <th>Vencedores</th>
+                  <th>Participantes</th>
+                  <th>Autor</th>
+                </tr>
+              </thead>
+              <tbody id="historyTableBody">
+                <tr><td colspan="7" class="text-center">Carregando histórico...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ABA 3: EVENTOS DA GUILDA -->
+      <section id="eventsTab" class="tab-content">
+        <div class="grid-layout">
+          <!-- Criar Evento -->
+          <div class="card glass-panel">
+            <div class="card-header">
+              <h2><i class="fa-solid fa-calendar-plus"></i> Agendar Novo Evento</h2>
+            </div>
+            <form id="createEventForm">
+              <div class="form-group">
+                <label>Título do Evento</label>
+                <input type="text" id="eventTitle" placeholder="Ex: Guerra de Servidores / World Boss" required>
+              </div>
+              <div class="form-group">
+                <label>Descrição</label>
+                <textarea id="eventDesc" rows="3" placeholder="Instruções, call de voz e detalhes..."></textarea>
+              </div>
+              <div class="form-row">
+                <div class="form-group">
+                  <label>Data e Hora (GMT-3)</label>
+                  <input type="datetime-local" id="eventDateTime" required>
+                </div>
+                <div class="form-group">
+                  <label>Recorrência</label>
+                  <select id="eventRecorrencia">
+                    <option value="nenhuma">Nenhuma (Único)</option>
+                    <option value="diaria">Diária</option>
+                    <option value="semanal">Semanal</option>
+                    <option value="mensal">Mensal</option>
+                  </select>
+                </div>
+              </div>
+              <button type="submit" class="btn-gold"><i class="fa-solid fa-plus"></i> Salvar & Agendar Avisos</button>
+            </form>
+          </div>
+
+          <!-- Lista de Eventos -->
+          <div class="card glass-panel">
+            <div class="card-header">
+              <h2><i class="fa-solid fa-calendar-check"></i> Eventos Agendados</h2>
+            </div>
+            <div id="eventsListContainer" class="events-list">
+              <div class="loading-spinner"><i class="fa-solid fa-circle-notch fa-spin"></i> Carregando eventos...</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ABA 4: PUBLICADOR DE NOTÍCIAS -->
+      <section id="newsTab" class="tab-content">
+        <div class="card glass-panel">
+          <div class="card-header">
+            <h2><i class="fa-solid fa-bullhorn"></i> Disparador de Notícias & Resumo de Eventos NC</h2>
+          </div>
+          <div class="news-box">
+            <p>Dispare resumos formatados diretamente no Webhook do Discord cadastrado com o perfil do <strong>Blow, Enviado por Raven</strong>.</p>
+            <div class="form-group">
+              <label>Webhook URL (Deixe em branco para usar o padrão):</label>
+              <input type="text" id="customWebhookInput" placeholder="https://discord.com/api/webhooks/...">
+            </div>
+            <button type="button" id="triggerNewsBtn" class="btn-execute-raffle">
+              <i class="fa-solid fa-paper-plane"></i> DISPARAR AVISO NO WEBHOOK AGORA
+            </button>
+            <div id="newsStatusMsg" class="status-box hidden"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ABA 5: STATUS DO BOT -->
+      <section id="statusTab" class="tab-content">
+        <div class="card glass-panel">
+          <div class="card-header">
+            <h2><i class="fa-solid fa-server"></i> Informações do Sistema</h2>
+          </div>
+          <div id="systemInfoGrid" class="system-grid">
+            <div class="info-item">
+              <span class="info-label">Tag do Bot:</span>
+              <span class="info-val" id="infoBotTag">--</span>
+            </div>
+            <div class="info-item">
+              <span class="info-label">Servidor Atual:</span>
+              <span class="info-val" id="infoGuildName">--</span>
+            </div>
+            <div class="info-item">
+              <span class="info-label">Cargo Staff:</span>
+              <span class="info-val" id="infoStaffRole">--</span>
+            </div>
+            <div class="info-item">
+              <span class="info-label">Cargo Jogador NC:</span>
+              <span class="info-val" id="infoEventRole">--</span>
+            </div>
+            <div class="info-item">
+              <span class="info-label">Tempo Online (Uptime):</span>
+              <span class="info-val" id="infoUptime">--</span>
+            </div>
+            <div class="info-item">
+              <span class="info-label">ID Autorizado:</span>
+              <span class="info-val gold" id="infoAllowedId">273600843251712020</span>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- MODAL DE RESULTADO DO SORTEIO -->
+  <div id="raffleResultModal" class="modal-overlay hidden">
+    <div class="modal-content glass-panel">
+      <div class="modal-header">
+        <h2>🎉 RESULTADO DO SORTEIO! 🎉</h2>
+        <button id="closeModalBtn" class="btn-close">&times;</button>
+      </div>
+      <div class="modal-body" id="modalResultBody">
+        <!-- Vencedores renderizados aqui com animação -->
+      </div>
+      <div class="modal-footer">
+        <a id="discordLinkBtn" href="#" target="_blank" class="btn-gold hidden">
+          <i class="fa-brands fa-discord"></i> Ver Anúncio no Discord
+        </a>
+        <button id="closeModalBtn2" class="btn-secondary">Fechar</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,332 @@
+Notícias
+
+
+
+
+Asas Negras da Liberdade
+
+
+
+
+Oi, pessoal! Somos o NIGHT CROWS.
+
+
+
+
+Com grande satisfação, anunciamos o evento Conclusão de Missão que começa nesta semana.
+
+
+
+
+Consulte as informações abaixo para obter mais detalhes.
+
+
+
+
+
+
+
+2. EVENTO DE CONCLUSÃO DE MISSÃO
+
+
+
+
+■ DETALHES
+
+- Ganhe itens de recompensa ao concluir missões durante o evento.
+
+- Todos os itens fornecidos como recompensas do evento não podem ser negociados.
+
+- Confira e obtenha as recompensas através do ícone [Evento] na parte superior da tela do jogo.
+
+※ O evento pode ser participado por personagem.
+
+
+
+
+■ RECOMPENSAS
+
+(1) DESAFIO RUMO AO PICO - MISSÃO DE DESENVOLVIMENTO DE SETEMBRO
+
+- Quando: Após a atualização de 25/08 - antes da atualização de 22/09
+
+- Servidor alvo: Todos os servidores
+
+- Item de prazo limitado: Até 29/09, 08:00 (UTC+8)
+
+CONDIÇÃO
+	MISSÃO	RECOMPENSA
+CONCLUSÃO DA MISSÃO	Tentar Combinar Montaria Épica 4x	[Evento] Invocação de Montaria Deslumbrante do Crepúsculo (Vinculado) x1
+Tentar Combinar Visual de Arma Épico 4x	[Evento] Invocação de Visual de Arma Deslumbrante do Crepúsculo (Vinculado) x1
+Tentar Combinar Elemento Épico 4x	[Evento] Extração de Elemento Deslumbrante da Fusão (Vinculado) x1
+Usar Baú de Seleção de Bola de Cristal (Vinculado) 150x	[Evento] Baú de Seleção de Visual de Arma/Montaria Épico (Vinculado) x1
+Usar Baú de Pedaço de Criação Lendário (Vinculado) 1x	Baú de Seleção de Penas/Lamparina (Vinculado) x1
+Invocar Montaria Épica 4x	[Evento] Invocação de Montaria do Crepúsculo 11x (Vinculado) x1
+Invocar Visual de Arma Épico 4x	[Evento] Invocação de Visual de Arma do Crepúsculo 11x (Vinculado) x1
+Extrair Elemento Épico 4x	[Evento] Extração de Elemento da Fusão 11x (Vinculado) x1
+Alcançar Nv. 5 de Transcendência de Montaria/Visual de Arma/Planador 2x	[Evento] Baú de Seleção de Material de Crescimento Épico (Vinculado) x2
+Alcançar Nv. 10 de Transcendência de Montaria/Visual de Arma/Planador 2x	[Evento] Baú de Seleção de Material de Crescimento Épico (Vinculado) x2
+PRÊMIO FINAL	[Evento] Baú de Seleção de Invocação Designada de Elemento/Visual de Arma/Montaria Lendário (Vinculado) x1
+
+
+
+
+(2) [900 DIAS] MOEDA RADIANTE DO POMBINHO
+
+- Quando: Após a atualização de 25/08 - antes da atualização de 08/09
+
+- Servidor alvo: Todos os servidores
+
+- Item de prazo limitado: Antes da atualização de 08/09
+
+CONDIÇÃO
+	MISSÃO	RECOMPENSA
+CONCLUSÃO DA MISSÃO	Concluir Campanha Diária 9x	Orvalho do Luar (Vinculado) x900
+Concluir Campanha Diária 90x	[Evento] Moeda Radiante do Pombinho (Vinculado) x1
+Derrotar todos os monstros 900x	Pétala Consumida pela Luz Estelar (Vinculado) x9
+Derrotar todos os monstros 9.000x	[Evento] Moeda Radiante do Pombinho (Vinculado) x1
+Gastar Ouro x90.000	Orvalho Solar (Vinculado) x90
+Gastar Ouro x900.000	[Evento] Moeda Radiante do Pombinho (Vinculado) x1
+PRÊMIO FINAL	Bola de Cristal da Flor (Vinculado) x9
+
+
+
+
+(3) [900 DIAS] PRESENTE DE COMEMORAÇÃO DOS PIADORES
+
+- Quando: Após a atualização de 25/08 - antes da atualização de 08/09
+
+- Servidor alvo: Todos os servidores
+
+- Item de prazo limitado: Até 15/09, 08:00 (UTC+8)
+
+CONDIÇÃO
+	MISSÃO	RECOMPENSA
+CONCLUSÃO DA MISSÃO	Desmontar Equipamento 5x	Peça de Voo Velha (Vinculado) x30
+Desmontar Equipamento 10x	Peça de Voo Meticulosa (Vinculado) x10
+Desmontar Equipamento 20x	[Evento] Ferramenta de Voo do Ajudante (Vinculado) x1
+Tentar criar 5x	Peça de Voo Velha (Vinculado) x30
+Tentar criar 10x	Peça de Voo Meticulosa (Vinculado) x10
+Tentar criar 20x	[Evento] Ferramenta de Voo do Ajudante (Vinculado) x2
+PRÊMIO FINAL	Pedaço de Céu Azul (Vinculado) x10
+
+
+
+
+(4) [900 DIAS] PROVISÃO DE BATALHA ESPECIAL
+
+- Quando: Após a atualização de 25/08 - antes da atualização de 08/09
+
+- Servidor alvo: Todos os servidores
+
+CONDIÇÃO
+	MISSÃO	RECOMPENSA
+CONCLUSÃO DA MISSÃO	Tentar fortalecer equipamento 5x	Baú de Seleção de Pergaminho de Fortalecimento (Vinculado) x5
+Tentar fortalecer equipamento 10x	Baú de Seleção de Pergaminho de Fortalecimento (Vinculado) x5
+Tentar fortalecer equipamento 20x	Baú de Seleção de Equipamento dos Corvos da Noite VI (Vinculado) x1
+Tentar Refinar Equipamento 10x	Baú de Seleção de Pedra de Refino (Vinculado) x5
+Tentar Refinar Equipamento 20x	Baú de Seleção de Pedra de Refino (Vinculado) x5
+Tentar Refinar Equipamento 30x	Baú de Seleção de Equipamento dos Corvos da Noite VI (Vinculado) x1
+PRÊMIO FINAL	Baú de Seleção de Equipamento dos Corvos da Noite VI (Vinculado) x9
+
+
+
+
+(5) MISSÃO CONJUNTA DE GASPARD E ALBERTO
+
+- Quando: Após a atualização de 25/08 - antes da atualização de 08/09
+
+- Servidor alvo: Todos os servidores
+
+- Item de prazo limitado: Até 15/09, 08:00 (UTC+8)
+
+CONDIÇÃO
+	MISSÃO	RECOMPENSA
+CONCLUSÃO DA MISSÃO	Obter Bilhete de Passe de Equipamento dos Corvos da Noite de Gaspard (Vinculado) 1x	Baú de Pedaço de Criação Lendário (Vinculado) x1
+Tentar Fortalecer Equipamento dos Corvos da Noite +1 40x	Baú de Seleção de Equipamento dos Corvos da Noite VI x11 (Vinculado) x1
+Tentar Fortalecer Equipamento dos Corvos da Noite +2 20x	Baú de Seleção de Equipamento dos Corvos da Noite VI x11 (Vinculado) x2
+Tentar Fortalecer Equipamento dos Corvos da Noite +3 10x	Baú de Seleção de Equipamento dos Corvos da Noite VI x11 (Vinculado) x3
+Criar Ferramenta de Voo do Ajudante 5x	[Evento] Pedaço de Céu Azul (Vinculado) x5
+Criar Ferramenta de Voo do Artífice 10x	[Evento] Pedaço de Céu Azul (Vinculado) x10
+Usar Ferramenta de Voo do Artífice 10x	[Evento] Pedaço de Céu Azul (Vinculado) x5
+PRÊMIO FINAL	[Evento] Baú de Seleção de Desafio de Gaspard e Alberto (Vinculado) x1
+
+
+
+
+(6) OFICINA SECRETA DE PLANADOR
+
+- Quando: Após a atualização de 25/08 - antes da atualização de 08/09
+
+- Servidor alvo: Todos os servidores
+
+- Item de prazo limitado: Até 15/09, 08:00 (UTC+8)
+
+CONDIÇÃO
+	MISSÃO	RECOMPENSA
+CONCLUSÃO DA MISSÃO	Usar Kit de Planador da Oficina Secreta (Vinculado) 1x	[Evento] Repositório de Planador Ofuscante de Meteorito 11x (Vinculado) x1
+Usar Kit de Planador da Oficina Secreta (Vinculado) 10x	Baú do Desafio de Planador Épico (Vinculado) x1
+Usar Kit de Planador da Oficina Secreta (Vinculado) 20x	Baú do Desafio de Planador Épico (Vinculado) x2
+Usar Kit de Planador da Oficina Secreta (Vinculado) 30x	Baú do Desafio de Planador Épico (Vinculado) x3
+Usar Kit de Planador da Oficina Secreta (Vinculado) 50x	[Evento] Baú de Tentativa de Planador Lendário (Vinculado) x1
+Usar Kit de Planador da Oficina Secreta (Vinculado) 60x	Baú de Planador Épico (Vinculado) x1
+Usar Kit de Planador da Oficina Secreta (Vinculado) 80x	Baú de Planador Épico (Vinculado) x2
+Usar Kit de Planador da Oficina Secreta (Vinculado) 100x	[Evento] Baú de Tentativa de Planador Lendário (Vinculado) x1
+PRÊMIO FINAL	[Evento] Baú de Planador Lendário (Vinculado) x1
+
+
+
+
+(7) DIRETIVA DE FORTALECIMENTO DE EQUIPAMENTO DOS CORVOS DA NOITE DE GASPARD
+
+- Quando: Após a atualização de 25/08 - antes da atualização de 08/09
+
+- Servidor alvo: Todos os servidores
+
+CONDIÇÃO
+	MISSÃO	RECOMPENSA
+CONCLUSÃO DA MISSÃO	Tentar Fortalecer Equipamento dos Corvos da Noite +3 50x	Baú de Seleção de Equipamento dos Corvos da Noite VI x11 (Vinculado) x1
+Tentar Fortalecer Equipamento dos Corvos da Noite +3 100x	Baú de Seleção de Equipamento dos Corvos da Noite VI x11 (Vinculado) x2
+Tentar Fortalecer Equipamento dos Corvos da Noite +4 45x	Baú de Seleção de Equipamento dos Corvos da Noite VI +4 (Vinculado) x3
+Tentar Fortalecer Equipamento dos Corvos da Noite +4 90x	Baú de Seleção de Equipamento dos Corvos da Noite VI +5 (Vinculado) x2
+Tentar Fortalecer Equipamento dos Corvos da Noite +5 10x	Baú de Seleção de Equipamento dos Corvos da Noite VI +5 (Vinculado) x3
+Tentar Fortalecer Equipamento dos Corvos da Noite +5 25x	Baú de Seleção de Equipamento dos Corvos da Noite VI +6 (Vinculado) x1
+Tentar Fortalecer Equipamento dos Corvos da Noite +6 5x	Baú de Seleção de Equipamento dos Corvos da Noite VI +6 (Vinculado) x1
+Tentar Fortalecer Equipamento dos Corvos da Noite +6 8x	Baú de Seleção de Equipamento dos Corvos da Noite VI +7 (Vinculado) x1
+PRÊMIO FINAL	Baú de Seleção de Equipamento dos Corvos da Noite VI +8 (Vinculado) x1
+
+
+
+
+(8) DIRETIVA DE ELITE DE EQUIPAMENTO DOS CORVOS DA NOITE DE GASPARD
+
+- Quando: Após a atualização de 25/08 - antes da atualização de 08/09
+
+- Servidor alvo: Todos os servidores
+
+- Item de prazo limitado: Antes da atualização de 08/09
+
+CONDIÇÃO
+	MISSÃO	RECOMPENSA
+CONCLUSÃO DA MISSÃO	Tentar Fortalecer Equipamento dos Corvos da Noite +4 50x	[Evento] Lingote de Equipamento dos Corvos da Noite (Vinculado) x1
+Tentar Fortalecer Equipamento dos Corvos da Noite +5 25x	[Evento] Lingote de Equipamento dos Corvos da Noite (Vinculado) x1
+Tentar Fortalecer Equipamento dos Corvos da Noite +5 50x	[Evento] Lingote de Equipamento dos Corvos da Noite (Vinculado) x1
+Tentar Fortalecer Equipamento dos Corvos da Noite +6 10x	[Evento] Lingote de Equipamento dos Corvos da Noite (Vinculado) x1
+Tentar Fortalecer Equipamento dos Corvos da Noite +6 20x	[Evento] Lingote de Equipamento dos Corvos da Noite (Vinculado) x2
+Tentar Fortalecer Equipamento dos Corvos da Noite +6 30x	[Evento] Lingote de Equipamento dos Corvos da Noite (Vinculado) x3
+Tentar Fortalecer Equipamento dos Corvos da Noite +7 5x	[Evento] Lingote de Equipamento dos Corvos da Noite (Vinculado) x2
+Tentar Fortalecer Equipamento dos Corvos da Noite +7 10x	[Evento] Lingote de Equipamento dos Corvos da Noite (Vinculado) x4
+PRÊMIO FINAL	[Evento] Lingote de Equipamento dos Corvos da Noite (Vinculado) x5
+
+
+
+
+(9) DIRETIVA DE PLANADOR DE ALBERTO
+
+- Quando: Após a atualização de 25/08 - antes da atualização de 08/09
+
+- Servidor alvo: Todos os servidores
+
+CONDIÇÃO
+	MISSÃO	RECOMPENSA
+CONCLUSÃO DA MISSÃO	Usar [Evento] Ferramenta de Voo de Alberto (Vinculado) 5x	Baú do Desafio de Planador Lendário (Vinculado) x1
+Criar Ferramenta de Voo do Artesão 15x	Baú de Planador Épico (Vinculado) x1
+Usar Ferramenta de Voo do Artesão 15x	Repositório de Planador Deslumbrante do Cometa (Vinculado) x1
+Criar Baú de Planador Épico 10x	Repositório de Planador Deslumbrante do Cometa (Vinculado) x2
+Criar Baú de Planador Épico 15x	Baú do Desafio de Planador Lendário (Vinculado) x1
+Criar Baú de Troca de Planador Lendário 1x	Baú do Desafio de Planador Lendário (Vinculado) x1
+PRÊMIO FINAL	Baú de Troca de Planador Lendário (Vinculado) x1
+
+
+
+
+(10) [900 DIAS] DIRETIVA DE DESAFIO DE PLANADOR MÍTICO
+
+- Quando: Após a atualização de 25/08 - antes da atualização de 08/09
+
+- Servidor alvo: Todos os servidores
+
+- Item de prazo limitado:
+
+* [Evento] Moeda de Celebração de Alberto (Vinculado): Antes da atualização de 08/09
+
+* Outro item: 15/09, 08:00(UTC+8)
+
+CONDIÇÃO
+	MISSÃO	RECOMPENSA
+CONCLUSÃO DA MISSÃO	Usar [Evento] Ferramenta de Voo de Alberto (Vinculado) 5x	[Evento] Morion (Vinculado) x100
+Usar [Evento] Ferramenta de Voo de Alberto (Vinculado) 10x	[Evento] Morion (Vinculado) x100
+Usar [Evento] Ferramenta de Voo de Alberto (Vinculado) 15x	[Evento] Morion (Vinculado) x100
+Usar [Evento] Ferramenta de Voo de Alberto (Vinculado) 20x	Baú do Desafio de Planador Mítico (Vinculado) x1
+Usar [Evento] Ferramenta de Voo de Alberto (Vinculado) 25x	[Evento] Morion (Vinculado) x100
+Usar [Evento] Ferramenta de Voo de Alberto (Vinculado) 30x	[Evento] [900 Dias] Moeda de Celebração de Alberto (Vinculado) x10
+PRÊMIO FINAL	Baú do Desafio de Planador Mítico (Vinculado) x1
+
+
+
+
+(11) [900 DIAS] PRESENTE ESPECIAL DO POMBINHO
+
+- Quando: Após a atualização de 25/08 - antes da atualização de 08/09
+
+- Servidor alvo: Todos os servidores
+
+CONDIÇÃO
+	MISSÃO	RECOMPENSA
+CONCLUSÃO DA MISSÃO	Obter [Evento] Pontos do Pombinho (Vinculado) 50x	Orvalho Solar (Vinculado) x50
+Obter [Evento] Pontos do Pombinho (Vinculado) 150x	Pétala Consumida pela Luz Estelar (Vinculado) x20
+Obter [Evento] Pontos do Pombinho (Vinculado) 300x	Orvalho Solar (Vinculado) x100
+Obter [Evento] Pontos do Pombinho (Vinculado) 500x	Pétala Consumida pela Luz Estelar (Vinculado) x40
+Obter [Evento] Pontos do Pombinho (Vinculado) 1.000x	Pedra de Magia da Sucessão (Vinculado) x3
+Obter [Evento] Pontos do Pombinho (Vinculado) 2.000x	Invocação de Espírito Superior (Vinculado) x5
+Obter [Evento] Pontos do Pombinho (Vinculado) 5.000x	Pedra de Magia da Sucessão (Vinculado) x6
+Obter [Evento] Pontos do Pombinho (Vinculado) 10.000x	Invocação de Espírito do Juramento (Vinculado) x1
+Obter [Evento] Pontos do Pombinho (Vinculado) 20.000x	Invocação de Espírito do Juramento (Vinculado) x1
+Obter [Evento] Pontos do Pombinho (Vinculado) 40.000x	Invocação de Espírito do Juramento (Vinculado) x1
+PRÊMIO FINAL	Invocação de Espírito do Juramento (Vinculado) x3
+
+
+
+
+(12) [SEMANAL] MISSÃO DE AUXÍLIO SEMANAL!
+
+- Quando: Após a atualização de 25/08 - até 01/09, 08:00 (UTC+8)
+
+- Servidor alvo: Todos os servidores
+
+CONDIÇÃO
+	MISSÃO	RECOMPENSA
+CONCLUSÃO DA MISSÃO	Concluir Campanha Diária 30x	Moeda de Abilius (Vinculado) x1
+Concluir Campanha Diária 90x	Moeda de Abilius (Vinculado) x1
+Concluir Campanha Diária 150x	Moeda de Abilius (Vinculado) x1
+Raide de Chefe - Derrotar Trashi 1x	Moeda de Abilius (Vinculado) x1
+Raide de Chefe - Derrotar Trashi 5x	Moeda de Abilius (Vinculado) x1
+Check-in da Guilda 3x	Moeda de Abilius (Vinculado) x1
+Check-in da Guilda 5x	Moeda de Abilius (Vinculado) x1
+Derrotar monstros em todas as masmorras 5.000x	Moeda de Abilius (Vinculado) x1
+Conclua Torre da Provação (Acumulado) 3x	Moeda de Abilius (Vinculado) x1
+Concluir Masmorra de Equipe 1x	Moeda de Abilius (Vinculado) x1
+PRÊMIO FINAL	Moeda de Abilius (Vinculado) x5
+
+
+
+
+(13) [SEMANAL] MISSÃO DE OBTENÇÃO DE MOEDA DE ABILIUS
+
+- Quando: Após a atualização de 25/08 - até 01/09, 08:00 (UTC+8)
+
+- Servidor alvo: Todos os servidores
+
+CONDIÇÃO
+	MISSÃO	RECOMPENSA
+CONCLUSÃO DA MISSÃO	Obter Moeda de Abilius (Vinculado) 5x	Baú de Seleção de Invocação Comum de Abilius 11x (Vinculado) x1
+Obter Moeda de Abilius (Vinculado) 15x	Baú de Seleção de Invocação Incomum de Abilius 11x (Vinculado) x1
+Obter Moeda de Abilius (Vinculado) 25x	Baú de Seleção de Invocação Rara de Abilius (Vinculado) x2
+Obter Moeda de Abilius (Vinculado) 35x	Baú de Seleção de Invocação Rara de Abilius (Vinculado) x3
+Obter Moeda de Abilius (Vinculado) 55x	Baú de Seleção de Invocação Rara de Abilius (Vinculado) x5
+PRÊMIO FINAL	Baú de Seleção de Invocação Épica de Abilius (Vinculado) x1
+
+
+
+
+
