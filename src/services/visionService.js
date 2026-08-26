@@ -64,8 +64,14 @@ Retorne APENAS um objeto JSON válido no formato estrito abaixo, sem marcações
 }
 Se algum número não estiver visível nas imagens, coloque null naquele campo específico.`;
 
-  // Modelos para tentar sequencialmente em caso de variação regional/versão da chave de API
-  const candidateModels = ['gemini-1.5-flash', 'gemini-1.5-flash-latest', 'gemini-2.0-flash', 'gemini-1.5-pro'];
+  // Modelos suportados pela API da Google em ordem de preferência
+  const candidateModels = [
+    'gemini-3.6-flash',
+    'gemini-3.0-flash',
+    'gemini-2.5-flash',
+    'gemini-1.5-flash',
+    'gemini-1.5-flash-latest'
+  ];
   let lastError = null;
 
   for (const modelName of candidateModels) {
