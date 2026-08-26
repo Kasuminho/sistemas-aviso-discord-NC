@@ -29,7 +29,9 @@ async function checkExpiredAltTimers(client) {
 
   for (const timer of expiredTimers) {
     try {
-      const user = await client.users.fetch(timer.userId);
+      const user = client.users.cache.get(timer.userId) || await client.users.fetch(timer.userId).catch(() => null);
+      if (!user) continue;
+
       const dmEmbed = new EmbedBuilder()
         .setColor('#57F287')
         .setTitle('🔔 SEU TIMER DE ALT ZEROU!')
@@ -51,7 +53,7 @@ async function checkExpiredAltTimers(client) {
 
       // 2. Se a DM falhar (mensagens diretas desativadas), posta no canal exclusivo marcando a pessoa
       if (!dmSent) {
-        const channel = await client.channels.fetch(config.altTimerChannelId);
+        const channel = client.channels.cache.get(config.altTimerChannelId) || await client.channels.fetch(config.altTimerChannelId).catch(() => null);
         if (channel && channel.isTextBased()) {
           await channel.send({
             content: `🔔 **AVISO DE ALT LIBERADO!** <@${timer.userId}>, o cooldown do seu **${timer.altName}** (Slot ${timer.slot}) zerou! Você já pode criar seu alt!`,
@@ -61,12 +63,11 @@ async function checkExpiredAltTimers(client) {
         }
       }
 
-      // Marca o timer como notificado para não reenviar
-      timer.notified = true;
-      db.updateAltTimer(timer);
+      // Marca o timer como notificado e limpa do banco de dados
+      db.removeAltTimer(timer.userId, timer.slot);
 
     } catch (err) {
-      console.error(`Erro ao notificar conclusão do Alt Timer (${timer.userId} - Slot ${timer.slot}):`, err);
+      console.error(`Erro ao notificar timer de alt do usuário ${timer.userId}:`, err);
     }
   }
 }

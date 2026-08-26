@@ -1,72 +1,76 @@
 import { config } from '../config.js';
 
-// Mapa em memória para rastrear usuários mutados: userId -> { mutedSince, guildId }
+// Mapa em memória para rastrear usuários mutados e o horário em que o mute iniciou
+// Chave: userId, Valor: { mutedSince: timestamp, channelId: string, guildId: string }
 const mutedUsers = new Map();
 
 /**
- * Inicializa o serviço de verificação de tempo em Mute nos canais de voz.
+ * Inicializa o monitoramento de Mute nos canais de voz da categoria configurada
  * @param {import('discord.js').Client} client 
  */
 export function initVoiceMuteChecker(client) {
   console.log(`🎙️ [VOICE MUTE] Serviço de monitoramento ativado (Categoria: ${config.voiceCategoryId}, Limite: ${config.muteTimeoutMinutes} min).`);
 
-  // Evento escutado a cada alteração no estado de voz de qualquer membro
+  // Evento disparado quando o estado de voz de um usuário muda (Entrou, saiu, mutou, desmutou)
   client.on('voiceStateUpdate', (oldState, newState) => {
     handleVoiceStateUpdate(newState);
   });
 
-  // Varredura periódica a cada 30 segundos
+  // Executa verificação a cada 30 segundos em memória
   setInterval(() => {
     checkMutedUsers(client);
   }, 30 * 1000);
 
-  // Varredura inicial nos canais para rastrear quem já estava mutado ao ligar o bot
+  // Faz uma varredura inicial dos usuários já conectados e mutados ao iniciar
   scanExistingVoiceStates(client);
 }
 
 /**
- * Atualiza o rastreamento de um membro baseado no seu VoiceState atual
+ * Processa a atualização do estado de voz de um usuário
  * @param {import('discord.js').VoiceState} state 
  */
 function handleVoiceStateUpdate(state) {
   const userId = state.id;
   const channel = state.channel;
 
-  // Se o usuário desconectou da voz
+  // Se o usuário não está em um canal de voz
   if (!channel) {
     mutedUsers.delete(userId);
     return;
   }
 
-  const guild = state.guild;
-  const afkChannelId = config.afkChannelId || guild.afkChannelId;
-
-  // Verifica se o canal está na Categoria especificada E NÃO é o próprio canal AFK
+  // Verifica se o canal pertence à categoria monitorada
   const isTargetCategory = channel.parentId === config.voiceCategoryId;
-  const isAfkChannel = channel.id === afkChannelId;
+  if (!isTargetCategory) {
+    mutedUsers.delete(userId);
+    return;
+  }
 
+  // Verifica se o usuário está mutado (Self-mute pelo Discord, Mute de Servidor ou Mute pelo Microfone)
   const isMuted = state.selfMute || state.serverMute || state.mute;
 
-  if (isTargetCategory && !isAfkChannel && isMuted) {
-    // Se ainda não estava no mapa, inicia a contagem
+  if (isMuted) {
+    // Se ainda não estava sendo rastreado, inicia a contagem
     if (!mutedUsers.has(userId)) {
       mutedUsers.set(userId, {
         mutedSince: Date.now(),
-        guildId: guild.id
+        channelId: channel.id,
+        guildId: state.guild.id
       });
       console.log(`🎙️ [VOICE MUTE] Membro ${state.member?.user.tag || userId} mutou em ${channel.name}. Iniciando cronômetro de ${config.muteTimeoutMinutes} min.`);
     }
   } else {
-    // Se desmutou, trocou de categoria ou foi para o AFK, remove da contagem
+    // Se o usuário desmutou, remove do rastreamento
     if (mutedUsers.has(userId)) {
       mutedUsers.delete(userId);
-      console.log(`🎙️ [VOICE MUTE] Cronômetro cancelado para o membro ${state.member?.user.tag || userId} (desmutou ou saiu).`);
+      console.log(`🔊 [VOICE MUTE] Membro ${state.member?.user.tag || userId} desmutou em ${channel.name}. Cronômetro cancelado.`);
     }
   }
 }
 
 /**
- * Varre todos os membros rastreados e move os que excederam o tempo limite mutados
+ * Verifica se algum usuário ultrapassou o tempo limite de mute (10 minutos por padrão) e o move para AFK
+ * @param {import('discord.js').Client} client 
  */
 async function checkMutedUsers(client) {
   const timeoutMs = config.muteTimeoutMinutes * 60 * 1000;
@@ -75,13 +79,13 @@ async function checkMutedUsers(client) {
   for (const [userId, info] of mutedUsers.entries()) {
     if (now - info.mutedSince >= timeoutMs) {
       try {
-        const guild = await client.guilds.fetch(info.guildId);
+        const guild = client.guilds.cache.get(info.guildId) || await client.guilds.fetch(info.guildId).catch(() => null);
         if (!guild) {
           mutedUsers.delete(userId);
           continue;
         }
 
-        const member = await guild.members.fetch(userId);
+        const member = guild.members.cache.get(userId) || await guild.members.fetch(userId).catch(() => null);
         if (!member || !member.voice || !member.voice.channel) {
           mutedUsers.delete(userId);
           continue;
@@ -116,16 +120,13 @@ async function checkMutedUsers(client) {
 }
 
 /**
- * Varre os canais na categoria ao ligar o bot
+ * Varre os canais na categoria ao ligar o bot usando apenas o cache em memória
  */
-async function scanExistingVoiceStates(client) {
+function scanExistingVoiceStates(client) {
   try {
-    const guilds = await client.guilds.fetch();
-    for (const [guildId] of guilds) {
-      const guild = await client.guilds.fetch(guildId);
+    for (const [, guild] of client.guilds.cache) {
       const voiceStates = guild.voiceStates.cache;
-
-      for (const [userId, state] of voiceStates) {
+      for (const [, state] of voiceStates) {
         handleVoiceStateUpdate(state);
       }
     }

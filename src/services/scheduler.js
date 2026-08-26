@@ -52,7 +52,7 @@ async function sendDaily15hAnnouncements(client) {
     if (!channelId) continue;
 
     try {
-      const channel = await client.channels.fetch(channelId);
+      const channel = client.channels.cache.get(channelId) || await client.channels.fetch(channelId).catch(() => null);
       if (channel && channel.isTextBased()) {
         const embed = createEventEmbed(event, 'DAILY_15H');
         await channel.send({
@@ -132,7 +132,7 @@ async function checkEventReminders(client) {
 
     if (noticeType) {
       try {
-        const channel = await client.channels.fetch(channelId);
+        const channel = client.channels.cache.get(channelId) || await client.channels.fetch(channelId).catch(() => null);
         if (channel && channel.isTextBased()) {
           const embed = createEventEmbed(event, noticeType);
           await channel.send({

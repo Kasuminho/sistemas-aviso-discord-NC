@@ -260,8 +260,7 @@ export function createWebServer(client) {
         return res.status(404).json({ error: 'Servidor Discord não encontrado pelo bot.' });
       }
 
-      await guild.members.fetch();
-
+      // Utiliza o cache em memória mantido pelo bot via Gateway Intents (zero chamadas API Opcode 8)
       const targetRoleId = config.eventRoleId || '1525526128725459065';
       const membersWithRole = guild.members.cache.filter(m => m.roles.cache.has(targetRoleId) && !m.user.bot);
 
@@ -369,7 +368,6 @@ export function createWebServer(client) {
       if (Array.isArray(participantIds) && participantIds.length > 0) {
         eligibleIds = [...new Set(participantIds)];
       } else {
-        await guild.members.fetch();
         const targetRoleId = config.eventRoleId || '1525526128725459065';
         const members = guild.members.cache.filter(m => m.roles.cache.has(targetRoleId) && !m.user.bot);
         eligibleIds = [...members.keys()];
