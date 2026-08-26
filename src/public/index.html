@@ -1415,9 +1415,16 @@
     const closeModalBtn = document.getElementById('closeModalBtn');
     const closeModalBtn2 = document.getElementById('closeModalBtn2');
 
+    function getAuthHeaders() {
+      const token = localStorage.getItem('nc_token');
+      const headers = { 'Content-Type': 'application/json' };
+      if (token) headers['Authorization'] = `Bearer ${token}`;
+      return headers;
+    }
+
     async function initApp() {
       try {
-        const res = await fetch('/api/me');
+        const res = await fetch('/api/me', { headers: getAuthHeaders() });
         const data = await res.json();
 
         if (data.authenticated && data.user) {
@@ -1465,17 +1472,22 @@
         const data = await res.json();
 
         if (res.ok && data.success) {
+          if (data.token) {
+            localStorage.setItem('nc_token', data.token);
+          }
           window.location.reload();
         } else {
           loginError.textContent = data.error || 'Chave incorreta.';
         }
       } catch (err) {
-        loginError.textContent = 'Erro de conexão com o servidor.';
+        console.error('Fetch error:', err);
+        loginError.textContent = 'Erro de conexão: ' + err.message;
       }
     });
 
     logoutBtn.addEventListener('click', async () => {
-      await fetch('/auth/logout', { method: 'POST' });
+      localStorage.removeItem('nc_token');
+      await fetch('/auth/logout', { method: 'POST', headers: getAuthHeaders() });
       window.location.reload();
     });
 
@@ -1512,7 +1524,7 @@
 
     async function loadBotStatus() {
       try {
-        const res = await fetch('/api/bot/status');
+        const res = await fetch('/api/bot/status', { headers: getAuthHeaders() });
         const data = await res.json();
 
         if (data.online) {
@@ -1535,7 +1547,7 @@
 
     async function loadChannels() {
       try {
-        const res = await fetch('/api/channels');
+        const res = await fetch('/api/channels', { headers: getAuthHeaders() });
         const data = await res.json();
 
         targetChannelSelect.innerHTML = '';
@@ -1561,7 +1573,7 @@
       membersListContainer.innerHTML = '<div class="loading-spinner"><i class="fa-solid fa-circle-notch fa-spin"></i> Carregando membros...</div>';
       
       try {
-        const res = await fetch('/api/raffle/eligible-members');
+        const res = await fetch('/api/raffle/eligible-members', { headers: getAuthHeaders() });
         const data = await res.json();
 
         if (res.ok && data.members) {
@@ -1691,7 +1703,7 @@
       try {
         const res = await fetch('/api/raffle/execute', {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
+          headers: getAuthHeaders(),
           body: JSON.stringify(payload)
         });
         const data = await res.json();
@@ -1770,7 +1782,7 @@
       tbody.innerHTML = '<tr><td colspan="7" class="text-center"><i class="fa-solid fa-circle-notch fa-spin"></i> Carregando...</td></tr>';
 
       try {
-        const res = await fetch('/api/raffle/history');
+        const res = await fetch('/api/raffle/history', { headers: getAuthHeaders() });
         const data = await res.json();
 
         if (data.history && data.history.length > 0) {
@@ -1816,7 +1828,7 @@
       container.innerHTML = '<div class="loading-spinner"><i class="fa-solid fa-circle-notch fa-spin"></i> Carregando...</div>';
 
       try {
-        const res = await fetch('/api/events');
+        const res = await fetch('/api/events', { headers: getAuthHeaders() });
         const data = await res.json();
 
         if (data.events && data.events.length > 0) {
@@ -1850,7 +1862,7 @@
 
     window.deleteEvent = async (id) => {
       if (confirm('Deseja realmente cancelar este evento agendado?')) {
-        await fetch(`/api/events/${id}`, { method: 'DELETE' });
+        await fetch(`/api/events/${id}`, { method: 'DELETE', headers: getAuthHeaders() });
         loadGuildEvents();
       }
     };
@@ -1866,7 +1878,7 @@
 
       const res = await fetch('/api/events', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: getAuthHeaders(),
         body: JSON.stringify(payload)
       });
 
@@ -1889,7 +1901,7 @@
       try {
         const res = await fetch('/api/news/publish-webhook', {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
+          headers: getAuthHeaders(),
           body: JSON.stringify({ customWebhookUrl })
         });
         const data = await res.json();

@@ -185,7 +185,7 @@ export function createWebServer(client) {
         maxAge: 7 * 24 * 60 * 60 * 1000
       });
 
-      return res.json({ success: true, message: 'Autenticado com sucesso!' });
+      return res.json({ success: true, message: 'Autenticado com sucesso!', token: sessionToken });
     }
 
     return res.status(403).json({ error: 'Chave de acesso incorreta.' });
