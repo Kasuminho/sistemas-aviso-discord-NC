@@ -1614,6 +1614,7 @@
       loadChannels();
       loadSavedItems();
       loadEligibleMembers();
+      loadCutoffSettings();
       renderMultiItems();
     }
 
@@ -1662,6 +1663,10 @@
         if (tabId === 'raffleTab') {
           pageTitle.innerHTML = '<i class="fa-solid fa-dice"></i> Central de Sorteios';
           pageSubtitle.textContent = 'Sorteie itens para os membros presentes de forma rápida e segura.';
+        } else if (tabId === 'membersTab') {
+          pageTitle.innerHTML = '<i class="fa-solid fa-users-gear"></i> Tabelão & Elegibilidade da Guilda';
+          pageSubtitle.textContent = 'Gerencie a pontuação semanal de boss, faltas, pontos de corte e verifique a elegibilidade dos membros.';
+          loadMembersTab();
         } else if (tabId === 'historyTab') {
           pageTitle.innerHTML = '<i class="fa-solid fa-clock-rotate-left"></i> Histórico de Sorteios';
           pageSubtitle.textContent = 'Registro detalhado de todos os sorteios e ganhadores passados.';
@@ -2220,6 +2225,141 @@
       } catch (err) {
         statusMsg.innerHTML = '❌ Erro de conexão com a API.';
         statusMsg.style.color = 'var(--accent-red)';
+      }
+    });
+
+    // ==========================================
+    // TABELÃO DE MEMBROS & PONTOS DE CORTE
+    // ==========================================
+    async function loadMembersTab() {
+      await loadCutoffSettings();
+      await loadGuildMembersTable();
+    }
+
+    async function loadCutoffSettings() {
+      try {
+        const res = await fetch(apiUrl('/api/guild/cutoff'), { headers: getAuthHeaders() });
+        const data = await res.json();
+        if (data.cutoff) {
+          document.getElementById('cutoffMinPCInput').value = data.cutoff.minPC || 1500;
+          document.getElementById('cutoffMinScoreInput').value = data.cutoff.minWeeklyScore || 50;
+          document.getElementById('cutoffMaxDaysInput').value = data.cutoff.maxStatusAgeDays || 3;
+          document.getElementById('cutoffBlockFaltaCheckbox').checked = Boolean(data.cutoff.blockIfFaltouBoss);
+        }
+      } catch (err) {
+        console.error('Erro ao carregar cutoff settings:', err);
+      }
+    }
+
+    async function loadGuildMembersTable() {
+      const tbody = document.getElementById('guildMembersTbody');
+      if (!tbody) return;
+
+      try {
+        const res = await fetch(apiUrl('/api/guild/members'), { headers: getAuthHeaders() });
+        const data = await res.json();
+        const members = data.members || [];
+
+        if (members.length === 0) {
+          tbody.innerHTML = '<tr><td colspan="7" style="text-align:center; padding:20px; color:var(--text-muted);">Nenhum membro registrou status ainda. Use /registrar-status no Discord.</td></tr>';
+          return;
+        }
+
+        tbody.innerHTML = '';
+        members.forEach(m => {
+          const tr = document.createElement('tr');
+          tr.dataset.userId = m.userId;
+          tr.dataset.userTag = m.userTag;
+
+          const lastUpdateText = m.lastStatusUpdateISO 
+            ? new Date(m.lastStatusUpdateISO).toLocaleDateString('pt-BR')
+            : 'Nunca';
+
+          const pcVal = m.parsedStats?.pc || 0;
+          const eligibleBadge = m.eligible 
+            ? '<span style="color:#57F287;font-weight:600;"><i class="fa-solid fa-circle-check"></i> Elegível</span>' 
+            : `<span style="color:#ED4245;font-weight:600;" title="${m.reasons ? m.reasons.join(', ') : 'Inapto'}"><i class="fa-solid fa-circle-xmark"></i> Inapto (${m.reasons ? m.reasons.length : 0})</span>`;
+
+          tr.innerHTML = `
+            <td><strong>${m.userTag}</strong><br><small style="color:var(--text-muted);">${m.userId}</small></td>
+            <td><input type="text" class="char-name-input" value="${m.charName || ''}" style="width:120px; padding:4px 6px; background:rgba(0,0,0,0.5); border:1px solid rgba(255,255,255,0.1); color:#fff; border-radius:4px;"></td>
+            <td><input type="number" class="weekly-score-input" value="${m.weeklyBossScore || 0}" style="width:80px; padding:4px 6px; background:rgba(0,0,0,0.5); border:1px solid rgba(255,255,255,0.1); color:#fff; border-radius:4px;"></td>
+            <td style="text-align:center;"><input type="checkbox" class="faltou-boss-checkbox" ${m.flagFaltouBoss ? 'checked' : ''} style="width:18px; height:18px; cursor:pointer;"></td>
+            <td>${lastUpdateText}</td>
+            <td><strong>${pcVal.toLocaleString('pt-BR')}</strong></td>
+            <td>${eligibleBadge}</td>
+          `;
+          tbody.appendChild(tr);
+        });
+      } catch (err) {
+        console.error('Erro ao carregar tabelão:', err);
+        tbody.innerHTML = '<tr><td colspan="7" style="text-align:center; color:var(--accent-red);">Erro ao carregar o tabelão da guilda.</td></tr>';
+      }
+    }
+
+    document.getElementById('cutoffSettingsForm')?.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const payload = {
+        minPC: parseInt(document.getElementById('cutoffMinPCInput').value, 10) || 0,
+        minWeeklyScore: parseInt(document.getElementById('cutoffMinScoreInput').value, 10) || 0,
+        maxStatusAgeDays: parseInt(document.getElementById('cutoffMaxDaysInput').value, 10) || 3,
+        blockIfFaltouBoss: document.getElementById('cutoffBlockFaltaCheckbox').checked
+      };
+
+      const res = await fetch(apiUrl('/api/guild/cutoff'), {
+        method: 'POST',
+        headers: getAuthHeaders(),
+        body: JSON.stringify(payload)
+      });
+
+      if (res.ok) {
+        alert('✅ Pontos de Corte salvos com sucesso!');
+        loadMembersTab();
+      } else {
+        alert('❌ Erro ao salvar pontos de corte.');
+      }
+    });
+
+    document.getElementById('saveBulkMembersBtn')?.addEventListener('click', async () => {
+      const rows = document.querySelectorAll('#guildMembersTbody tr');
+      const updates = [];
+
+      rows.forEach(tr => {
+        const userId = tr.dataset.userId;
+        const userTag = tr.dataset.userTag;
+        if (!userId) return;
+
+        const charName = tr.querySelector('.char-name-input')?.value || '';
+        const weeklyBossScore = parseInt(tr.querySelector('.weekly-score-input')?.value, 10) || 0;
+        const flagFaltouBoss = tr.querySelector('.faltou-boss-checkbox')?.checked || false;
+
+        updates.push({ userId, userTag, charName, weeklyBossScore, flagFaltouBoss });
+      });
+
+      const res = await fetch(apiUrl('/api/guild/members/bulk'), {
+        method: 'POST',
+        headers: getAuthHeaders(),
+        body: JSON.stringify({ updates })
+      });
+
+      if (res.ok) {
+        alert('✅ Tabelão salvo com sucesso!');
+        loadMembersTab();
+      } else {
+        alert('❌ Erro ao salvar tabelão.');
+      }
+    });
+
+    document.getElementById('resetWeeklyScoresBtn')?.addEventListener('click', async () => {
+      if (confirm('Deseja realmente zerar a pontuação semanal de boss e limpar as faltas de todos os membros?')) {
+        const res = await fetch(apiUrl('/api/guild/members/reset'), {
+          method: 'POST',
+          headers: getAuthHeaders()
+        });
+        if (res.ok) {
+          alert('🔄 Pontuações e faltas zeradas com sucesso!');
+          loadMembersTab();
+        }
       }
     });
 
