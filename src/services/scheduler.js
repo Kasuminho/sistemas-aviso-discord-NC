@@ -11,7 +11,7 @@ import { config } from '../config.js';
 export function initScheduler(client) {
   console.log('⏰ [SCHEDULER] Serviço de agendamento inicializado (Fuso: GMT-3 / America/Sao_Paulo).');
 
-  // 1. Cron Job Diário às 15:00 GMT-3
+  // 1. Cron Job Diário às 15:00 GMT-3 para eventos
   cron.schedule('0 15 * * *', async () => {
     console.log('📢 [SCHEDULER] Executando aviso diário das 15:00 GMT-3...');
     await sendDaily15hAnnouncements(client);
@@ -19,9 +19,17 @@ export function initScheduler(client) {
     timezone: 'America/Sao_Paulo'
   });
 
-  // 2. Cron Job Minuto a Minuto para avisos de 4h, 1h e 30 min antes do evento e gestão de recorrência
+  // 2. Cron Job Minuto a Minuto para avisos de 4h, 1h e 30 min e eventos recorrentes
   cron.schedule('* * * * *', async () => {
     await checkEventReminders(client);
+  }, {
+    timezone: 'America/Sao_Paulo'
+  });
+
+  // 3. Cron Job Semanal de Segunda-Feira às 04:00 AM GMT-3 para reset de pontuação de Boss
+  cron.schedule('0 4 * * 1', () => {
+    console.log('🔄 [SCHEDULER] Executando reset semanal de pontuações de boss e faltas (Segunda-feira 04:00 AM GMT-3)...');
+    db.resetWeeklyBossScores();
   }, {
     timezone: 'America/Sao_Paulo'
   });

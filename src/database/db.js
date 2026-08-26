@@ -9,23 +9,24 @@ const DATA_DIR = path.join(__dirname, '../../data');
 const EVENTS_FILE = path.join(DATA_DIR, 'events.json');
 const SORTEIOS_FILE = path.join(DATA_DIR, 'sorteios.json');
 const ALT_TIMERS_FILE = path.join(DATA_DIR, 'alt_timers.json');
-const PLAYER_STATUS_FILE = path.join(DATA_DIR, 'player_status.json');
+const GUILD_MEMBERS_FILE = path.join(DATA_DIR, 'guild_members.json');
+const CUTOFF_SETTINGS_FILE = path.join(DATA_DIR, 'cutoff_settings.json');
 
 // Garante que o diretório data exista
 if (!fs.existsSync(DATA_DIR)) {
   fs.mkdirSync(DATA_DIR, { recursive: true });
 }
 
-function readJSON(filePath) {
+function readJSON(filePath, defaultValue = []) {
   if (!fs.existsSync(filePath)) {
-    return [];
+    return defaultValue;
   }
   try {
     const raw = fs.readFileSync(filePath, 'utf-8');
     return JSON.parse(raw);
   } catch (error) {
     console.error(`Erro ao ler o arquivo ${filePath}:`, error);
-    return [];
+    return defaultValue;
   }
 }
 
@@ -42,7 +43,7 @@ function writeJSON(filePath, data) {
 export const db = {
   // Eventos
   getEvents() {
-    return readJSON(EVENTS_FILE);
+    return readJSON(EVENTS_FILE, []);
   },
 
   saveEvents(events) {
@@ -77,7 +78,7 @@ export const db = {
 
   // Sorteios
   getSorteios() {
-    return readJSON(SORTEIOS_FILE);
+    return readJSON(SORTEIOS_FILE, []);
   },
 
   addSorteio(sorteio) {
@@ -88,7 +89,7 @@ export const db = {
 
   // Alt Timers
   getAltTimers() {
-    return readJSON(ALT_TIMERS_FILE);
+    return readJSON(ALT_TIMERS_FILE, []);
   },
 
   saveAltTimers(timers) {
@@ -142,86 +143,159 @@ export const db = {
     }
   },
 
-  // Player Status (OCR Prints)
-  getPlayerStatusList() {
-    return readJSON(PLAYER_STATUS_FILE);
+  // Settings de Pontos de Corte
+  getCutoffSettings() {
+    const defaultSettings = {
+      minPC: 1500,
+      minWeeklyScore: 50,
+      blockIfFaltouBoss: true,
+      maxStatusAgeDays: 3
+    };
+    return readJSON(CUTOFF_SETTINGS_FILE, defaultSettings);
   },
 
-  savePlayerStatusList(list) {
-    writeJSON(PLAYER_STATUS_FILE, list);
+  saveCutoffSettings(settings) {
+    const current = this.getCutoffSettings();
+    const updated = { ...current, ...settings };
+    writeJSON(CUTOFF_SETTINGS_FILE, updated);
+    return updated;
   },
 
-  addPlayerStatus(statusData) {
-    const list = this.getPlayerStatusList();
-    const index = list.findIndex(s => s.userId === statusData.userId);
+  // Membros da Guild (Status & Pontuação)
+  getGuildMembersList() {
+    return readJSON(GUILD_MEMBERS_FILE, []);
+  },
+
+  saveGuildMembersList(list) {
+    writeJSON(GUILD_MEMBERS_FILE, list);
+  },
+
+  getMemberData(userId) {
+    const list = this.getGuildMembersList();
+    return list.find(m => m.userId === userId);
+  },
+
+  setPlayerStatus(userId, userTag, charName, parsedStats, imageUrls = [], observacao = '') {
+    const list = this.getGuildMembersList();
+    const index = list.findIndex(m => m.userId === userId);
+
+    // Calcula PC = Dano + Defesa + Acerto
+    const pc = (parsedStats.dano || 0) + (parsedStats.defesa || 0) + (parsedStats.acerto || 0);
+    const updatedStats = { ...parsedStats, pc };
+
+    const memberEntry = {
+      userId,
+      userTag,
+      charName: charName ? charName.trim() : (index !== -1 ? list[index].charName : userTag),
+      parsedStats: updatedStats,
+      imageUrls: imageUrls.filter(Boolean),
+      observacao,
+      lastStatusUpdateISO: new Date().toISOString(),
+      weeklyBossScore: index !== -1 ? (list[index].weeklyBossScore || 0) : 0,
+      flagFaltouBoss: index !== -1 ? (list[index].flagFaltouBoss || false) : false
+    };
 
     if (index !== -1) {
-      // Mantém histórico no array e atualiza o atual
-      if (!list[index].history) list[index].history = [];
-      list[index].history.push({
-        imageUrl: list[index].imageUrl,
-        parsedStats: list[index].parsedStats,
-        timestamp: list[index].updatedAtISO
-      });
-      list[index] = {
-        ...statusData,
-        history: list[index].history
-      };
+      list[index] = memberEntry;
     } else {
-      list.push({
-        ...statusData,
-        history: []
-      });
+      list.push(memberEntry);
     }
 
-    this.savePlayerStatusList(list);
-    return statusData;
+    this.saveGuildMembersList(list);
+    return memberEntry;
   },
 
-  getLatestPlayerStatus(userId) {
-    const list = this.getPlayerStatusList();
-    return list.find(s => s.userId === userId);
-  },
+  bulkUpdateMembers(updatesArray) {
+    const list = this.getGuildMembersList();
 
-  // Itens Salvos / Predefinições de Sorteio
-  getSavedItems() {
-    const defaultItems = [
-      '10.000 Diamantes',
-      '5.000 Diamantes',
-      '1.000 Diamantes',
-      'Baú de Seleção Lendário',
-      'Baú de Seleção Épico',
-      'Tomo de Habilidade Lendário',
-      'Tomo de Habilidade Épico',
-      'Pedra de Aperfeiçoamento de Voo Lendária',
-      'Poção de EXP Supremo',
-      'Lágrima do Corvo'
-    ];
-    const items = readJSON(path.join(DATA_DIR, 'saved_items.json'));
-    if (!items || items.length === 0) {
-      writeJSON(path.join(DATA_DIR, 'saved_items.json'), defaultItems);
-      return defaultItems;
+    for (const update of updatesArray) {
+      const index = list.findIndex(m => m.userId === update.userId);
+      if (index !== -1) {
+        if (update.charName !== undefined) list[index].charName = update.charName.trim();
+        if (update.weeklyBossScore !== undefined) list[index].weeklyBossScore = parseInt(update.weeklyBossScore, 10) || 0;
+        if (update.flagFaltouBoss !== undefined) list[index].flagFaltouBoss = Boolean(update.flagFaltouBoss);
+      } else {
+        list.push({
+          userId: update.userId,
+          userTag: update.userTag || update.userId,
+          charName: update.charName ? update.charName.trim() : update.userId,
+          parsedStats: {},
+          imageUrls: [],
+          observacao: '',
+          lastStatusUpdateISO: null,
+          weeklyBossScore: parseInt(update.weeklyBossScore, 10) || 0,
+          flagFaltouBoss: Boolean(update.flagFaltouBoss)
+        });
+      }
     }
-    return items;
+
+    this.saveGuildMembersList(list);
+    return list;
   },
 
-  addSavedItem(itemName) {
-    if (!itemName || typeof itemName !== 'string') return;
-    const cleanName = itemName.trim();
-    if (!cleanName) return;
+  resetWeeklyBossScores() {
+    const list = this.getGuildMembersList();
+    const updated = list.map(m => ({
+      ...m,
+      weeklyBossScore: 0,
+      flagFaltouBoss: false
+    }));
+    this.saveGuildMembersList(updated);
+    console.log('🔄 [WEEKLY RESET] Pontuações de boss da semana e faltas zeradas com sucesso!');
+    return updated;
+  },
 
-    const items = this.getSavedItems();
-    if (!items.includes(cleanName)) {
-      items.push(cleanName);
-      writeJSON(path.join(DATA_DIR, 'saved_items.json'), items);
+  /**
+   * Avalia os 4 critérios de elegibilidade para sorteio de um jogador
+   * @param {string} userId 
+   * @returns {{ eligible: boolean, reasons: Array<string>, memberData: Object|null }}
+   */
+  isPlayerEligibleForRaffle(userId) {
+    const member = this.getMemberData(userId);
+    const cutoff = this.getCutoffSettings();
+    const reasons = [];
+
+    if (!member) {
+      return {
+        eligible: false,
+        reasons: ['Nenhum status cadastrado no sistema (Use `/registrar-status`)'],
+        memberData: null
+      };
     }
-    return items;
-  },
 
-  removeSavedItem(itemName) {
-    const items = this.getSavedItems();
-    const filtered = items.filter(i => i.toLowerCase() !== itemName.toLowerCase().trim());
-    writeJSON(path.join(DATA_DIR, 'saved_items.json'), filtered);
-    return filtered;
+    // 1. Atualização nos últimos X dias
+    if (!member.lastStatusUpdateISO) {
+      reasons.push('Status nunca foi enviado (Use `/registrar-status`)');
+    } else {
+      const lastUpdate = new Date(member.lastStatusUpdateISO);
+      const now = new Date();
+      const diffDays = (now - lastUpdate) / (1000 * 60 * 60 * 24);
+      if (diffDays > cutoff.maxStatusAgeDays) {
+        reasons.push(`Status desatualizado (Enviado há ${Math.floor(diffDays)} dias. Máximo permitido: ${cutoff.maxStatusAgeDays} dias)`);
+      }
+    }
+
+    // 2. PC Mínimo
+    const pc = member.parsedStats?.pc || 0;
+    if (pc < cutoff.minPC) {
+      reasons.push(`PC insuficiente (${pc}/${cutoff.minPC})`);
+    }
+
+    // 3. Presença Mínima no Boss
+    const score = member.weeklyBossScore || 0;
+    if (score < cutoff.minWeeklyScore) {
+      reasons.push(`Presença semanal em Boss insuficiente (${score}/${cutoff.minWeeklyScore} pts)`);
+    }
+
+    // 4. Flag de Faltou ao Boss
+    if (cutoff.blockIfFaltouBoss && member.flagFaltouBoss) {
+      reasons.push('Marcado com flag de FALTOU ao Boss da Guild');
+    }
+
+    return {
+      eligible: reasons.length === 0,
+      reasons,
+      memberData: member
+    };
   }
 };

@@ -19,6 +19,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@google/genai": "^2.19.0",
     "cookie-parser": "^1.4.7",
     "cors": "^2.8.6",
     "discord.js": "^14.18.0",

@@ -600,6 +600,67 @@ export function createWebServer(client) {
     }
   });
 
+  // ==========================================
+  // ROTAS DO TABELÃO DA GUILD & PONTOS DE CORTE
+  // ==========================================
+
+  // 1. Obter Pontos de Corte Atuais
+  router.get('/api/guild/cutoff', requireAdminAuth, (req, res) => {
+    res.json({ cutoff: db.getCutoffSettings() });
+  });
+
+  // 2. Salvar Pontos de Corte
+  router.post('/api/guild/cutoff', requireAdminAuth, (req, res) => {
+    try {
+      const updated = db.saveCutoffSettings(req.body);
+      res.json({ success: true, cutoff: updated });
+    } catch (e) {
+      res.status(500).json({ error: e.message });
+    }
+  });
+
+  // 3. Obter Lista de Membros da Guild com Status e Elegibilidade
+  router.get('/api/guild/members', requireAdminAuth, (req, res) => {
+    try {
+      const members = db.getGuildMembersList();
+      const enriched = members.map(m => {
+        const check = db.isPlayerEligibleForRaffle(m.userId);
+        return {
+          ...m,
+          eligible: check.eligible,
+          reasons: check.reasons
+        };
+      });
+      res.json({ members: enriched, cutoff: db.getCutoffSettings() });
+    } catch (e) {
+      res.status(500).json({ error: e.message });
+    }
+  });
+
+  // 4. Atualizar Pontuações e Faltas em Lote (Bulk Edit)
+  router.post('/api/guild/members/bulk', requireAdminAuth, (req, res) => {
+    try {
+      const { updates } = req.body;
+      if (!Array.isArray(updates)) {
+        return res.status(400).json({ error: 'Array "updates" é obrigatório.' });
+      }
+      const updatedList = db.bulkUpdateMembers(updates);
+      res.json({ success: true, membersCount: updatedList.length });
+    } catch (e) {
+      res.status(500).json({ error: e.message });
+    }
+  });
+
+  // 5. Zerar Semanalmente (Reset Manual)
+  router.post('/api/guild/members/reset', requireAdminAuth, (req, res) => {
+    try {
+      const resetList = db.resetWeeklyBossScores();
+      res.json({ success: true, membersCount: resetList.length });
+    } catch (e) {
+      res.status(500).json({ error: e.message });
+    }
+  });
+
   // Monta as rotas tanto na raiz quanto no subcaminho /hotlink/discord
   app.use('/hotlink/discord', router);
   app.use('/', router);

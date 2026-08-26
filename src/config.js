@@ -4,7 +4,6 @@ dotenv.config();
 export const config = {
   token: process.env.DISCORD_TOKEN,
   clientId: process.env.CLIENT_ID,
-  clientSecret: process.env.CLIENT_SECRET || '',
   guildId: process.env.GUILD_ID,
   staffRoleId: process.env.STAFF_ROLE_ID || '1526370359652122826',
   eventRoleId: process.env.EVENT_ROLE_ID || '1525526128725459065',
@@ -13,15 +12,11 @@ export const config = {
   voiceCategoryId: process.env.VOICE_CATEGORY_ID || '1525526402500395189',
   afkChannelId: process.env.AFK_CHANNEL_ID || '',
   muteTimeoutMinutes: parseInt(process.env.MUTE_TIMEOUT_MINUTES || '10', 10),
-  timezone: 'America/Sao_Paulo', // GMT-3
-  
-  // Configurações do Portal Web e Segurança
-  port: parseInt(process.env.PORT || '3000', 10),
-  allowedUserId: process.env.ALLOWED_USER_ID || '273600843251712020',
-  redirectUri: process.env.REDIRECT_URI || '',
-  sessionSecret: process.env.SESSION_SECRET || 'secret_nc_token_session_2026',
-  adminKey: process.env.ADMIN_KEY || 'raven273600843251712020',
-  webhookUrl: process.env.WEBHOOK_URL || 'https://discord.com/api/webhooks/1538936957537751050/JGT2tcgOKgTXBMwJ4ls9SevxZFtPueN9jFJQhA79A5k9RFH28b0_Bxp8zdUA-UxNFHmF'
+  geminiApiKey: process.env.GEMINI_API_KEY || '',
+  allowedUserId: process.env.ALLOWED_USER_ID || '1526370359652122826',
+  adminKey: process.env.ADMIN_KEY || 'raven123',
+  sessionSecret: process.env.SESSION_SECRET || 'secret_nc_session_token_key_123',
+  timezone: 'America/Sao_Paulo' // GMT-3
 };
 
 export function validateConfig() {

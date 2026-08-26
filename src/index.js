@@ -16,6 +16,7 @@ import * as removerAltTimer from './commands/removerAltTimer.js';
 import * as registrarStatusPrint from './commands/registrarStatusPrint.js';
 import * as consultarStatus from './commands/consultarStatus.js';
 import * as listarStatusGuild from './commands/listarStatusGuild.js';
+import * as meuStatusGuild from './commands/meuStatusGuild.js';
 
 validateConfig();
 
@@ -41,38 +42,37 @@ const commandsList = [
   removerAltTimer,
   registrarStatusPrint,
   consultarStatus,
-  listarStatusGuild
+  listarStatusGuild,
+  meuStatusGuild
 ];
 
 for (const cmd of commandsList) {
   client.commands.set(cmd.data.name, cmd);
 }
 
-// Inicia o Servidor Web do Portal de Gestão
-export const webServer = createWebServer(client);
-
 // Evento quando o bot está pronto
 client.once('ready', async () => {
   console.log(`==========================================`);
   console.log(`🤖 Bot conectado como: ${client.user.tag}`);
-  console.log(`🌐 Portal Web Ativo em: http://localhost:${config.port}`);
   console.log(`🛡️ Cargo Staff Permitido: ${config.staffRoleId}`);
   console.log(`⚔️ Cargo Jogador NC: ${config.eventRoleId}`);
   console.log(`📍 Canal Alt Timers: ${config.altTimerChannelId}`);
   console.log(`🎙️ Categoria Voz Monitorada: ${config.voiceCategoryId}`);
-  console.log(`👑 Acesso Exclusivo ao Usuário: ${config.allowedUserId}`);
   console.log(`==========================================`);
 
   // Tenta registrar/atualizar as Slash Commands automaticamente
   await registerCommands();
 
+  // Inicia o Servidor Web Dashboard
+  createWebServer(client);
+
   // Define a presença/status do bot
   client.user.setPresence({
-    activities: [{ name: 'Gerenciando Sorteios, Eventos & Alts NC', type: ActivityType.Custom }],
+    activities: [{ name: 'Gerenciando Eventos, Boss & Status Gemini NC', type: ActivityType.Custom }],
     status: 'online'
   });
 
-  // Inicializa o serviço de agendamento de avisos (15h GMT-3 e 4h/1h/30m)
+  // Inicializa o serviço de agendamento de avisos (15h GMT-3, 4h/1h/30m e reset segunda 4am)
   initScheduler(client);
 
   // Inicializa o serviço de verificação de mute em voz (mover para AFK após 10 min)
