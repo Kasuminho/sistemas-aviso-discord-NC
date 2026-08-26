@@ -179,9 +179,24 @@ export const db = {
     const list = this.getGuildMembersList();
     const index = list.findIndex(m => m.userId === userId);
 
-    // Calcula PC = Dano + Defesa + Acerto
-    const pc = (parsedStats.dano || 0) + (parsedStats.defesa || 0) + (parsedStats.acerto || 0);
-    const updatedStats = { ...parsedStats, pc };
+    // Prioriza o Desenvolvimento oficial do jogo, ou calcula Dano + Defesa + Acerto
+    const pc = parsedStats.desenvolvimento || ((parsedStats.dano || 0) + (parsedStats.defesa || 0) + (parsedStats.acerto || 0));
+    
+    // Mescla com estatísticas anteriores para não perder dados nulos
+    const existingStats = index !== -1 ? (list[index].parsedStats || {}) : {};
+    const updatedStats = {
+      desenvolvimento: parsedStats.desenvolvimento || existingStats.desenvolvimento || null,
+      classe: parsedStats.classe || existingStats.classe || null,
+      nivel: parsedStats.nivel || existingStats.nivel || null,
+      dano: parsedStats.dano || existingStats.dano || null,
+      defesa: parsedStats.defesa || existingStats.defesa || null,
+      acerto: parsedStats.acerto || existingStats.acerto || null,
+      acertoJvA: parsedStats.acertoJvA || existingStats.acertoJvA || null,
+      defesaJvA: parsedStats.defesaJvA || existingStats.defesaJvA || null,
+      acertoJvJ: parsedStats.acertoJvJ || existingStats.acertoJvJ || null,
+      defesaJvJ: parsedStats.defesaJvJ || existingStats.defesaJvJ || null,
+      pc
+    };
 
     const memberEntry = {
       userId,
@@ -263,7 +278,7 @@ export const db = {
       };
     }
 
-    // 1. Atualização nos últimos X dias
+    // 1. Atualização nos últimos X dias (72h)
     if (!member.lastStatusUpdateISO) {
       reasons.push('Status nunca foi enviado (Use `/registrar-status`)');
     } else {
@@ -275,10 +290,10 @@ export const db = {
       }
     }
 
-    // 2. PC Mínimo
+    // 2. PC / Desenvolvimento Mínimo
     const pc = member.parsedStats?.pc || 0;
     if (pc < cutoff.minPC) {
-      reasons.push(`PC insuficiente (${pc}/${cutoff.minPC})`);
+      reasons.push(`Desenvolvimento/PC insuficiente (${pc.toLocaleString('pt-BR')}/${cutoff.minPC.toLocaleString('pt-BR')})`);
     }
 
     // 3. Presença Mínima no Boss

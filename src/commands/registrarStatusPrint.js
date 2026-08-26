@@ -13,17 +13,17 @@ export const data = new SlashCommandBuilder()
   )
   .addAttachmentOption(option =>
     option.setName('print_1')
-      .setDescription('Print 1: HUD da barra de vida (Nivel, Dano, Defesa, Acerto)')
+      .setDescription('Print 1: HUD ou Pagina de Desenvolvimento')
       .setRequired(true)
   )
   .addAttachmentOption(option =>
     option.setName('print_2')
-      .setDescription('Print 2: Janela de atributos JvA (Opcional)')
+      .setDescription('Print 2: Janela de atributos JvA / JvJ (Opcional)')
       .setRequired(false)
   )
   .addAttachmentOption(option =>
     option.setName('print_3')
-      .setDescription('Print 3: Janela de atributos JvJ (Opcional)')
+      .setDescription('Print 3: Janela de atributos adicionais (Opcional)')
       .setRequired(false)
   )
   .addStringOption(option =>
@@ -52,8 +52,8 @@ export async function execute(interaction) {
     imageUrls.push(att.url);
   }
 
-  // Defer resposta pois a análise multimodal leva entre 1 e 3 segundos
-  await interaction.deferReply({ ephemeral: false });
+  // Resposta Efêmera Privada ativada para não poluir o canal de chat geral
+  await interaction.deferReply({ ephemeral: true });
 
   try {
     // Chama o serviço multimodal Gemini Vision mandando todas as imagens anexadas juntas
@@ -69,35 +69,37 @@ export async function execute(interaction) {
       observacao
     );
 
-    const pcTotal = savedMember.parsedStats.pc || 0;
+    const s = savedMember.parsedStats || {};
+    const desVal = s.desenvolvimento || s.pc || 0;
     const timestampUnix = Math.floor(Date.now() / 1000);
 
     const embed = new EmbedBuilder()
       .setColor('#57F287')
-      .setTitle(`🛡️ STATUS DE "${charName.toUpperCase()}" ATUALIZADOS COM SUCESSO!`)
-      .setDescription(`Status de <@${interaction.user.id}> processados via **IA Gemini Vision** em <t:${timestampUnix}:F>`)
+      .setTitle(`🛡️ STATUS DE "${charName.toUpperCase()}" REGISTRADOS COM SUCESSO!`)
+      .setDescription(`Status de <@${interaction.user.id}> salvos via **IA Gemini 3.6 Flash** em <t:${timestampUnix}:F>`)
       .addFields(
-        { name: '👤 Personagem', value: `**${charName}**`, inline: true },
-        { name: '⭐ Nível', value: parsedStats.nivel ? `**${parsedStats.nivel}**` : 'Não detectado', inline: true },
-        { name: '⚡ PC Total (Poder)', value: `**${pcTotal}**`, inline: true },
-        { name: '⚔️ Dano', value: parsedStats.dano ? `**${parsedStats.dano}**` : 'Não detectado', inline: true },
-        { name: '🛡️ Defesa', value: parsedStats.defesa ? `**${parsedStats.defesa}**` : 'Não detectado', inline: true },
-        { name: '🎯 Acerto Geral', value: parsedStats.acerto ? `**${parsedStats.acerto}**` : 'Não detectado', inline: true },
-        { name: '🐉 Acerto JvA', value: parsedStats.acertoJvA ? `**${parsedStats.acertoJvA}**` : 'Não detectado', inline: true },
-        { name: '🛡️ Defesa JvA', value: parsedStats.defesaJvA ? `**${parsedStats.defesaJvA}**` : 'Não detectado', inline: true },
-        { name: '⚔️ Acerto JvJ', value: parsedStats.acertoJvJ ? `**${parsedStats.acertoJvJ}**` : 'Não detectado', inline: true },
-        { name: '🛡️ Defesa JvJ', value: parsedStats.defesaJvJ ? `**${parsedStats.defesaJvJ}**` : 'Não detectado', inline: true }
+        { name: '👤 Personagem In-Game', value: `**${charName}**`, inline: true },
+        { name: '🗡️ Classe', value: s.classe ? `**${s.classe}**` : 'Não detectado', inline: true },
+        { name: '⚡ Desenvolvimento (PC)', value: `**${desVal.toLocaleString('pt-BR')}**`, inline: true },
+        { name: '⭐ Nível', value: s.nivel ? `**${s.nivel}**` : 'Não detectado', inline: true },
+        { name: '⚔️ Dano', value: s.dano ? `**${s.dano}**` : 'Não detectado', inline: true },
+        { name: '🛡️ Defesa', value: s.defesa ? `**${s.defesa}**` : 'Não detectado', inline: true },
+        { name: '🎯 Acerto Geral', value: s.acerto ? `**${s.acerto}**` : 'Não detectado', inline: true },
+        { name: '🐉 Acerto JvA', value: s.acertoJvA ? `**${s.acertoJvA}**` : 'Não detectado', inline: true },
+        { name: '🛡️ Defesa JvA', value: s.defesaJvA ? `**${s.defesaJvA}**` : 'Não detectado', inline: true },
+        { name: '⚔️ Acerto JvJ', value: s.acertoJvJ ? `**${s.acertoJvJ}**` : 'Não detectado', inline: true },
+        { name: '🛡️ Defesa JvJ', value: s.defesaJvJ ? `**${s.defesaJvJ}**` : 'Não detectado', inline: true }
       )
       .setImage(imageUrls[0])
       .setTimestamp()
-      .setFooter({ text: 'NC Bot • Gemini Vision AI Status Tracker' });
+      .setFooter({ text: 'NC Bot • Resposta Privada (Efêmera)' });
 
     if (observacao) {
       embed.addFields({ name: '📝 Observação', value: observacao, inline: false });
     }
 
     await interaction.editReply({
-      content: `✅ Status de <@${interaction.user.id}> ("${charName}") salvos com sucesso!`,
+      content: `✅ Seus status de **${charName}** foram salvos com sucesso!`,
       embeds: [embed]
     });
 
