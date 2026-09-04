@@ -11,6 +11,7 @@ const SORTEIOS_FILE = path.join(DATA_DIR, 'sorteios.json');
 const ALT_TIMERS_FILE = path.join(DATA_DIR, 'alt_timers.json');
 const GUILD_MEMBERS_FILE = path.join(DATA_DIR, 'guild_members.json');
 const CUTOFF_SETTINGS_FILE = path.join(DATA_DIR, 'cutoff_settings.json');
+const SAVED_ITEMS_FILE = path.join(DATA_DIR, 'saved_items.json');
 
 // Garante que o diretório data exista
 if (!fs.existsSync(DATA_DIR)) {
@@ -85,6 +86,29 @@ export const db = {
     const sorteios = this.getSorteios();
     sorteios.push(sorteio);
     writeJSON(SORTEIOS_FILE, sorteios);
+  },
+
+  // Itens Salvos (Predefinições de Sorteio)
+  getSavedItems() {
+    return readJSON(SAVED_ITEMS_FILE, ['VIP 30 Dias', 'Moedas de Ouro', 'Chave de Baú', 'Poção Especial']);
+  },
+
+  addSavedItem(name) {
+    if (!name || !name.trim()) return this.getSavedItems();
+    const items = this.getSavedItems();
+    const cleanName = name.trim();
+    if (!items.includes(cleanName)) {
+      items.push(cleanName);
+      writeJSON(SAVED_ITEMS_FILE, items);
+    }
+    return items;
+  },
+
+  removeSavedItem(name) {
+    const items = this.getSavedItems();
+    const filtered = items.filter(i => i.toLowerCase() !== String(name).toLowerCase());
+    writeJSON(SAVED_ITEMS_FILE, filtered);
+    return filtered;
   },
 
   // Alt Timers

@@ -1,0 +1,298 @@
+Notícias
+
+
+
+
+Asas Negras da Liberdade
+
+
+
+
+Oi, pessoal! Somos o NIGHT CROWS.
+
+
+
+
+Com grande satisfação, anunciamos o evento Conclusão de Missão que começa nesta semana.
+
+
+
+
+Consulte as informações abaixo para obter mais detalhes.
+
+
+
+
+
+
+
+1. EVENTO DE CONCLUSÃO DE MISSÃO
+
+
+
+
+■ DETALHES
+
+- Ganhe itens de recompensa ao concluir missões durante o evento.
+
+- Todos os itens fornecidos como recompensas do evento não podem ser negociados.
+
+- Confira e obtenha as recompensas através do ícone [Evento] na parte superior da tela do jogo.
+
+※ O evento pode ser participado por personagem.
+
+
+
+
+■ RECOMPENSAS
+
+(1) AUXÍLIO DE BAÚ DE INVOCAÇÃO DE PESQUISA DE CLEMENS NUM DIA DE OUTONO
+
+- Quando: Após a atualização de 01/09 - até 15/09, 08:00 (UTC+8)
+
+- Servidor alvo: Todos os servidores
+
+- Item de prazo limitado: Antes da atualização de 22/09 (UTC+8)
+
+CONDIÇÃO
+	MISSÃO	RECOMPENSA
+CONCLUSÃO DA MISSÃO	Usar Poção de HP 100x	Baú de Seleção de Bola de Cristal (Vinculado) x3
+Usar Poção de HP 500x	Baú de Seleção de Bola de Cristal (Vinculado) x3
+Usar Poção de HP 1.000x	[Evento] Invocação de Montaria do Pôr do Sol 11x (Vinculado) x1
+Tentar criar 5x	Baú de Seleção de Bola de Cristal (Vinculado) x5
+Tentar criar 10x	Baú de Seleção de Bola de Cristal (Vinculado) x5
+Tentar criar 20x	[Evento] Invocação de Montaria do Pôr do Sol 11x (Vinculado) x1
+PRÊMIO FINAL	Baú de Invocação de Pesquisa de Clemens (Vinculado) x1
+
+
+
+
+(2) AUXÍLIO DE DADO DA SORTE NUM DIA DE OUTONO I
+
+- Quando: Após a atualização de 01/09 - até 15/09, 08:00 (UTC+8)
+
+- Servidor alvo: Todos os servidores
+
+- Item de prazo limitado:
+
+* [Evento] Baú de Auxílio de Cupom de Desconto de Substituição de Visual de Arma/Montaria (Vinculado): Antes da atualização de 22/09
+
+* [Evento] Dado da Sorte (Vinculado): 15/09, 08:00 (UTC+8)
+
+CONDIÇÃO
+	MISSÃO	RECOMPENSA
+CONCLUSÃO DA MISSÃO	Gastar Ouro 100.000x	[Evento] Baú de Auxílio de Cupom de Desconto de Substituição de Visual de Arma/Montaria (Vinculado) x6
+Gastar Ouro 1.000.000x	Baú de Seleção de Bola de Cristal (Vinculado) x3
+Gastar Ouro 3.000.000x	Baú de Ouro (Vinculado) x10
+Derrotar monstros 3.000x	Baú de Seleção de Panaceia de Desenvolvimento (Vinculado) x3
+Derrotar monstros 5.000x	Baú de Seleção de Panaceia de Desenvolvimento (Vinculado) x5
+Derrotar monstros 10.000x	Invocação de Montaria Ofuscante da Madrugada 11x (Vinculado) x1
+PRÊMIO FINAL	[Evento] Dado da Sorte (Vinculado) x1
+
+
+
+
+(3) AUXÍLIO DE DADO DA SORTE NUM DIA DE OUTONO II
+
+- Quando: Após a atualização de 01/09 - até 15/09, 08:00 (UTC+8)
+
+- Servidor alvo: Todos os servidores
+
+- Item de prazo limitado: 15/09, 08:00 (UTC+8)
+
+CONDIÇÃO
+	MISSÃO	RECOMPENSA
+CONCLUSÃO DA MISSÃO	Desmontar Equipamento Comum 10x	Baú de Ouro (Vinculado) x5
+Desmontar Equipamento Comum 20x	Baú de Ouro (Vinculado) x10
+Desmontar Equipamento Incomum 5x	Pedra da Bênção (Vinculado) x5
+Desmontar Equipamento Incomum 10x	Pedra da Bênção (Vinculado) x5
+Desmontar Equipamento Incomum 20x	Pedra da Bênção (Vinculado) x5
+Desmontar Equipamento Raro 1x	Pedra da Bênção Esplêndida (Vinculado) x1
+Desmontar Equipamento Raro 3x	Pedra da Bênção Esplêndida (Vinculado) x1
+PRÊMIO FINAL	[Evento] Dado da Sorte (Vinculado) x1
+
+
+
+
+(4) [SEMANAL] MISSÃO DE AUXÍLIO SEMANAL!
+
+- Quando: Após a atualização de 01/09 - antes da atualização de 08/09
+
+- Servidor alvo: Todos os servidores
+
+CONDIÇÃO
+	MISSÃO	RECOMPENSA
+CONCLUSÃO DA MISSÃO	Concluir Campanha Diária 30x	Moeda de Abilius (Vinculado) x1
+Concluir Campanha Diária 90x	Moeda de Abilius (Vinculado) x1
+Concluir Campanha Diária 150x	Moeda de Abilius (Vinculado) x1
+Raide de Chefe - Derrotar Trashi 1x	Moeda de Abilius (Vinculado) x1
+Raide de Chefe - Derrotar Trashi 5x	Moeda de Abilius (Vinculado) x1
+Check-in da Guilda 3x	Moeda de Abilius (Vinculado) x1
+Check-in da Guilda 5x	Moeda de Abilius (Vinculado) x1
+Derrotar monstros em todas as masmorras 5.000x	Moeda de Abilius (Vinculado) x1
+Conclua Torre da Provação (Acumulado) 3x	Moeda de Abilius (Vinculado) x1
+Concluir Masmorra de Equipe 1x	Moeda de Abilius (Vinculado) x1
+PRÊMIO FINAL	Moeda de Abilius (Vinculado) x5
+
+
+
+
+(5) [SEMANAL] MISSÃO DE OBTENÇÃO DE MOEDA DE ABILIUS
+
+- Quando: Após a atualização de 01/09 - antes da atualização de 08/09
+
+- Servidor alvo: Todos os servidores
+
+CONDIÇÃO
+	MISSÃO	RECOMPENSA
+CONCLUSÃO DA MISSÃO	Obter Moeda de Abilius (Vinculado) 5x	Baú de Seleção de Invocação Comum de Abilius 11x (Vinculado) x1
+Obter Moeda de Abilius (Vinculado) 15x	Baú de Seleção de Invocação Incomum de Abilius 11x (Vinculado) x1
+Obter Moeda de Abilius (Vinculado) 25x	Baú de Seleção de Invocação Rara de Abilius (Vinculado) x2
+Obter Moeda de Abilius (Vinculado) 35x	Baú de Seleção de Invocação Rara de Abilius (Vinculado) x3
+Obter Moeda de Abilius (Vinculado) 55x	Baú de Seleção de Invocação Rara de Abilius (Vinculado) x5
+PRÊMIO FINAL	Baú de Seleção de Invocação Épica de Abilius (Vinculado) x1
+
+
+
+
+(6) LABORATÓRIO DE CLEMENS
+
+- Quando: Após a atualização de 01/09 - até 15/09, 08:00 (UTC+8)
+
+- Servidor alvo: Todos os servidores
+
+CONDIÇÃO
+	MISSÃO	RECOMPENSA
+CONCLUSÃO DA MISSÃO	Usar Baú de Invocação de Pesquisa de Clemens (Vinculado) 1x	Baú de Seleção de Visual de Arma/Montaria Ofuscante da Madrugada 11x (Vinculado) x1
+Usar Baú de Invocação de Pesquisa de Clemens (Vinculado) 5x	Invocação de Montaria do Pôr do Sol 11x (Vinculado) x1
+Usar Baú de Invocação de Pesquisa de Clemens (Vinculado) 10x	Invocação de Montaria do Pôr do Sol 11x (Vinculado) x1
+Usar Baú de Invocação de Pesquisa de Clemens (Vinculado) 20x	Invocação de Montaria Deslumbrante do Pôr do Sol 11x (Vinculado) x1
+Usar Baú de Invocação de Pesquisa de Clemens (Vinculado) 40x	Invocação de Montaria do Crepúsculo 11x (Vinculado) x1
+Usar Baú de Invocação de Pesquisa de Clemens (Vinculado) 60x	Baú de Seleção de Desafio de Invocação de Visual de Arma/Montaria Lendário (Vinculado) x1
+Usar Baú de Invocação de Pesquisa de Clemens (Vinculado) 80x	Invocação de Montaria Deslumbrante do Crepúsculo (Vinculado) x1
+Usar Baú de Invocação de Pesquisa de Clemens (Vinculado) 100x	Invocação de Montaria Deslumbrante do Crepúsculo (Vinculado) x1
+PRÊMIO FINAL	Invocação de Montaria Lendária (Vinculado) x1
+
+
+
+
+(7) [MONTARIA] DIRETIVA DE MONTARIA DE INICIANTE
+
+- Quando: Após a atualização de 01/09 - até 15/09, 08:00 (UTC+8)
+
+- Servidor alvo: Todos os servidores
+
+- Item de prazo limitado: Antes da atualização de 22/09
+
+CONDIÇÃO
+	MISSÃO	RECOMPENSA
+CONCLUSÃO DA MISSÃO	Obter Bilhete de Passe de Montaria de Clemens (Vinculado) 1x	Baú de Pedaço de Criação Lendário (Vinculado) x1
+Obter Montaria 20x	[Evento] Invocação de Montaria Ofuscante da Madrugada 11x (Vinculado) x1
+Obter Montaria 40x	[Evento] Invocação de Montaria do Pôr do Sol 11x (Vinculado) x1
+Obter Montaria 60x	[Evento] Invocação de Montaria Deslumbrante do Pôr do Sol 11x (Vinculado) x1
+Obter Montaria 80x	[Evento] Invocação de Montaria do Crepúsculo (Vinculado) x1
+PRÊMIO FINAL	[Evento] Bilhete de Tentativa de Invocação de Montaria Lendária (Vinculado) x1
+
+
+
+
+(8) [MONTARIA] DIRETIVA DE MONTARIA DE CLEMENS
+
+- Quando: Após a atualização de 01/09 - até 15/09, 08:00 (UTC+8)
+
+- Servidor alvo: Todos os servidores
+
+- Item de prazo limitado: Antes da atualização de 22/09
+
+CONDIÇÃO
+	MISSÃO	RECOMPENSA
+CONCLUSÃO DA MISSÃO	Gastar Ouro 2.000.000x	[Evento] Baú de Seleção de Visual de Arma/Montaria Ofuscante da Madrugada 11x (Vinculado) x1
+Obter Montaria Comum 50x	[Evento] Baú de Seleção de Visual de Arma/Montaria Ofuscante da Madrugada 11x (Vinculado) x1
+Obter Montaria Comum 150x	[Evento] Invocação de Montaria do Pôr do Sol 11x (Vinculado) x1
+Invocar Montaria Incomum 100x	[Evento] Invocação de Montaria do Pôr do Sol 11x (Vinculado) x3
+Invocar Montaria Incomum 200x	[Evento] Invocação de Montaria do Crepúsculo 11x (Vinculado) x1
+Combinar Montaria Incomum 100x	[Evento] Invocação de Montaria do Crepúsculo 11x (Vinculado) x1
+Invocar Montaria Rara 30x	[Evento] Invocação de Montaria Deslumbrante do Pôr do Sol 11x (Vinculado) x1
+Invocar Montaria Rara 55x	[Evento Invocação de Montaria Deslumbrante do Crepúsculo (Vinculado) x1
+Combinar Montaria Rara 25x	[Evento Invocação de Montaria Deslumbrante do Crepúsculo (Vinculado) x1
+Invocar Montaria Épica 3x	[Evento] Invocação de Montaria do Crepúsculo 11x (Vinculado) x1
+Tentar Combinar Montaria Épica 2x	[Evento] Invocação de Montaria do Crepúsculo 11x (Vinculado) x1
+PRÊMIO FINAL	[Evento] Baú de Invocação de Montaria Lendária de Ouro Deslumbrante (Vinculado) x1
+
+
+
+
+(9) [MONTARIA] DIRETIVA DE COMBINAÇÃO DE OURO
+
+- Quando: Após a atualização de 01/09 - até 15/09, 08:00 (UTC+8)
+
+- Servidor alvo: Todos os servidores
+
+- Item de prazo limitado:
+
+* [Evento] Dado da Sorte (Vinculado): 15/09, 08:00 (UTC+8)
+
+* [Evento] Dado de Ouro (Vinculado): 15/09, 08:00 (UTC+8)
+
+* Outro item: Antes da atualização de 22/09
+
+CONDIÇÃO
+	MISSÃO	RECOMPENSA
+CONCLUSÃO DA MISSÃO	[Evento] Usar Dado da Sorte 14x	[Evento] Dado da Sorte (Vinculado) x1
+Usar [Evento] Baú de Invocação de Montaria Lendária de Ouro Deslumbrante (Vinculado) 1x	[Evento] Dado de Ouro (Vinculado) x3
+Invocar Montaria Incomum 200x	[Evento] Dado de Ouro (Vinculado) x1
+Invocar Montaria Incomum 350x	[Evento] Dado de Ouro (Vinculado) x2
+Combinar Montaria Incomum 100x	[Evento] Dado de Ouro (Vinculado) x1
+Invocar Montaria Rara 110x	[Evento] Dado de Ouro (Vinculado) x2
+Combinar Montaria Rara 35x	[Evento] Dado de Ouro (Vinculado) x1
+Combinar Montaria Rara 70x	[Evento] Dado de Ouro (Vinculado) x2
+Tentar Combinar Montaria Épica 7x	[Evento] Dado de Ouro (Vinculado) x3
+Tentar Combinar Montaria Lendária 1x	[Evento] Dado de Ouro (Vinculado) x4
+Usar [Recompensa da Grande Jornada Mítica 6x] Baú da Lenda Selada II 1x	[Evento] Seleção de Invocação de Montaria Lendária (Vinculado) x1
+Usar [Evento] Baú de Penas de Ouro (Vinculado) 8x	[Evento] Dado da Sorte (Vinculado) x5
+Usar [Evento] Baú de Penas de Ouro (Vinculado) 9x	[Evento] Dado da Sorte (Vinculado) x5
+Usar [Evento] Baú de Penas de Ouro (Vinculado) 10x	[Evento] Dado da Sorte (Vinculado) x5
+Usar [Evento] Baú de Penas de Ouro (Vinculado) 11x	[Evento] Dado da Sorte (Vinculado) x5
+Usar [Evento] Baú de Penas de Ouro (Vinculado) 12x	[Evento] Baú de Seleção de Desafio de Invocação de Visual de Arma/Montaria Mítico (Vinculado) x1
+
+
+
+
+(10) EVENTO DE TRANSCENDÊNCIA DO FOGO E VENTO
+
+- Quando: Após a atualização de 01/09 - até 15/09, 08:00 (UTC+8)
+
+- Servidor alvo: Todos os servidores
+
+- Item de prazo limitado: Antes da atualização de 22/09
+
+CONDIÇÃO
+	MISSÃO	RECOMPENSA
+CONCLUSÃO DA MISSÃO	Consumir Bola de Cristal do Fogo (Vinculado) 60x	Baú de Seleção de Material de Desenvolvimento de Visual de Arma/Montaria Raro (Vinculado) x2
+Consumir Bola de Cristal do Fogo (Vinculado) 150x	Baú de Seleção de Material de Desenvolvimento de Visual de Arma/Montaria Raro (Vinculado) x3
+Consumir Bola de Cristal do Fogo (Vinculado) 250x	Baú de Seleção de Material de Desenvolvimento de Visual de Arma/Montaria Raro (Vinculado) x4
+Consumir Bola de Cristal do Fogo (Vinculado) 300x	Baú de Seleção de Material de Desenvolvimento de Visual de Arma/Montaria Épico (Vinculado) x1
+Consumir Bola de Cristal do Fogo (Vinculado) 350x	[Evento] Baú de Seleção de Desafio de Invocação de Visual de Arma/Montaria Lendário (Vinculado) x1
+Consumir Bola de Cristal do Vento (Vinculado) 50x	Baú de Seleção de Material de Desenvolvimento de Visual de Arma/Montaria Raro (Vinculado) x1
+Consumir Bola de Cristal do Vento (Vinculado) 100x	Baú de Seleção de Material de Desenvolvimento de Visual de Arma/Montaria Raro (Vinculado) x2
+Consumir Bola de Cristal do Vento (Vinculado) 150x	Baú de Seleção de Material de Desenvolvimento de Visual de Arma/Montaria Épico (Vinculado) x1
+PRÊMIO FINAL	[Evento] Baú de Seleção de Visual de Arma/Montaria Lendário (Vinculado) x1
+
+
+
+
+(11) AUXÍLIO DO CUSTO DE SUBSTITUIÇÃO DE MONTARIA MÍTICA!
+
+- Quando: Após a atualização de 01/09 - até 15/09, 08:00 (UTC+8)
+
+- Servidor alvo: Todos os servidores
+
+CONDIÇÃO
+	MISSÃO	RECOMPENSA
+CONCLUSÃO DA MISSÃO	Obter Montaria Lendária 1x	Cupom de Desconto de Substituição de Montaria Mítica (Vinculado) x3
+Tentar Combinar Montaria Lendária 1x	Cupom de Desconto de Substituição de Montaria Mítica (Vinculado) x3
+
+
+
+
+

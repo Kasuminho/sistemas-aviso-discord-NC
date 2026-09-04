@@ -1,0 +1,293 @@
+Notícias
+
+
+
+
+Asas Negras da Liberdade
+
+
+
+
+Oi, pessoal! Somos o NIGHT CROWS.
+
+
+
+
+Role os dados e ganhe recompensas especiais dos Corvos em cada parada.
+
+
+
+
+Cada lançamento é uma nova chance de ganhar tesouros dos Corvos!
+
+
+
+
+Confira os detalhes completos no guia abaixo.
+
+
+
+
+
+
+
+2. EVENTO DE DADO
+
+
+
+
+■ QUANDO
+
+- Após a atualização de 01/09 - até 15/09, 08:00 (UTC+8)
+
+
+
+
+■ SERVIDOR ALVO
+
+- Todos os servidores
+
+
+
+
+■ DETALHES
+
+- Você pode participar do evento de dados obtendo dados durante o evento.
+
+- Todos os itens fornecidos como recompensas do evento não podem ser negociados.
+
+- Confira e obtenha as recompensas através do ícone [Evento] na parte superior da tela do jogo.
+
+※ O evento pode ser participado por personagem.
+
+
+
+
+■ LOCAL DE OBTENÇÃO DE DADO
+
+- [Evento] Dado da Sorte (Vinculado): Loja paga, Evento de Conclusão de Missão
+
+- [Evento] Dado de Ouro (Vinculado): Evento de Conclusão de Missão, Recompensa por Conclusão de Grande Expedição da Sorte do Corvinho
+
+※ O item Dado estará disponível até 15/09, 08:00 (UTC+8)
+
+
+
+
+■ REGRAS
+
+- Role o dado e avance o número de casas mostrado.
+
+- Cada vez que lança o dado, você ganha a recompensa da casa correspondente.
+
+- Há 16 recompensas no tabuleiro que podem ser obtidas repetidamente ao percorrê-lo.
+
+
+
+
+■ RECOMPENSAS
+
+(1) GRANDE EXPEDIÇÃO DA SORTE DO CORVINHO
+
+- Item de prazo limitado: Antes da atualização de 22/09
+
+ORDEM
+	ITEM	QTD.
+1	[Evento] Baú de Seleção de Visual de Arma/Montaria Extravagante da Madrugada 11x (Vinculado)	1
+2	[Evento] Baú de Seleção de Visual de Arma/Montaria 11x (Vinculado)	1
+3	[Evento] Extração de Elemento Extravagante da Desintegração 11x (Vinculado)	1
+4	[Evento] Extração de Elemento Raro (Vinculado)	3
+5	[Evento] Baú de Seleção de Visual de Arma/Montaria Extravagante da Madrugada 11x (Vinculado)	1
+6	Cesta de Moeda de Desempenho (Vinculado)	2
+7	Baú de Ouro (Vinculado)	10
+8	[Evento] Baú de Seleção de Visual de Arma/Montaria Raro (Vinculado)	3
+9	[Evento] Baú de Seleção de Visual de Arma/Montaria Extravagante da Madrugada 11x (Vinculado)	1
+10	Fragmento do Caos (Vinculado)	2
+11	[Evento] Baú de Seleção de Visual de Arma/Montaria 11x (Vinculado)	1
+12	Invocação de Espírito Superior (Vinculado)	3
+13	Cesta de Moeda da Guilda (Vinculado)	2
+14	[Evento] Baú de Seleção de Visual de Arma/Montaria Extravagante da Madrugada 11x (Vinculado)	1
+15	Essência do Princípio (Vinculado)	2
+16	[Evento] Baú de Seleção de Visual de Arma/Montaria Raro (Vinculado)	3
+
+
+
+
+TIPO DE RECOMPENSA
+	ITEM	QTD.
+Completar 1 volta	[Evento] Baú de Dado de Ouro (Vinculado)	1
+Completar 11 voltas	[Evento] Baú de Seleção de Desafio de Invocação de Visual de Arma/Montaria Lendário (Vinculado)	1
+
+※ A recompensa por completar 11 voltas só pode ser obtida 1 vez por personagem.
+
+※ A recompensa de conclusão pode ser usada até 15 de setembro às 08:00 (UTC+8).
+
+
+
+
+[Evento] Baú de Dado de Ouro (Vinculado)
+ITEM	QTD.
+[Evento] Moeda da Sorte do Corvinho (Vinculado)	1
+[Evento] Dado de Ouro (Vinculado)	1
+
+※ Pode-se obter todos os produtos inclusos quando usado.
+
+
+
+
+[Evento] Baú de Seleção de Desafio de Invocação de Visual de Arma/Montaria Lendário (Vinculado)
+ITEM	QTD.
+[Evento] Bilhete de Tentativa de Invocação de Montaria Lendária (Vinculado)	1
+[Evento] Bilhete de Tentativa de Invocação de Visual de Arma Lendário (Vinculado)	1
+
+
+
+
+(2) GRANDE JORNADA DO MITO DO CORVINHO
+
+- Item de prazo limitado:
+
+* [Evento] Baú Aleatório de Dado da Sorte (Vinculado): 15/09, 08:00 (UTC+8)
+
+* Outro item: Antes da atualização de 22/09
+
+ORDEM
+	ITEM	QTD.
+1	[Evento] Invocação de Visual de Arma do Crepúsculo (Vinculado)	10
+2	[Evento] Invocação de Montaria Deslumbrante do Pôr do Sol 11x (Vinculado)	2
+3	[Evento] Invocação de Montaria do Crepúsculo (Vinculado)	10
+4	[Evento] Invocação de Montaria do Crepúsculo 11x (Vinculado)	1
+5	[Evento] Invocação de Visual de Arma do Crepúsculo (Vinculado)	10
+6	[Evento] Invocação de Montaria Deslumbrante do Pôr do Sol 11x (Vinculado)	1
+7	[Evento] Baú Aleatório de Dado da Sorte (Vinculado)	1
+8	[Evento] Invocação de Montaria Deslumbrante do Crepúsculo (Vinculado)	1
+9	[Evento] Invocação de Visual de Arma do Crepúsculo (Vinculado)	10
+10	[Evento] Invocação de Visual de Arma Deslumbrante do Pôr do Sol 11x (Vinculado)	2
+11	[Evento] Invocação de Montaria do Crepúsculo (Vinculado)	10
+12	[Evento] Invocação de Visual de Arma Deslumbrante do Crepúsculo (Vinculado)	1
+13	[Evento] Baú de Seleção de Visual de Arma/Montaria do Crepúsculo 11x (Vinculado)	1
+14	[Evento] Invocação de Visual de Arma Deslumbrante do Pôr do Sol 11x (Vinculado)	2
+15	[Evento] Invocação de Montaria do Crepúsculo (Vinculado)	10
+16	[Evento] Baú de Seleção de Visual de Arma/Montaria Deslumbrante do Crepúsculo (Vinculado)	1
+
+
+
+
+TIPO DE RECOMPENSA
+	ITEM	QTD.
+Completar 1 volta	[Evento] Baú de Penas de Ouro (Vinculado)	1
+Completar 6 voltas	[Evento] Baú da Lenda Selada II (Vinculado)	1
+
+※ A recompensa por completar 6 voltas só pode ser obtida 1 vez por personagem.
+
+※ A recompensa de conclusão pode ser usada até 15 de setembro às 08:00 (UTC+8).
+
+
+
+
+[Evento] Baú de Penas de Ouro (Vinculado)
+ITEM	QTD.
+[Evento] Presente do Corvinho (Vinculado)	1
+[Evento] Pena de Ouro do Corvinho (Vinculado)	1
+
+※ Pode-se obter todos os produtos inclusos quando usado.
+
+
+
+
+[Evento] Baú da Lenda Selada II (Vinculado)
+ITEM	QTD.
+[Evento] Resquício Mítico (Vinculado)	1
+[Evento] Baú do Desafio de Chance Dupla de Seleção de Visual de Arma/Montaria Lendário (Vinculado)	1
+
+※ Pode-se obter todos os produtos inclusos quando usado.
+
+
+
+
+[Evento] Presente do Corvinho (Vinculado)
+ITEM	QTD.	Chance
+[Evento] Invocação de Montaria do Crepúsculo (Vinculado)	1	0.30%
+[Evento] Invocação de Visual de Arma do Crepúsculo (Vinculado)	1	0.30%
+[Evento] Extração de Elemento da Fusão (Vinculado)	1	0.30%
+[Evento] Ferramenta de Voo do Artesão (Vinculado)	1	0.30%
+Invocação de Espírito Superior (Vinculado)	1	1%
+[Evento] Invocação de Montaria do Pôr do Sol 11x (Vinculado)	1	6.30%
+[Evento] Invocação de Visual de Arma do Pôr do Sol 11x (Vinculado)	1	6.30%
+[Evento] Extração de Elemento da Harmonia 11x (Vinculado)	1	6.30%
+Invocação de Espírito (Vinculado)	2	4.60%
+Ferramenta de Voo do Artífice (Vinculado)	2	5%
+Ferramenta de Voo do Ajudante (Vinculado)	5	18%
+Token de Ascensão (Vinculado)	15	25.65%
+Peça de Voo Velha (Vinculado)	30	25.65%
+
+※ Pode-se obter 1 item com uma certa probabilidade quando usado.
+
+
+
+
+[Evento] Baú do Desafio de Chance Dupla de Seleção de Visual de Arma/Montaria Lendário (Vinculado)
+ITEM	QTD.	Chance
+[Evento] Baú de Seleção de Visual de Arma/Montaria Lendário (Vinculado)	1	90%
+[Evento] Baú de Seleção de Visual de Arma/Montaria Lendário (Vinculado)	2	10%
+
+
+
+
+■ CRIAÇÃO DE EVENTO
+
+Método de Criação de Dado da Sorte
+
+- Item de prazo limitado:
+
+* [Evento] Baú de Seleção de Visual de Arma/Montaria Épico (Vinculado), [Evento] Extração de Elemento da Fusão 11x (Vinculado),[Evento] Baú de Seleção de Desafio de Invocação de Visual de Arma/Montaria Mítico (Vinculado): Antes da atualização de 22/09
+
+* Outro item: 15/09, 08:00 (UTC+8)
+
+ITEM
+	MATERIAL NECESSÁRIO	RESTRIÇÃO DE CRIAÇÃO	PERÍODO DE CRIAÇÃO
+[Evento] Presente do Corvinho (Vinculado) x1	[Evento] Moeda da Sorte do Corvinho (Vinculado) x1	Sem restrição	Após a atualização de 01/09 - até 15/09, 08:00 (UTC+8)
+[Evento] Baú de Seleção de Visual de Arma/Montaria Épico (Vinculado) x1	[Evento] Moeda da Sorte do Corvinho (Vinculado) x4	4 vezes/personagem
+[Evento] Extração de Elemento da Fusão 11x (Vinculado) x1	[Evento] Moeda da Sorte do Corvinho (Vinculado) x4	4 vezes/personagem
+[Evento] Retribuição do Corvinho (Vinculado) x1	[Evento] Pena de Ouro do Corvinho (Vinculado) x1	Sem restrição
+[Evento] Retribuição do Corvinho (Vinculado) x1	[Evento] Fonte da Sorte (Vinculado) x1	Sem restrição
+[Evento] Retribuição do Corvinho (Vinculado) x1	[Evento] Resquício Mítico (Vinculado) x1	Sem restrição
+[Evento] Baú de Seleção de Visual de Arma/Montaria Épico (Vinculado) x1	[Evento] Pena de Ouro do Corvinho (Vinculado) x2	Sem restrição
+[Evento] Baú de Seleção de Desafio de Invocação de Visual de Arma/Montaria Mítico (Vinculado) x1	[Evento] Pena de Ouro do Corvinho (Vinculado) x4[Evento] Fonte da Sorte (Vinculado) x1[Evento] Resquício Mítico (Vinculado) x1	1 vez/personagem
+[Evento] Baú da Lenda Selada I (Vinculado) x1	[Evento] Pena de Ouro do Corvinho (Vinculado) x4	1 vez/personagem
+
+
+
+
+[Evento] Retribuição do Corvinho (Vinculado)
+ITEM	QTD.	Chance
+[Evento] Baú de Seleção de Visual de Arma/Montaria Lendário (Vinculado)	1	0.30%
+[Evento] Baú de Seleção de Visual de Arma/Montaria Raro (Vinculado)	5	40%
+[Evento] Extração de Elemento da Fusão (Vinculado)	5	59.70%
+
+※ Pode-se obter 1 item com uma certa probabilidade quando usado.
+
+
+
+
+[Evento] Baú da Lenda Selada I (Vinculado)
+ITEM	QTD.
+[Evento] Fonte da Sorte (Vinculado)	1
+[Evento] Baú de Seleção de Visual de Arma/Montaria Lendário (Vinculado)	1
+
+※ Pode-se obter todos os produtos inclusos quando usado.
+
+
+
+
+[Evento] Baú de Seleção de Desafio de Invocação de Visual de Arma/Montaria Mítico (Vinculado)
+ITEM	QTD.
+[Evento] Bilhete de Tentativa de 20% de Invocação de Montaria Mítica (Vinculado)	1
+[Evento] Bilhete de Tentativa de 20% de Invocação de Visual de Arma Mítico (Vinculado)	1
+
+※ Pode-se obter todos os produtos inclusos quando usado.
+
+
+
+
+
